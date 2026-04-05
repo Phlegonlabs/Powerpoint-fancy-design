@@ -4,6 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "build:style-cases": "node ./scripts/generate_style_cases.mjs",
     "render:slides": "node ./scripts/render_slides.mjs",
     "export:ppt": "node ./scripts/export_ppt.mjs",
     "build:ppt": "npm run render:slides && npm run export:ppt"

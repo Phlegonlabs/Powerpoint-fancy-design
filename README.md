@@ -15,6 +15,8 @@ It is built for presentation work rather than document layout:
 - Generates one HTML file per slide: `slide_01.html`, `slide_02.html`, and so on
 - Keeps every slide at a fixed `1600x900` canvas
 - Supports 10 visual styles from editorial Swiss layouts to Memphis pop
+- Shows one standalone case board per style in the README
+- Includes a light style index graphic made of standalone motifs
 - Uses a mandatory second-pass review for presentation safety
 - Exports to PowerPoint with strong visual fidelity
 
@@ -116,17 +118,13 @@ npm run build:ppt
 - Style recommendations and style descriptions should default to English.
 - Generated slide copy should stay in the user's source language unless translation is explicitly requested.
 
-## Style Overview Graphic
-
-![PPT Design Style Overview](./assets/style-overview.svg)
-
-## Style Sample Gallery
-
-![PPT Design Style Sample Gallery](./assets/style-samples.svg)
-
 ## Style Gallery
 
 The skill uses these style families. Full rules live in [`references/style-selector.md`](./references/style-selector.md) and the detailed style specs in [`styles/`](./styles/).
+
+## Style Index
+
+![PPT Design style index](./assets/style-index.svg)
 
 | Style | Name | Visual Feel | Best For | `white` |
 |---|---|---|---|---|
@@ -141,11 +139,17 @@ The skill uses these style families. Full rules live in [`references/style-selec
 | I | Dark Editorial | serious, premium, magazine-like | investigations, documentaries, deep research | No |
 | J | Memphis Pop | playful, bright, anti-grid, energetic | education, entertainment, social campaigns, festivals | Yes |
 
+Each style section below includes its own full case board. The index above is only for quick scanning, so it stays lighter and avoids crowded labels.
+
 ## Style Templates
 
 These are GitHub-facing prompt templates. Each template is designed for one style and can be copied directly, then filled with your own topic, audience, and slide requirements.
 
 ### A. Swiss International
+
+![Swiss International case board](./assets/style-case-a.svg)
+
+Case focus: `ASEAN EV Market Outlook` for a regional investor briefing.
 
 Reference template:
 
@@ -177,6 +181,10 @@ Good fit:
 
 ### B. East Asian Minimalism
 
+![East Asian Minimalism case board](./assets/style-case-b.svg)
+
+Case focus: `Tea House Brand Philosophy` for a quiet founder story deck.
+
 Reference template:
 
 ```text
@@ -206,6 +214,10 @@ Good fit:
 - reflective storytelling
 
 ### C. Risograph Print
+
+![Risograph Print case board](./assets/style-case-c.svg)
+
+Case focus: `Indie Festival Launch` for a creative pitch deck.
 
 Reference template:
 
@@ -237,6 +249,10 @@ Good fit:
 
 ### D. Bauhaus Geometry
 
+![Bauhaus Geometry case board](./assets/style-case-d.svg)
+
+Case focus: `Modular Construction Systems` for a structural product strategy deck.
+
 Reference template:
 
 ```text
@@ -266,6 +282,10 @@ Good fit:
 - product systems
 
 ### E. Organic Handcrafted
+
+![Organic Handcrafted case board](./assets/style-case-e.svg)
+
+Case focus: `Wellness Retreat Story` for a tactile lifestyle narrative.
 
 Reference template:
 
@@ -297,6 +317,10 @@ Good fit:
 
 ### F. Art Deco Luxury
 
+![Art Deco Luxury case board](./assets/style-case-f.svg)
+
+Case focus: `Grand Ballroom Awards Night` for a premium event presentation.
+
 Reference template:
 
 ```text
@@ -326,6 +350,10 @@ Good fit:
 - ceremonial event presentations
 
 ### G. Neo Brutalism
+
+![Neo Brutalism case board](./assets/style-case-g.svg)
+
+Case focus: `AI Workflow Tool Launch` for a fast-moving startup deck.
 
 Reference template:
 
@@ -357,6 +385,10 @@ Good fit:
 
 ### H. Retro Futurism
 
+![Retro Futurism case board](./assets/style-case-h.svg)
+
+Case focus: `Space Game Reveal Deck` for a cinematic launch sequence.
+
 Reference template:
 
 ```text
@@ -387,6 +419,10 @@ Good fit:
 
 ### I. Dark Editorial
 
+![Dark Editorial case board](./assets/style-case-i.svg)
+
+Case focus: `Ocean Surveillance Documentary` for a research storytelling deck.
+
 Reference template:
 
 ```text
@@ -416,6 +452,10 @@ Good fit:
 - high-seriousness editorial content
 
 ### J. Memphis Pop
+
+![Memphis Pop case board](./assets/style-case-j.svg)
+
+Case focus: `School Reading Campaign` for an energetic education deck.
 
 Reference template:
 
