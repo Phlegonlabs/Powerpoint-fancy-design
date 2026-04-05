@@ -7,6 +7,17 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const rootDir = path.join(__dirname, "..");
 const htmlOutputDir = path.join(rootDir, "outputs", "readme-previews", "html");
 const pngOutputDir = path.join(rootDir, "assets");
+const locales = [
+  { id: "en", suffix: "", titleSuffix: "Preview" },
+  { id: "zh-Hans", suffix: "-zh", titleSuffix: "中文预览" },
+  { id: "zh-Hant", suffix: "-zh-tw", titleSuffix: "繁體中文預覽" },
+];
+
+const localeFonts = {
+  en: "",
+  "zh-Hans": `<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700;900&family=Noto+Serif+SC:wght@400;700;900&display=swap" rel="stylesheet">`,
+  "zh-Hant": `<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Noto+Serif+TC:wght@400;700;900&display=swap" rel="stylesheet">`,
+};
 
 const styles = [
   {
@@ -303,14 +314,65 @@ const styles = [
   },
 ];
 
-function renderDocument(style) {
+const localizedCopy = {
+  "zh-Hans": {
+    a: { name: "瑞士国际主义", replacements: [["STYLE A / SWISS INTERNATIONAL", "风格 A / 瑞士国际主义"], ["EV Market Signals", "电动车市场信号"], ["A data-driven title slide that uses one headline number, one editorial claim, and one structured notes column without turning into a dashboard.", "这张页展示的是编辑型数据封面：用一个核心数字、一句判断和一列注释完成清晰表达，而不是做成仪表盘。"], ["Takeaway", "核心判断"], ["Battery adoption is now concentrated in three metro clusters, which makes one giant percentage more useful than five tiny charts.", "电池采用率集中在三个城市群，所以一个大数字比五张小图更适合演示。"], ["Why It Works", "为什么有效"], ["Large negative space, asymmetrical rhythm, and restrained rules keep the slide printable, presentable, and serious.", "大面积留白、不对称节奏和克制线条，让页面既适合展示，也保持严肃的编辑感。"], ["Use It For", "适用场景"], ["Board updates, policy briefings, market outlook decks, and newsroom-style explainers.", "适合董事会汇报、政策简报、市场展望和新闻编辑型说明页。"]], css: `.kicker,.summary,.side .label,.side .text{font-family:"Noto Sans SC",sans-serif;letter-spacing:0}.headline{font-family:"Noto Serif SC",serif;font-size:64px;line-height:1.04;width:448px}.summary{font-size:24px;line-height:1.58;width:432px}.side .label{font-size:16px;font-weight:700}.side .text{font-size:21px;line-height:1.56}` },
+    b: { name: "东亚极简", replacements: [["STYLE B / EAST ASIAN MINIMALISM", "风格 B / 东亚极简"], ["Quiet Craft<br/>Brand Story", "安静工艺<br/>品牌叙事"], ["This template shows how one focal form, one horizontal rule, and one calm text block can carry an entire philosophy slide without noise.", "这张模板页强调克制表达：一个主形、一条横线和一段安静文字，就足以支撑完整的品牌理念页。"], ["Ideal for founder beliefs, museum-like decks, and cultural presentations where silence is part of the message.", "适合创始人理念、展览型内容和文化叙事，重点是把安静也当成表达的一部分。"]], css: `.kicker,.summary{font-family:"Noto Sans SC",sans-serif;letter-spacing:0}.headline{font-family:"Noto Serif SC",serif;font-size:58px;line-height:1.08;width:470px}.summary{font-size:24px;line-height:1.64;width:452px}.quiet-note{font-family:"Noto Serif SC",serif;font-size:19px;line-height:1.65;max-width:380px}` },
+    c: { name: "Risograph 印刷", replacements: [["STYLE C / RISOGRAPH PRINT", "风格 C / Risograph 印刷"], ["Indie Festival<br/>Launch Kit", "独立音乐节<br/>发布套件"], ["The point of this slide is controlled collision: two inks, offset registration, rough hierarchy, and a headline that feels screen-printed instead of digitally polished.", "这张页强调的是可控碰撞：双色油墨、错位套印、粗粝层级，以及更像丝网印刷而不是数字排版的标题。"], ["Use this direction for event promos, youth campaigns, and creative proposals that should feel handmade, loud, and independent.", "适合活动预热、青年 campaign 和创意提案，重点是手作感、冲突感和独立气质。"]], css: `.label,.summary,.footer{font-family:"Noto Sans SC",sans-serif;letter-spacing:0}.headline{font-family:"Noto Sans SC",sans-serif;font-size:76px;line-height:1.02;width:510px}.summary{font-size:23px;line-height:1.62;width:442px}.footer{font-size:20px;line-height:1.56;width:1240px}` },
+    d: { name: "包豪斯几何", replacements: [["STYLE D / BAUHAUS GEOMETRY", "风格 D / 包豪斯几何"], ["Modular<br/>Systems Deck", "模块系统<br/>提案页"], ["This preview keeps the composition structural: strong diagonals, one dark anchor, and headline-driven hierarchy instead of neat corporate rows.", "这张页强调结构感：强烈对角线、一个深色锚点，以及由标题驱动的层级，而不是整齐但乏味的企业排布。"], ["Framework", "结构逻辑"], ["Good for architecture, operational systems, and slides that need visual logic more than softness.", "适合建筑、系统框架和需要视觉逻辑强于柔和氛围的内容。"], ["Behavior", "使用提醒"], ["If content starts feeling dense, split it. Bauhaus should stay decisive, not crowded.", "如果内容开始变密，就拆页。包豪斯应该果断，而不是拥挤。"]], css: `.kicker,.summary,.fact-title,.fact-copy{font-family:"Noto Sans SC",sans-serif;letter-spacing:0}.headline{font-family:"Noto Sans SC",sans-serif;font-size:62px;line-height:1.06;width:472px}.summary{font-size:23px;line-height:1.58;width:432px}.fact-title{font-size:15px;font-weight:700}.fact-copy{font-size:21px;line-height:1.55}` },
+    e: { name: "有机手作", replacements: [["STYLE E / ORGANIC HANDCRAFTED", "风格 E / 有机手作"], ["Wellness Retreat<br/>Story Arc", "疗愈品牌<br/>故事页"], ["The slide should feel human and tactile. Soft shapes can carry the emotional tone, while the text stays spacious, warm, and easy to speak over.", "这一页要有人味和触感。柔软形状承担情绪氛围，而文字保持宽松、温暖、容易在演示里讲述。"], ["Best for lifestyle storytelling, hospitality narratives, food culture decks, and any presentation that benefits from softness without becoming vague.", "适合生活方式叙事、酒店品牌、饮食文化和所有需要温柔但不松散的演示内容。"]], css: `.kicker,.summary,.footer{font-family:"Noto Sans SC",sans-serif;letter-spacing:0}.headline{font-family:"Noto Serif SC",serif;font-size:56px;line-height:1.1;width:432px}.summary{font-size:23px;line-height:1.62;width:432px}.footer{font-size:21px;line-height:1.58;width:420px}` },
+    f: { name: "装饰艺术奢华", replacements: [["STYLE F / ART DECO LUXURY", "风格 F / 装饰艺术奢华"], ["Awards Night<br/>Opening Slide", "颁奖之夜<br/>开场页"], ["This template stays dark, centered, and ceremonial. The slide should feel expensive because the linework is disciplined, not because it is crowded with ornaments.", "这张模板页保持深色、居中和仪式感。它的高级感来自线条秩序，而不是来自堆满装饰。"], ["Mood", "气质"], ["Premium, formal, symmetrical, and paced like an event reveal.", "高级、正式、对称，像一场典礼揭幕。"], ["Best For", "适合内容"], ["Hospitality decks, prestige finance, luxury launches, gala openers.", "适合酒店、金融 prestige 场景、奢侈品发布和晚宴开场。"], ["Constraint", "使用限制"], ["Do not force white mode. The dark field is part of the system.", "不要强行改成白底，深色场就是这套系统的一部分。"]], css: `.kicker,.summary,.stat-label,.stat-copy{font-family:"Noto Sans SC",sans-serif;letter-spacing:0}.headline{font-family:"Noto Serif SC",serif;font-size:70px;line-height:1.08;width:780px}.summary{font-size:24px;line-height:1.6;width:820px}.stat-label{font-size:15px;font-weight:700}.stat-copy{font-size:20px;line-height:1.56}` },
+    g: { name: "新粗野主义", replacements: [["STYLE G / NEO BRUTALISM", "风格 G / 新粗野主义"], ["This slide works when the message is blunt. Heavy borders, hard shadows, and loud blocks should support conviction, not random decoration.", "这张页适合强态度表达。粗边框、硬阴影和大色块应该服务立场，而不是变成随意装饰。"], ["Ship The Tool.<br/>Say It Clearly.", "把工具推出去。<br/>把话说清楚。"], ["Use it for product launches, manifesto decks, opinionated startup intros, and presentations that need high-contrast momentum.", "适合产品发布、宣言式 deck、强观点创业介绍，以及需要高对比推进感的演示。"], ["If the slide starts feeling cute, it is no longer brutalist enough.", "如果页面开始变可爱，那它就不够粗野了。"]], css: `.kicker,.summary,.note{font-family:"Noto Sans SC",sans-serif;letter-spacing:0}.headline{font-family:"Noto Sans SC",sans-serif;font-size:72px;line-height:1.04;width:620px;font-weight:900}.summary{font-size:22px;line-height:1.58;width:350px}.note{font-size:20px;line-height:1.56}` },
+    h: { name: "复古未来主义", replacements: [["STYLE H / RETRO FUTURISM", "风格 H / 复古未来主义"], ["Signal Locked.<br/>Reveal Sequence.", "信号锁定。<br/>揭示开始。"], ["A good retro-futurist slide feels cinematic and restrained. It should use horizon drama and scanline atmosphere without becoming a neon mess.", "好的复古未来主义页面应该同时具备电影感和克制感，用地平线张力和扫描线氛围，而不是做成霓虹堆砌。"], ["Scene", "场景"], ["Game reveals, electronic music decks, future-tech launches.", "适合游戏揭幕、电子音乐 deck 和未来科技发布。"], ["Rule", "使用规则"], ["Keep the dark background. The contrast system depends on it.", "保持深色背景，这套对比系统依赖黑场。"]], css: `.kicker,.summary,.spec .label,.spec .copy{font-family:"Noto Sans SC",sans-serif;letter-spacing:0}.headline{font-family:"Noto Serif SC",serif;font-size:62px;line-height:1.08;width:620px}.summary{font-size:23px;line-height:1.6;width:520px}.spec .label{font-size:15px;font-weight:700}.spec .copy{font-size:20px;line-height:1.56}` },
+    i: { name: "深色编辑感", replacements: [["STYLE I / DARK EDITORIAL", "风格 I / 深色编辑感"], ["Sharp Evidence.<br/>Slow Authority.", "锋利证据。<br/>缓慢权威。"], ["This should look like a serious magazine opener. The typography leads, the contrast breathes, and the slide carries weight without stuffing in extra widgets.", "这张页应该像一本严肃杂志的开篇。字体承担主导，对比要留有呼吸，页面有分量但不能塞满组件。"], ["Use It For", "适用场景"], ["Investigations, documentary proposals, longform research storytelling, high-seriousness narratives.", "适合调查报道、纪录片提案、长篇研究叙事和高严肃度内容。"], ["Watch Out", "注意事项"], ["Do not cram too many arguments into one page. Editorial pacing is the design system.", "不要把太多论点塞进同一页，编辑节奏本身就是设计系统。"]], css: `.kicker,.summary,.rail .label,.rail .copy{font-family:"Noto Sans SC",sans-serif;letter-spacing:0}.headline{font-family:"Noto Serif SC",serif;font-size:62px;line-height:1.08;width:520px}.summary{font-size:22px;line-height:1.62;width:500px;top:470px}.rail .label{font-size:15px;font-weight:700}.rail .copy{font-size:20px;line-height:1.56}` },
+    j: { name: "孟菲斯波普", replacements: [["STYLE J / MEMPHIS POP", "风格 J / 孟菲斯波普"], ["This template should feel playful, bright, and anti-grid, but the reading order still needs to stay obvious from the first second.", "这张模板页要有玩味、明亮和反网格感，但阅读顺序依然要在第一眼就足够清楚。"], ["Read More.<br/>Make Noise.", "多读一点。<br/>把声音放大。"], ["Great for education decks, school campaigns, social storytelling, festival programs, and presentations that benefit from a fun public-facing voice.", "适合教育 deck、校园 campaign、社交叙事、节庆活动，以及所有需要公众友好语气的演示。"]], css: `.kicker,.summary,.footer{font-family:"Noto Sans SC",sans-serif;letter-spacing:0}.headline{font-family:"Noto Sans SC",sans-serif;font-size:74px;line-height:1.04;width:540px;font-weight:900}.summary{font-size:22px;line-height:1.58;width:312px}.footer{font-size:20px;line-height:1.58;width:332px}` },
+  },
+  "zh-Hant": {
+    a: { name: "瑞士國際主義", replacements: [["STYLE A / SWISS INTERNATIONAL", "風格 A / 瑞士國際主義"], ["EV Market Signals", "電動車市場信號"], ["A data-driven title slide that uses one headline number, one editorial claim, and one structured notes column without turning into a dashboard.", "這張頁展示的是編輯型數據封面：用一個核心數字、一句判斷和一列註解完成清晰表達，而不是做成儀表板。"], ["Takeaway", "核心判斷"], ["Battery adoption is now concentrated in three metro clusters, which makes one giant percentage more useful than five tiny charts.", "電池採用率集中在三個城市群，所以一個大數字比五張小圖更適合演示。"], ["Why It Works", "為什麼有效"], ["Large negative space, asymmetrical rhythm, and restrained rules keep the slide printable, presentable, and serious.", "大面積留白、不對稱節奏和克制線條，讓頁面既適合展示，也保持嚴肅的編輯感。"], ["Use It For", "適用場景"], ["Board updates, policy briefings, market outlook decks, and newsroom-style explainers.", "適合董事會簡報、政策說明、市場展望和新聞編輯型說明頁。"]], css: `.kicker,.summary,.side .label,.side .text{font-family:"Noto Sans TC",sans-serif;letter-spacing:0}.headline{font-family:"Noto Serif TC",serif;font-size:64px;line-height:1.04;width:448px}.summary{font-size:24px;line-height:1.58;width:432px}.side .label{font-size:16px;font-weight:700}.side .text{font-size:21px;line-height:1.56}` },
+    b: { name: "東亞極簡", replacements: [["STYLE B / EAST ASIAN MINIMALISM", "風格 B / 東亞極簡"], ["Quiet Craft<br/>Brand Story", "安靜工藝<br/>品牌敘事"], ["This template shows how one focal form, one horizontal rule, and one calm text block can carry an entire philosophy slide without noise.", "這張模板頁強調克制表達：一個主形、一條橫線和一段安靜文字，就足以支撐完整的品牌理念頁。"], ["Ideal for founder beliefs, museum-like decks, and cultural presentations where silence is part of the message.", "適合創辦人理念、展覽型內容和文化敘事，重點是把安靜也當成表達的一部分。"]], css: `.kicker,.summary{font-family:"Noto Sans TC",sans-serif;letter-spacing:0}.headline{font-family:"Noto Serif TC",serif;font-size:58px;line-height:1.08;width:470px}.summary{font-size:24px;line-height:1.64;width:452px}.quiet-note{font-family:"Noto Serif TC",serif;font-size:19px;line-height:1.65;max-width:380px}` },
+    c: { name: "Risograph 印刷", replacements: [["STYLE C / RISOGRAPH PRINT", "風格 C / Risograph 印刷"], ["Indie Festival<br/>Launch Kit", "獨立音樂節<br/>發布套件"], ["The point of this slide is controlled collision: two inks, offset registration, rough hierarchy, and a headline that feels screen-printed instead of digitally polished.", "這張頁強調的是可控碰撞：雙色油墨、錯位套印、粗礪層級，以及更像網版印刷而不是數位排版的標題。"], ["Use this direction for event promos, youth campaigns, and creative proposals that should feel handmade, loud, and independent.", "適合活動預熱、青年 campaign 和創意提案，重點是手作感、衝突感和獨立氣質。"]], css: `.label,.summary,.footer{font-family:"Noto Sans TC",sans-serif;letter-spacing:0}.headline{font-family:"Noto Sans TC",sans-serif;font-size:76px;line-height:1.02;width:510px}.summary{font-size:23px;line-height:1.62;width:442px}.footer{font-size:20px;line-height:1.56;width:1240px}` },
+    d: { name: "包豪斯幾何", replacements: [["STYLE D / BAUHAUS GEOMETRY", "風格 D / 包豪斯幾何"], ["Modular<br/>Systems Deck", "模組系統<br/>提案頁"], ["This preview keeps the composition structural: strong diagonals, one dark anchor, and headline-driven hierarchy instead of neat corporate rows.", "這張頁強調結構感：強烈對角線、一個深色錨點，以及由標題驅動的層級，而不是整齊但乏味的企業排布。"], ["Framework", "結構邏輯"], ["Good for architecture, operational systems, and slides that need visual logic more than softness.", "適合建築、系統框架和需要視覺邏輯強於柔和氛圍的內容。"], ["Behavior", "使用提醒"], ["If content starts feeling dense, split it. Bauhaus should stay decisive, not crowded.", "如果內容開始變密，就拆頁。包豪斯應該果斷，而不是擁擠。"]], css: `.kicker,.summary,.fact-title,.fact-copy{font-family:"Noto Sans TC",sans-serif;letter-spacing:0}.headline{font-family:"Noto Sans TC",sans-serif;font-size:62px;line-height:1.06;width:472px}.summary{font-size:23px;line-height:1.58;width:432px}.fact-title{font-size:15px;font-weight:700}.fact-copy{font-size:21px;line-height:1.55}` },
+    e: { name: "有機手作", replacements: [["STYLE E / ORGANIC HANDCRAFTED", "風格 E / 有機手作"], ["Wellness Retreat<br/>Story Arc", "療癒品牌<br/>故事頁"], ["The slide should feel human and tactile. Soft shapes can carry the emotional tone, while the text stays spacious, warm, and easy to speak over.", "這一頁要有人味和觸感。柔軟形狀承擔情緒氛圍，而文字保持寬鬆、溫暖、容易在演示裡講述。"], ["Best for lifestyle storytelling, hospitality narratives, food culture decks, and any presentation that benefits from softness without becoming vague.", "適合生活方式敘事、飯店品牌、飲食文化和所有需要溫柔但不鬆散的演示內容。"]], css: `.kicker,.summary,.footer{font-family:"Noto Sans TC",sans-serif;letter-spacing:0}.headline{font-family:"Noto Serif TC",serif;font-size:56px;line-height:1.1;width:432px}.summary{font-size:23px;line-height:1.62;width:432px}.footer{font-size:21px;line-height:1.58;width:420px}` },
+    f: { name: "裝飾藝術奢華", replacements: [["STYLE F / ART DECO LUXURY", "風格 F / 裝飾藝術奢華"], ["Awards Night<br/>Opening Slide", "頒獎之夜<br/>開場頁"], ["This template stays dark, centered, and ceremonial. The slide should feel expensive because the linework is disciplined, not because it is crowded with ornaments.", "這張模板頁保持深色、置中和儀式感。它的高級感來自線條秩序，而不是來自堆滿裝飾。"], ["Mood", "氣質"], ["Premium, formal, symmetrical, and paced like an event reveal.", "高級、正式、對稱，像一場典禮揭幕。"], ["Best For", "適合內容"], ["Hospitality decks, prestige finance, luxury launches, gala openers.", "適合飯店、金融 prestige 場景、奢侈品發布和晚宴開場。"], ["Constraint", "使用限制"], ["Do not force white mode. The dark field is part of the system.", "不要強行改成白底，深色場就是這套系統的一部分。"]], css: `.kicker,.summary,.stat-label,.stat-copy{font-family:"Noto Sans TC",sans-serif;letter-spacing:0}.headline{font-family:"Noto Serif TC",serif;font-size:70px;line-height:1.08;width:780px}.summary{font-size:24px;line-height:1.6;width:820px}.stat-label{font-size:15px;font-weight:700}.stat-copy{font-size:20px;line-height:1.56}` },
+    g: { name: "新粗野主義", replacements: [["STYLE G / NEO BRUTALISM", "風格 G / 新粗野主義"], ["This slide works when the message is blunt. Heavy borders, hard shadows, and loud blocks should support conviction, not random decoration.", "這張頁適合強態度表達。粗邊框、硬陰影和大色塊應該服務立場，而不是變成隨意裝飾。"], ["Ship The Tool.<br/>Say It Clearly.", "把工具推出去。<br/>把話說清楚。"], ["Use it for product launches, manifesto decks, opinionated startup intros, and presentations that need high-contrast momentum.", "適合產品發布、宣言式 deck、強觀點創業介紹，以及需要高對比推進感的演示。"], ["If the slide starts feeling cute, it is no longer brutalist enough.", "如果頁面開始變可愛，那它就不夠粗野了。"]], css: `.kicker,.summary,.note{font-family:"Noto Sans TC",sans-serif;letter-spacing:0}.headline{font-family:"Noto Sans TC",sans-serif;font-size:72px;line-height:1.04;width:620px;font-weight:900}.summary{font-size:22px;line-height:1.58;width:350px}.note{font-size:20px;line-height:1.56}` },
+    h: { name: "復古未來主義", replacements: [["STYLE H / RETRO FUTURISM", "風格 H / 復古未來主義"], ["Signal Locked.<br/>Reveal Sequence.", "訊號鎖定。<br/>揭示開始。"], ["A good retro-futurist slide feels cinematic and restrained. It should use horizon drama and scanline atmosphere without becoming a neon mess.", "好的復古未來主義頁面應該同時具備電影感與克制感，用地平線張力和掃描線氛圍，而不是做成霓虹堆砌。"], ["Scene", "場景"], ["Game reveals, electronic music decks, future-tech launches.", "適合遊戲揭幕、電子音樂 deck 和未來科技發布。"], ["Rule", "使用規則"], ["Keep the dark background. The contrast system depends on it.", "保持深色背景，這套對比系統依賴黑場。"]], css: `.kicker,.summary,.spec .label,.spec .copy{font-family:"Noto Sans TC",sans-serif;letter-spacing:0}.headline{font-family:"Noto Serif TC",serif;font-size:62px;line-height:1.08;width:620px}.summary{font-size:23px;line-height:1.6;width:520px}.spec .label{font-size:15px;font-weight:700}.spec .copy{font-size:20px;line-height:1.56}` },
+    i: { name: "深色編輯感", replacements: [["STYLE I / DARK EDITORIAL", "風格 I / 深色編輯感"], ["Sharp Evidence.<br/>Slow Authority.", "鋒利證據。<br/>緩慢權威。"], ["This should look like a serious magazine opener. The typography leads, the contrast breathes, and the slide carries weight without stuffing in extra widgets.", "這張頁應該像一本嚴肅雜誌的開篇。字體承擔主導，對比要留有呼吸，頁面有分量但不能塞滿元件。"], ["Use It For", "適用場景"], ["Investigations, documentary proposals, longform research storytelling, high-seriousness narratives.", "適合調查報導、紀錄片提案、長篇研究敘事和高嚴肅度內容。"], ["Watch Out", "注意事項"], ["Do not cram too many arguments into one page. Editorial pacing is the design system.", "不要把太多論點塞進同一頁，編輯節奏本身就是設計系統。"]], css: `.kicker,.summary,.rail .label,.rail .copy{font-family:"Noto Sans TC",sans-serif;letter-spacing:0}.headline{font-family:"Noto Serif TC",serif;font-size:62px;line-height:1.08;width:520px}.summary{font-size:22px;line-height:1.62;width:500px;top:470px}.rail .label{font-size:15px;font-weight:700}.rail .copy{font-size:20px;line-height:1.56}` },
+    j: { name: "孟菲斯波普", replacements: [["STYLE J / MEMPHIS POP", "風格 J / 孟菲斯波普"], ["This template should feel playful, bright, and anti-grid, but the reading order still needs to stay obvious from the first second.", "這張模板頁要有玩味、明亮和反網格感，但閱讀順序依然要在第一眼就足夠清楚。"], ["Read More.<br/>Make Noise.", "多讀一點。<br/>把聲音放大。"], ["Great for education decks, school campaigns, social storytelling, festival programs, and presentations that benefit from a fun public-facing voice.", "適合教育 deck、校園 campaign、社交敘事、節慶活動，以及所有需要大眾友好語氣的演示。"]], css: `.kicker,.summary,.footer{font-family:"Noto Sans TC",sans-serif;letter-spacing:0}.headline{font-family:"Noto Sans TC",sans-serif;font-size:74px;line-height:1.04;width:540px;font-weight:900}.summary{font-size:22px;line-height:1.58;width:312px}.footer{font-size:20px;line-height:1.58;width:332px}` },
+  },
+};
+
+function applyReplacements(value, replacements) {
+  return replacements.reduce((result, [from, to]) => result.replaceAll(from, to), value);
+}
+
+function localizeStyle(style, localeId) {
+  if (localeId === "en") {
+    return style;
+  }
+
+  const localeVariant = localizedCopy[localeId]?.[style.id];
+  if (!localeVariant) {
+    return style;
+  }
+
+  return {
+    ...style,
+    name: localeVariant.name,
+    css: `${style.css}\n${localeVariant.css}`,
+    html: applyReplacements(style.html, localeVariant.replacements),
+  };
+}
+
+function renderDocument(style, locale) {
+  const localizedStyle = localizeStyle(style, locale.id);
   return `<!doctype html>
-<html lang="en">
+<html lang="${locale.id}">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=1600, initial-scale=1" />
     <link rel="icon" href="data:," />
-    <title>${style.name} Preview</title>
+    ${localeFonts[locale.id]}
+    <title>${localizedStyle.name} ${locale.titleSuffix}</title>
     <style>
       * { box-sizing: border-box; }
       html, body { margin: 0; padding: 0; background: #111; }
@@ -325,11 +387,11 @@ function renderDocument(style) {
       }
       .check { display: block; }
       .slide > .check { position: absolute; }
-      ${style.css}
+      ${localizedStyle.css}
     </style>
   </head>
   <body>
-    <div class="slide">${style.html}</div>
+    <div class="slide">${localizedStyle.html}</div>
   </body>
 </html>`;
 }
@@ -406,17 +468,19 @@ async function main() {
     });
     const page = await context.newPage();
 
-    for (const style of styles) {
-      const htmlPath = path.join(htmlOutputDir, `style-preview-${style.id}.html`);
-      const pngPath = path.join(pngOutputDir, `style-preview-${style.id}.png`);
+    for (const locale of locales) {
+      for (const style of styles) {
+        const htmlPath = path.join(htmlOutputDir, `style-preview${locale.suffix}-${style.id}.html`);
+        const pngPath = path.join(pngOutputDir, `style-preview${locale.suffix}-${style.id}.png`);
 
-      await fs.writeFile(htmlPath, renderDocument(style), "utf8");
-      await page.goto(pathToFileURL(htmlPath).href, { waitUntil: "load" });
+        await fs.writeFile(htmlPath, renderDocument(style, locale), "utf8");
+        await page.goto(pathToFileURL(htmlPath).href, { waitUntil: "load" });
 
-      const slide = await ensureReady(page, path.basename(htmlPath));
-      await slide.screenshot({ path: pngPath, type: "png" });
+        const slide = await ensureReady(page, path.basename(htmlPath));
+        await slide.screenshot({ path: pngPath, type: "png" });
 
-      console.log(`Rendered ${path.relative(rootDir, pngPath)}`);
+        console.log(`Rendered ${path.relative(rootDir, pngPath)}`);
+      }
     }
 
     await context.close();

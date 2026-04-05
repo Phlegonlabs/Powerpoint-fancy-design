@@ -1,5 +1,7 @@
 # PPT Design 中文说明
 
+語言： [English](./README.md) | **简体中文** | [繁體中文](./README.zh-TW.md)
+
 `ppt-design` 是一个可复用的 Codex skill，用来把演示内容设计成 `1600x900` 的 HTML slide，并在需要时进一步导出成高保真的 PPTX。
 
 英文版说明：[`README.md`](./README.md)
@@ -99,6 +101,7 @@ ppt-design/
 |- SKILL.md
 |- README.md
 |- README.zh.md
+|- README.zh-TW.md
 |- agents/openai.yaml
 |- references/
 |  |- style-selector.md
@@ -276,7 +279,7 @@ npm run build:style-previews
 
 ### A. Swiss International
 
-![Swiss International preview](./assets/style-preview-a.png)
+![Swiss International preview](./assets/style-preview-zh-a.png)
 
 ```text
 Create a [SLIDE_COUNT]-slide presentation in the Swiss International style.
@@ -292,7 +295,7 @@ Keep the layout asymmetrical, grid-first, and presentation-readable.
 
 ### B. East Asian Minimalism
 
-![East Asian Minimalism preview](./assets/style-preview-b.png)
+![East Asian Minimalism preview](./assets/style-preview-zh-b.png)
 
 ```text
 Create a [SLIDE_COUNT]-slide presentation in the East Asian Minimalism style.
@@ -308,7 +311,7 @@ Keep one main visual focus per slide and preserve large negative space.
 
 ### C. Risograph Print
 
-![Risograph Print preview](./assets/style-preview-c.png)
+![Risograph Print preview](./assets/style-preview-zh-c.png)
 
 ```text
 Create a [SLIDE_COUNT]-slide presentation in the Risograph Print style.
@@ -324,7 +327,7 @@ Use two-ink visual logic, registration shift, and bold print-like composition.
 
 ### D. Bauhaus Geometry
 
-![Bauhaus Geometry preview](./assets/style-preview-d.png)
+![Bauhaus Geometry preview](./assets/style-preview-zh-d.png)
 
 ```text
 Create a [SLIDE_COUNT]-slide presentation in the Bauhaus Geometry style.
@@ -340,7 +343,7 @@ Use diagonal composition, bold geometry, and strong title hierarchy.
 
 ### E. Organic Handcrafted
 
-![Organic Handcrafted preview](./assets/style-preview-e.png)
+![Organic Handcrafted preview](./assets/style-preview-zh-e.png)
 
 ```text
 Create a [SLIDE_COUNT]-slide presentation in the Organic Handcrafted style.
@@ -356,7 +359,7 @@ Use soft organic forms, visible texture, and generous breathing room.
 
 ### F. Art Deco Luxury
 
-![Art Deco Luxury preview](./assets/style-preview-f.png)
+![Art Deco Luxury preview](./assets/style-preview-zh-f.png)
 
 ```text
 Create a [SLIDE_COUNT]-slide presentation in the Art Deco Luxury style.
@@ -372,7 +375,7 @@ Keep the layout dark, centered, elegant, and linework-driven.
 
 ### G. Neo Brutalism
 
-![Neo Brutalism preview](./assets/style-preview-g.png)
+![Neo Brutalism preview](./assets/style-preview-zh-g.png)
 
 ```text
 Create a [SLIDE_COUNT]-slide presentation in the Neo Brutalism style.
@@ -388,7 +391,7 @@ Use thick borders, hard shadows, strong color blocks, and assertive hierarchy.
 
 ### H. Retro Futurism
 
-![Retro Futurism preview](./assets/style-preview-h.png)
+![Retro Futurism preview](./assets/style-preview-zh-h.png)
 
 ```text
 Create a [SLIDE_COUNT]-slide presentation in the Retro Futurism style.
@@ -404,7 +407,7 @@ Use a dark horizon-grid composition, restrained neon linework, and monospaced la
 
 ### I. Dark Editorial
 
-![Dark Editorial preview](./assets/style-preview-i.png)
+![Dark Editorial preview](./assets/style-preview-zh-i.png)
 
 ```text
 Create a [SLIDE_COUNT]-slide presentation in the Dark Editorial style.
@@ -420,7 +423,7 @@ Use sharp editorial typography, dark space, and strong headline-body contrast.
 
 ### J. Memphis Pop
 
-![Memphis Pop preview](./assets/style-preview-j.png)
+![Memphis Pop preview](./assets/style-preview-zh-j.png)
 
 ```text
 Create a [SLIDE_COUNT]-slide presentation in the Memphis Pop style.

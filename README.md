@@ -1,8 +1,8 @@
 # PPT Design
 
-`ppt-design` is a reusable Codex skill for designing presentation slides as polished `1600x900` HTML pages, then exporting them to a high-fidelity image-based PPTX when needed.
+Language: **English** | [简体中文](./README.zh.md) | [繁體中文](./README.zh-TW.md)
 
-Chinese reference: [`README.zh.md`](./README.zh.md)
+`ppt-design` is a reusable Codex skill for designing presentation slides as polished `1600x900` HTML pages, then exporting them to a high-fidelity image-based PPTX when needed.
 
 Claude Code compatible. `skills.sh` installable.
 
@@ -96,6 +96,7 @@ ppt-design/
 |- SKILL.md
 |- README.md
 |- README.zh.md
+|- README.zh-TW.md
 |- agents/openai.yaml
 |- references/
 |  |- style-selector.md
