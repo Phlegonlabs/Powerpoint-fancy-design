@@ -34,12 +34,12 @@ const styles = [
       .kicker{top:68px;left:90px;font:600 18px/1.2 Georgia,serif;letter-spacing:2px;text-transform:uppercase;}
       .metric{top:170px;left:96px;font:700 180px/.88 Georgia,serif;letter-spacing:-5px;}
       .headline{top:170px;left:468px;width:440px;font:700 76px/.95 Georgia,serif;}
-      .summary{top:380px;left:472px;width:420px;font:400 28px/1.45 "Segoe UI",Arial,sans-serif;color:#5f5a55;}
+      .summary{top:380px;left:472px;width:420px;font:400 28px/1.45 "Segoe UI",Arial,sans-serif;color:#433831;}
       .rule{position:absolute;left:96px;top:132px;width:188px;height:6px;background:#b85038;}
       .side{position:absolute;top:138px;right:92px;width:392px;}
       .side .item{padding:0 0 28px;margin-bottom:24px;border-bottom:1px solid rgba(42,42,48,.12);}
-      .side .label{font:700 14px/1.2 Consolas,"Courier New",monospace;letter-spacing:1.8px;color:#7d756d;text-transform:uppercase;}
-      .side .text{margin-top:10px;font:400 24px/1.45 "Segoe UI",Arial,sans-serif;color:#393735;}
+      .side .label{font:700 14px/1.2 Consolas,"Courier New",monospace;letter-spacing:1.8px;color:#9a624b;text-transform:uppercase;}
+      .side .text{margin-top:10px;font:400 24px/1.45 "Segoe UI",Arial,sans-serif;color:#2f2a26;}
       .page-no{right:96px;bottom:70px;font:400 22px/1 Georgia,serif;opacity:.25;}
     `,
     html: `
@@ -111,15 +111,15 @@ const styles = [
     css: `
       .slide { background:#f2ede4; color:#1f1a17; }
       .diag1{position:absolute;left:82px;top:116px;width:760px;height:488px;background:#d4c8a8;clip-path:polygon(0 100%, 54% 0, 100% 0, 46% 100%);}
-      .diag2{position:absolute;right:86px;top:190px;width:464px;height:420px;background:#8a3a2a;clip-path:polygon(40% 0, 100% 0, 100% 100%, 0 100%);}
+      .diag2{position:absolute;right:32px;top:312px;width:302px;height:294px;background:#8a3a2a;clip-path:polygon(40% 0, 100% 0, 100% 100%, 0 100%);}
       .block{position:absolute;left:136px;top:154px;width:140px;height:34px;background:#1a1a1a;}
-      .kicker{top:86px;right:100px;font:700 15px/1.2 Consolas,"Courier New",monospace;letter-spacing:2px;color:#6d655b;}
+      .kicker{top:86px;right:100px;font:700 15px/1.2 Consolas,"Courier New",monospace;letter-spacing:2px;color:#8a4b39;}
       .headline{top:142px;right:96px;width:560px;font:700 74px/.95 Georgia,serif;text-align:right;}
-      .summary{top:340px;right:98px;width:482px;font:400 26px/1.5 "Segoe UI",Arial,sans-serif;text-align:right;color:#4d463f;}
+      .summary{top:330px;right:332px;width:318px;font:400 25px/1.54 "Segoe UI",Arial,sans-serif;text-align:right;color:#2f2925;}
       .facts{position:absolute;left:124px;bottom:90px;display:flex;gap:42px;}
       .fact{width:300px;}
-      .fact-title{font:700 14px/1.2 Consolas,"Courier New",monospace;letter-spacing:1.6px;color:#6d655b;text-transform:uppercase;}
-      .fact-copy{margin-top:10px;font:400 24px/1.45 "Segoe UI",Arial,sans-serif;color:#2a241f;}
+      .fact-title{font:700 14px/1.2 Consolas,"Courier New",monospace;letter-spacing:1.6px;color:#8a4b39;text-transform:uppercase;}
+      .fact-copy{margin-top:10px;font:400 24px/1.45 "Segoe UI",Arial,sans-serif;color:#241f1b;}
     `,
     html: `
       <div class="diag1"></div>
