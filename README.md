@@ -36,6 +36,16 @@ What this skill is responsible for:
 
 The goal is not to preserve the Markdown as a document. The goal is to transform the Markdown into presentation-ready slide layouts that are easier to scan, easier to present, and more visually coherent.
 
+## GitHub About Copy
+
+Description:
+
+`A Codex skill for turning page-by-page Markdown into styled 1600x900 HTML slides, PNG previews, and exportable PPTX decks.`
+
+Suggested topics:
+
+`codex-skill`, `ppt`, `powerpoint`, `presentation-design`, `markdown-to-slides`, `html-slides`, `pptx`, `slide-generator`
+
 ## What It Does
 
 - Generates one HTML file per slide: `slide_01.html`, `slide_02.html`, and so on

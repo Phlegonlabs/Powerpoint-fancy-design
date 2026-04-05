@@ -39,6 +39,16 @@
 
 目标不是保留 Markdown 原来的文档样子，而是把它转换成一套更适合讲述、更适合展示、也更有视觉统一性的 PPT 页面。
 
+## GitHub About 文案
+
+Description：
+
+`A Codex skill for turning page-by-page Markdown into styled 1600x900 HTML slides, PNG previews, and exportable PPTX decks.`
+
+建议 topics：
+
+`codex-skill`, `ppt`, `powerpoint`, `presentation-design`, `markdown-to-slides`, `html-slides`, `pptx`, `slide-generator`
+
 ## 它能做什么
 
 - 每一页输出一个 HTML 文件，例如 `slide_01.html`、`slide_02.html`
