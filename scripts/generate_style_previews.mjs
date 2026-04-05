@@ -184,14 +184,14 @@ const styles = [
     name: "Neo Brutalism",
     css: `
       .slide { background:#f5f0e0; color:#171717; }
-      .yellow{position:absolute;left:112px;top:132px;width:348px;height:136px;background:#ffe156;border:6px solid #171717;box-shadow:18px 18px 0 #171717;}
-      .red{position:absolute;left:284px;top:262px;width:394px;height:132px;background:#ff6b6b;border:6px solid #171717;box-shadow:18px 18px 0 #171717;}
-      .cyan{position:absolute;right:196px;top:144px;width:168px;height:66px;background:#4ecdc4;border:6px solid #171717;transform:rotate(5deg);}
-      .kicker{top:84px;left:112px;font:700 16px/1.2 "Segoe UI",Arial,sans-serif;text-transform:uppercase;letter-spacing:1.8px;}
-      .headline{top:454px;left:116px;width:760px;font:900 98px/.92 Impact,"Arial Black",sans-serif;text-transform:uppercase;}
-      .summary{top:158px;right:118px;width:420px;font:500 26px/1.45 "Segoe UI",Arial,sans-serif;}
-      .notes{position:absolute;right:116px;bottom:92px;width:430px;}
-      .note{margin-top:18px;padding-top:18px;border-top:3px solid #171717;font:500 24px/1.45 "Segoe UI",Arial,sans-serif;}
+      .yellow{position:absolute;left:110px;top:154px;width:320px;height:120px;background:#ffe156;border:6px solid #171717;box-shadow:16px 16px 0 #171717;}
+      .red{position:absolute;left:278px;top:268px;width:372px;height:120px;background:#ff6b6b;border:6px solid #171717;box-shadow:16px 16px 0 #171717;}
+      .cyan{position:absolute;left:720px;top:686px;width:118px;height:40px;background:#4ecdc4;border:6px solid #171717;transform:rotate(4deg);}
+      .kicker{top:90px;left:112px;font:700 16px/1.2 "Segoe UI",Arial,sans-serif;text-transform:uppercase;letter-spacing:1.8px;}
+      .headline{top:454px;left:112px;width:700px;font:900 92px/.92 Impact,"Arial Black",sans-serif;text-transform:uppercase;}
+      .summary{top:166px;right:116px;width:372px;font:500 24px/1.5 "Segoe UI",Arial,sans-serif;}
+      .notes{position:absolute;right:116px;bottom:86px;width:394px;}
+      .note{margin-top:16px;padding-top:16px;border-top:3px solid #171717;font:500 22px/1.45 "Segoe UI",Arial,sans-serif;}
     `,
     html: `
       <div class="yellow"></div>
@@ -273,28 +273,28 @@ const styles = [
     name: "Memphis Pop",
     css: `
       .slide { background:#faf5e8; color:#202020; }
-      .dot{position:absolute;left:120px;top:138px;width:74px;height:74px;border-radius:50%;background:#2ec4b6;border:4px solid #202020;}
-      .tri{position:absolute;right:170px;top:126px;width:0;height:0;border-left:80px solid transparent;border-right:80px solid transparent;border-bottom:150px solid #ffd23f;filter:drop-shadow(0 0 0 #202020);}
-      .tri::after{content:"";position:absolute;left:-84px;top:-6px;width:0;height:0;border-left:84px solid transparent;border-right:84px solid transparent;border-bottom:156px solid transparent;border-bottom-color:transparent;outline:4px solid #202020;clip-path:polygon(50% 0, 100% 100%, 0 100%);}
-      .sq{position:absolute;left:498px;top:178px;width:92px;height:92px;background:#4a90d9;border:4px solid #202020;transform:rotate(-7deg);}
-      .zig{position:absolute;left:122px;bottom:156px;width:250px;height:46px;background:
+      .dot{position:absolute;left:112px;top:152px;width:64px;height:64px;border-radius:50%;background:#2ec4b6;border:4px solid #202020;}
+      .tri{position:absolute;right:38px;top:58px;width:0;height:0;border-left:58px solid transparent;border-right:58px solid transparent;border-bottom:106px solid #ffd23f;}
+      .sq{position:absolute;left:474px;top:176px;width:80px;height:80px;background:#4a90d9;border:4px solid #202020;transform:rotate(-7deg);}
+      .zig{position:absolute;left:124px;bottom:156px;width:228px;height:42px;background:
         linear-gradient(135deg, transparent 0 16%, #ff8a5c 16% 32%, transparent 32% 48%, #ff8a5c 48% 64%, transparent 64% 80%, #ff8a5c 80% 100%);
       }
-      .wave{position:absolute;right:142px;bottom:154px;width:250px;height:54px;background:
-        radial-gradient(circle at 12px 42px, transparent 18px, #ff6b9d 19px 24px, transparent 25px) repeat-x;
-        background-size:62px 54px;
-      }
-      .kicker{top:86px;left:216px;font:700 15px/1.2 "Segoe UI",Arial,sans-serif;letter-spacing:2px;text-transform:uppercase;}
-      .headline{top:260px;left:118px;width:720px;font:900 102px/.9 Impact,"Arial Black",sans-serif;text-transform:uppercase;}
-      .summary{top:172px;right:120px;width:430px;font:500 26px/1.46 "Segoe UI",Arial,sans-serif;}
-      .footer{right:122px;bottom:92px;width:430px;font:500 24px/1.45 "Segoe UI",Arial,sans-serif;}
+      .wave{position:absolute;right:28px;bottom:72px;width:104px;height:96px;}
+      .wave::before,.wave::after{content:"";position:absolute;border:4px solid #ff6b9d;border-left-color:transparent;border-top-color:transparent;border-radius:50%;}
+      .wave::before{width:34px;height:34px;right:48px;bottom:8px;transform:rotate(-18deg);}
+      .wave::after{width:34px;height:34px;right:6px;bottom:8px;transform:rotate(-18deg);}
+      .wave span{position:absolute;width:34px;height:34px;right:90px;bottom:8px;border:4px solid #ff6b9d;border-left-color:transparent;border-top-color:transparent;border-radius:50%;transform:rotate(-18deg);}
+      .kicker{top:92px;left:204px;font:700 15px/1.2 "Segoe UI",Arial,sans-serif;letter-spacing:2px;text-transform:uppercase;}
+      .headline{top:260px;left:112px;width:660px;font:900 96px/.92 Impact,"Arial Black",sans-serif;text-transform:uppercase;}
+      .summary{top:176px;right:138px;width:336px;font:500 24px/1.48 "Segoe UI",Arial,sans-serif;}
+      .footer{right:136px;bottom:96px;width:360px;font:500 22px/1.46 "Segoe UI",Arial,sans-serif;}
     `,
     html: `
       <div class="dot"></div>
       <div class="tri"></div>
       <div class="sq"></div>
       <div class="zig"></div>
-      <div class="wave"></div>
+      <div class="wave"><span></span></div>
       <div class="check kicker">STYLE J / MEMPHIS POP</div>
       <div class="check summary">This template should feel playful, bright, and anti-grid, but the reading order still needs to stay obvious from the first second.</div>
       <div class="check headline">Read More.<br/>Make Noise.</div>

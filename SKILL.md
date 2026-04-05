@@ -222,3 +222,4 @@ The PPT export is intentionally image-based for fidelity. Each slide becomes one
 - Text-heavy and table-like content has been reformatted into stronger slide hierarchy where appropriate.
 - A second-pass HTML review happened after generation, not only before.
 - PPT pages preserve the HTML composition without cropping or scaling errors.
+- Decorative blocks, especially dark or saturated ones, do not invade the primary reading zones unless that overlap is deliberate, padded, and presentation-safe.

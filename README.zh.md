@@ -69,15 +69,17 @@ npx skills add https://github.com/Phlegonlabs/Powerpoint-fancy-design --skill pp
 - 渲染与 PPT 导出脚本
 - 可直接套用的 Markdown deck 模板
 
-## GitHub About 文案
+## 演示设计标准
 
-Description：
+这个 skill 对外呈现出来的状态，应该像一套专业的 PowerPoint 设计系统，而不是一组松散的素材。
 
-`A Codex skill for turning page-by-page Markdown into styled 1600x900 HTML slides, PNG previews, and exportable PPTX decks.`
+这意味着：
 
-建议 topics：
-
-`codex-skill`, `ppt`, `powerpoint`, `presentation-design`, `markdown-to-slides`, `html-slides`, `pptx`, `slide-generator`
+- 字体和图形不能抢同一个阅读焦点
+- 深色块和高饱和图形不能直接撞进正文阅读区，除非留白和对比是经过控制的
+- 装饰元素必须服务层级，而不是破坏层级
+- 每一张 preview 和每一页 slide 都应该像真的可以拿去做客户提案、产品汇报或正式演示
+- 就算 style 很大胆，阅读顺序和版式节奏也必须保持干净
 
 ## 它能做什么
 

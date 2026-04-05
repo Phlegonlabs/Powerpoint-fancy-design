@@ -66,15 +66,17 @@ What users get after installing:
 - bundled render and PPT export scripts
 - a reusable Markdown deck template
 
-## GitHub About Copy
+## Presentation Design Standard
 
-Description:
+This skill should present itself like a professional presentation design system, not a loose asset pack.
 
-`A Codex skill for turning page-by-page Markdown into styled 1600x900 HTML slides, PNG previews, and exportable PPTX decks.`
+That means:
 
-Suggested topics:
-
-`codex-skill`, `ppt`, `powerpoint`, `presentation-design`, `markdown-to-slides`, `html-slides`, `pptx`, `slide-generator`
+- typography and shapes should not compete for the same focal area
+- dark or saturated blocks should not crash into reading zones unless the contrast and padding are intentional
+- decorative devices must support hierarchy instead of interrupting it
+- every preview and generated slide should feel usable in a real executive, product, or client-facing deck
+- expressive styles can stay bold, but they still need clean reading order and disciplined spacing
 
 ## What It Does
 
