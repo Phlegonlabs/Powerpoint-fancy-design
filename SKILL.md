@@ -1,0 +1,217 @@
+---
+name: ppt-design
+description: Design presentation slides, infographic pages, and PPT-style visuals as 1600x900 HTML slides with optional PPT export. Use when Codex needs to pick or explain a slide style, recommend styles based on content, generate one or more static HTML slides, support `background_mode` paper or white for compatible light styles, or render finished slides into a high-fidelity image-based PPTX.
+---
+
+# PPT Design
+
+Design each slide as a standalone 1600x900 HTML file, then export to PPT only when the user asks for it.
+
+## Workflow
+
+1. Identify the topic, audience, and deliverable.
+2. Read [style-selector.md](./references/style-selector.md) before choosing a style.
+3. Recommend 2-3 styles when the user has not already chosen one.
+4. Explain each recommended style in plain language:
+   - style name
+   - one-line visual description
+   - what kind of content it fits best
+   - use English by default for these style explanations and recommendations
+5. Confirm or infer `background_mode`:
+   - default to `paper`
+   - allow `white` only for compatible light styles
+   - if the chosen style does not support `white`, say so and keep `paper` or recommend a compatible style
+6. Read [background-modes.md](./references/background-modes.md).
+7. Read [presentation-layout-rules.md](./references/presentation-layout-rules.md).
+8. Read [html-review-checklist.md](./references/html-review-checklist.md).
+9. Read the chosen style file in `./styles/style_[a-j].md` before writing HTML. Do not rely on memory.
+10. Generate one HTML file per slide in `./outputs/html/`.
+11. Review every generated HTML slide before delivery. Treat this as mandatory, not optional.
+12. Fix layout, spacing, typography, and hierarchy issues found in review.
+13. If the user wants PPT, render the HTML slides to PNG and package them into a PPTX.
+
+## Inputs
+
+Use these fields when the user provides them or when you need to make them explicit in your own reasoning:
+
+- `style`: `A-J` or a named style
+- `background_mode`: `paper` or `white`
+- `deliverable`: `html`, `ppt`, or `both`
+
+Default behavior:
+
+- `style`: recommend candidates first when unspecified
+- `background_mode`: `paper`
+- `deliverable`: `html`
+
+## Style Selection
+
+Read [style-selector.md](./references/style-selector.md) first.
+
+When the user has not chosen a style:
+
+- Recommend only 2-3 styles, not all 10.
+- Match the recommendation to the content rather than to arbitrary taste words like "nice" or "cool".
+- Explain what the style looks like and what kind of material it suits.
+- Default the style recommendation language to English, even when the working conversation is in another language.
+- Keep generated slide copy in the user's source language unless the user explicitly asks for translation.
+
+Examples:
+
+- Business report, finance, policy, research summary: bias toward `A`, `D`, or `I`.
+- Brand story, culture, exhibition, philosophy, editorial: bias toward `B`, `E`, or `F`.
+- Creative proposal, event, youth brand, campaign, entertainment: bias toward `C`, `G`, `H`, or `J`.
+
+## Background Modes
+
+Read [background-modes.md](./references/background-modes.md).
+
+Apply these rules:
+
+- `paper` keeps paper grain, print texture, and warm off-white stock when the style supports it.
+- `white` switches the slide canvas to clean white and removes paper-specific texture, fold marks, and stock simulation.
+- `white` does not remove style identity. Keep the typography, grid, ornament, contrast system, and non-paper decorative devices.
+- `white` is supported only by styles `A`, `B`, `C`, `D`, `E`, `G`, and `J`.
+- Styles `F`, `H`, and `I` are dark-native. Do not whitewash them.
+
+## HTML Rules
+
+- Create one file per slide: `slide_01.html`, `slide_02.html`, and so on.
+- Keep the canvas fixed at `1600x900`.
+- Use static HTML, CSS, and inline SVG only.
+- Do not use JavaScript in the slide files.
+- Do not use external images other than Google Fonts.
+- Save outputs in `./outputs/html/`.
+- Design for projection and presentation first, not for dense document reading.
+
+Use this base structure unless the style file overrides a specific detail:
+
+```html
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=1600">
+  <title>Slide Title</title>
+  <link href="https://fonts.googleapis.com/css2?family=..." rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background: #e0e0e0;
+      overflow: hidden;
+    }
+    .slide {
+      position: relative;
+      width: 1600px;
+      height: 900px;
+      overflow: hidden;
+    }
+    .slide::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      z-index: 50;
+      pointer-events: none;
+    }
+    .content {
+      position: relative;
+      z-index: 10;
+      width: 100%;
+      height: 100%;
+    }
+  </style>
+</head>
+<body>
+  <div class="slide">
+    <div class="content"></div>
+  </div>
+</body>
+</html>
+```
+
+## Presentation Typography
+
+Read [presentation-layout-rules.md](./references/presentation-layout-rules.md).
+
+Apply these rules on every slide:
+
+- Prioritize legibility at presentation distance.
+- Do not allow text blocks, labels, or numbers to collide with each other.
+- Prefer fewer, larger text groups over many small annotations.
+- Keep headline and body contrast obvious in size, weight, and spacing.
+- If a slide is text-heavy, redesign the hierarchy instead of shrinking everything.
+- If a slide contains table-like information, convert it into presentation-friendly structure unless the user explicitly requires a literal dense table.
+
+For presentation use, default minimums are:
+
+- Main title: about `44px` or larger
+- Section heading: about `28px` or larger
+- Body text: about `22px` or larger
+- Small labels and notes: avoid going below `16px` unless the style explicitly depends on microtype and the slide stays readable
+
+When the chosen style is intentionally fancy or experimental, preserve the style but still protect legibility.
+
+## Tables And Text-Heavy Content
+
+Read [presentation-layout-rules.md](./references/presentation-layout-rules.md).
+
+When the user asks for tables, comparisons, or many words:
+
+- Default to redesigned comparison blocks, metric cards, timeline rows, or labeled columns instead of raw spreadsheet tables.
+- Use a true table only when row-column comparison is the main point and simplifying it would lose meaning.
+- Break large tables into multiple slides when needed.
+- Highlight only the few values or row groups that matter.
+- Maintain generous padding inside cells or cards so text never feels cramped.
+- For dense content, prefer 3-6 major points per slide rather than squeezing everything into one page.
+
+## Mandatory HTML Review
+
+Read [html-review-checklist.md](./references/html-review-checklist.md).
+
+After generating each slide, perform a second-pass review before delivery:
+
+1. Check for overlap, collision, clipping, and crowding.
+2. Check that typography is large enough for presentation.
+3. Check that text-heavy or table-heavy content has been reformatted for slides.
+4. Check that the chosen style is still intact after readability adjustments.
+5. When tools allow it, render the HTML and inspect the actual visual result instead of relying only on source review.
+6. Revise the HTML if any item fails.
+
+Never hand off first-draft HTML without this review pass.
+
+## PPT Export
+
+When the user wants `ppt` or `both`, use the bundled scripts:
+
+1. Ensure dependencies are installed with `npm install`.
+2. Render HTML slides to PNG:
+
+```powershell
+node .\scripts\render_slides.mjs --input .\outputs\html --output .\outputs\rendered
+```
+
+3. Build the PPTX:
+
+```powershell
+node .\scripts\export_ppt.mjs --input .\outputs\rendered --output .\outputs\ppt\deck.pptx
+```
+
+The PPT export is intentionally image-based for fidelity. Each slide becomes one full-bleed PNG inside a 16:9 deck.
+
+## Quality Checks
+
+- The chosen style matches the content type and tone.
+- The user can understand why that style was chosen.
+- `background_mode` is honored correctly.
+- Compatible light styles can switch between `paper` and `white`.
+- Incompatible dark styles reject `white` explicitly.
+- Every slide remains visually coherent within one style family.
+- Text does not overlap, collide, clip, or crowd nearby elements.
+- Typography is large enough for projection and presentation use.
+- Text-heavy and table-like content has been reformatted into stronger slide hierarchy where appropriate.
+- A second-pass HTML review happened after generation, not only before.
+- PPT pages preserve the HTML composition without cropping or scaling errors.
