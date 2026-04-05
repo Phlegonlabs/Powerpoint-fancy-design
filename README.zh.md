@@ -4,6 +4,8 @@
 
 英文版说明：[`README.md`](./README.md)
 
+兼容 Claude Code，也支持通过 `skills.sh` 安装。
+
 它的重点不是做文档排版，而是做演示稿设计：
 
 - 先选择 style，再开始生成页面
@@ -38,6 +40,34 @@
 6. 如果用户需要，再把结果导出成 PNG 和 PPTX。
 
 目标不是保留 Markdown 原来的文档样子，而是把它转换成一套更适合讲述、更适合展示、也更有视觉统一性的 PPT 页面。
+
+## 作为 Skill 安装
+
+这个仓库现在已经整理成可安装的 skill 结构，适合 Claude Code 和 `skills.sh` 的使用方式。
+
+兼容范围：
+
+- Claude Code
+- `skills.sh`
+- 基于 `SKILL.md` 的 skill 仓库安装方式
+
+安装命令：
+
+```bash
+npx skills add https://github.com/Phlegonlabs/Powerpoint-fancy-design --skill ppt-design
+```
+
+可分发的 skill bundle 在这里：
+
+- [`skills/ppt-design/SKILL.md`](./skills/ppt-design/SKILL.md)
+
+安装后拿到的内容包括：
+
+- `ppt-design` 的核心 skill prompt
+- style selector 和双语字体参考文档
+- 10 套 style 规则
+- 渲染与 PPT 导出脚本
+- 可直接套用的 Markdown deck 模板
 
 ## GitHub About 文案
 
@@ -180,6 +210,10 @@ npm run build:style-previews
 3. 不照搬原始 Markdown 的排版，而是重组为演示级层级。
 4. 把同一个 style 一致地应用到整套 deck。
 5. 渲染后检查越界、碰撞、过密和阅读距离问题。
+
+可直接套用的模板文件：
+
+- [`references/deck-markdown-template.md`](./references/deck-markdown-template.md)
 
 ## 工作流
 

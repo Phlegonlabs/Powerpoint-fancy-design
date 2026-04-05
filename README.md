@@ -4,6 +4,8 @@
 
 Chinese reference: [`README.zh.md`](./README.zh.md)
 
+Claude Code compatible. `skills.sh` installable.
+
 It is built for presentation work rather than document layout:
 
 - choose a style before generating slides
@@ -35,6 +37,34 @@ What this skill is responsible for:
 6. Exporting the final deck to PNG and PPTX when requested.
 
 The goal is not to preserve the Markdown as a document. The goal is to transform the Markdown into presentation-ready slide layouts that are easier to scan, easier to present, and more visually coherent.
+
+## Install As A Skill
+
+This repository is packaged as an installable skill for Claude Code compatible workflows and the `skills.sh` ecosystem.
+
+Compatibility:
+
+- Claude Code
+- `skills.sh`
+- skill-style repository installs based on `SKILL.md`
+
+Install from `skills.sh`:
+
+```bash
+npx skills add https://github.com/Phlegonlabs/Powerpoint-fancy-design --skill ppt-design
+```
+
+The distributable skill bundle lives in:
+
+- [`skills/ppt-design/SKILL.md`](./skills/ppt-design/SKILL.md)
+
+What users get after installing:
+
+- the core `ppt-design` skill prompt
+- style selector and bilingual typography references
+- 10 style definition files
+- bundled render and PPT export scripts
+- a reusable Markdown deck template
 
 ## GitHub About Copy
 
@@ -177,6 +207,10 @@ What the skill should do with this input:
 3. Recompose the page into presentation hierarchy instead of preserving raw Markdown formatting.
 4. Apply the chosen style consistently across the full deck.
 5. Review the rendered result and fix overlap, clipping, and density problems before delivery.
+
+Reusable template:
+
+- [`references/deck-markdown-template.md`](./references/deck-markdown-template.md)
 
 ## Workflow
 
