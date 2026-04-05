@@ -81,6 +81,13 @@ Label: 14-16px
 
 Use serif and sans-serif contrast inside the same headline when possible. Inter Black plus Playfair italic is the preferred signature move.
 
+### Chinese And English Pairing
+
+- Let `Noto Serif SC` carry the main Chinese headline. Use `Playfair Display` only for short English contrast words, giant numbers, or italic subheads.
+- Keep Chinese body copy in `Noto Sans SC` with `1.45-1.6` line-height. Do not use `DM Mono` for Chinese sentences.
+- In bilingual slides, let Chinese carry the thesis and let English stay in labels, numbers, chart tags, or one short editorial phrase.
+- If one headline needs both languages, split them into separate lines or separate blocks instead of alternating scripts word by word.
+
 ## Background Treatment
 
 ### Background Mode

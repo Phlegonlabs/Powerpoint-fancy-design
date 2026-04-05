@@ -77,6 +77,13 @@ Label: 14-16px
 
 Titles should be heavy but do not need to be all-caps.
 
+### Chinese And English Pairing
+
+- Use `Noto Sans SC` for Chinese titles and Chinese body copy, and keep the Chinese wording short, punchy, and declarative.
+- Let English stay in `Space Grotesk` for loud headlines and in `Space Mono` for sticker-like labels or UI tags.
+- Do not scatter mixed-script text inside one color sticker. Give Chinese and English their own blocks when both need emphasis.
+- Keep Chinese body copy at `400` or `700` weight with `1.4-1.5` line-height so the raw composition still reads fast.
+
 ## Background Treatment
 
 ### Background Mode

@@ -45,7 +45,7 @@ Pure white `#fff` is allowed only when `background_mode=white`.
 ## Typography
 
 ```html
-<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700;900&family=DM+Mono:wght@300;400;500&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700;900&family=Noto+Sans+SC:wght@300;400;500&family=DM+Mono:wght@300;400;500&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
 ```
 
 | Role | Font | Weight |
@@ -54,6 +54,7 @@ Pure white `#fff` is allowed only when `background_mode=white`.
 | English support copy | Inter | 300 |
 | Monospaced label | DM Mono | 400 |
 | Chinese title | Noto Serif SC | 700 |
+| Chinese body | Noto Sans SC | 300 / 400 |
 
 Suggested sizes:
 
@@ -65,6 +66,13 @@ Label: 12-14px
 ```
 
 Keep the typography small and quiet. Titles should feel deliberate, not loud. Place text near edges or corners rather than in the center.
+
+### Chinese And English Pairing
+
+- Let Chinese titles lead in `Noto Serif SC`. English should usually appear as a small reflective subtitle, label, or closing phrase.
+- Keep Chinese body copy in `Noto Sans SC` with `1.6-1.75` line-height so quiet layouts still read cleanly at presentation distance.
+- Do not insert decorative English italics into the middle of Chinese sentences. Separate the English phrase onto its own line or corner note.
+- In bilingual slides, Chinese should carry the message while English acts as atmosphere.
 
 ## Background Treatment
 

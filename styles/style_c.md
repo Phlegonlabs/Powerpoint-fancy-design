@@ -89,6 +89,13 @@ Label: 14-16px
 
 Use bold sans-serif all-caps for major titles with slightly compressed letter spacing.
 
+### Chinese And English Pairing
+
+- Use `Noto Sans SC` for Chinese headlines and keep them short, bold, and block-like.
+- Use `Inter Black` for English poster words, but do not try to force English all-caps rhythm onto Chinese lines.
+- Keep Chinese body copy in `Noto Sans SC` with `1.45-1.55` line-height and let English labels sit in their own sticker, tag, or ink block.
+- In bilingual slides, separate the two scripts by layer or shape instead of mixing them inside one sentence.
+
 ## Background Treatment
 
 ### Background Mode

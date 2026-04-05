@@ -80,6 +80,13 @@ Label: 11-14px
 
 The critical move is weight contrast: `900` headline against `200` body.
 
+### Chinese And English Pairing
+
+- Use `Noto Serif SC` for Chinese titles and `Noto Sans SC` for Chinese body copy. This preserves the editorial contrast without forcing Latin serif behavior onto Han characters.
+- Let `Playfair Display` stay on short English pull words, subtitles, or numerals. Chinese should carry the main thesis when the deck is Chinese-first.
+- Long Chinese paragraphs should use slightly narrower line widths than English, with `1.55-1.7` line-height.
+- In bilingual slides, English should support the editorial mood while Chinese carries the argument.
+
 ## Background Treatment
 
 ### Background Mode

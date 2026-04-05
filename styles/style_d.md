@@ -57,6 +57,7 @@ Pure white `#fff` is allowed only when `background_mode=white`.
 | Subtitle and body | Inter | 300 / 700 |
 | Data and labels | Space Mono | 400 / 700 |
 | Chinese title | Noto Sans SC | 900 |
+| Chinese body | Noto Sans SC | 400 / 700 |
 
 Suggested sizes:
 
@@ -69,6 +70,13 @@ Label: 14-16px
 ```
 
 The title should be extremely large and function as part of the visual architecture, not as ordinary text.
+
+### Chinese And English Pairing
+
+- Use `Noto Sans SC` for both Chinese titles and Chinese body copy. Do not fake `Bebas Neue` with Chinese characters.
+- Let English stay in `Bebas Neue` for large architectural words and `Space Mono` for directional labels or module tags.
+- If the main headline is bilingual, place Chinese and English in separate directional blocks rather than forcing them into one line.
+- Chinese body copy should stay compact and structural, with `1.4-1.5` line-height and short line lengths.
 
 ## Background Treatment
 

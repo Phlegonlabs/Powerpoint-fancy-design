@@ -10,36 +10,42 @@ Design each slide as a standalone 1600x900 HTML file, then export to PPT only wh
 ## Workflow
 
 1. Identify the topic, audience, and deliverable.
-2. Read [style-selector.md](./references/style-selector.md) before choosing a style.
-3. Recommend 2-3 styles when the user has not already chosen one.
-4. Explain each recommended style in plain language:
+2. If the user provides a Markdown document, treat each `Page X` section as one slide unless the document clearly indicates a different page structure.
+3. Read [style-selector.md](./references/style-selector.md) before choosing a style.
+4. If the deck is in Chinese or mixed Chinese and English, read [bilingual-typography.md](./references/bilingual-typography.md).
+5. Recommend 2-3 styles when the user has not already chosen one.
+6. Explain each recommended style in plain language:
    - style name
    - one-line visual description
    - what kind of content it fits best
    - use English by default for these style explanations and recommendations
-5. Confirm or infer `background_mode`:
+7. Confirm or infer `background_mode`:
    - default to `paper`
    - allow `white` only for compatible light styles
    - if the chosen style does not support `white`, say so and keep `paper` or recommend a compatible style
-6. Read [background-modes.md](./references/background-modes.md).
-7. Read [presentation-layout-rules.md](./references/presentation-layout-rules.md).
-8. Read [html-review-checklist.md](./references/html-review-checklist.md).
-9. Read the chosen style file in `./styles/style_[a-j].md` before writing HTML. Do not rely on memory.
-10. Generate one HTML file per slide in `./outputs/html/`.
-11. Review every generated HTML slide before delivery. Treat this as mandatory, not optional.
-12. Fix layout, spacing, typography, and hierarchy issues found in review.
-13. If the user wants PPT, render the HTML slides to PNG and package them into a PPTX.
+8. Read [background-modes.md](./references/background-modes.md).
+9. Read [presentation-layout-rules.md](./references/presentation-layout-rules.md).
+10. Read [html-review-checklist.md](./references/html-review-checklist.md).
+11. Read the chosen style file in `./styles/style_[a-j].md` before writing HTML. Do not rely on memory.
+12. When the slide copy is Chinese or bilingual, follow the style's Chinese and English pairing guidance rather than reusing the English display font everywhere.
+13. Recompose page content into slide hierarchy instead of preserving raw Markdown formatting literally.
+14. Generate one HTML file per slide in `./outputs/html/`.
+15. Review every generated HTML slide before delivery. Treat this as mandatory, not optional.
+16. Fix layout, spacing, typography, and hierarchy issues found in review.
+17. If the user wants PPT, render the HTML slides to PNG and package them into a PPTX.
 
 ## Inputs
 
 Use these fields when the user provides them or when you need to make them explicit in your own reasoning:
 
+- `input_markdown`: the source Markdown for the deck, ideally grouped by `Page 1`, `Page 2`, and so on
 - `style`: `A-J` or a named style
 - `background_mode`: `paper` or `white`
 - `deliverable`: `html`, `ppt`, or `both`
 
 Default behavior:
 
+- `input_markdown`: infer page structure from headings when possible
 - `style`: recommend candidates first when unspecified
 - `background_mode`: `paper`
 - `deliverable`: `html`

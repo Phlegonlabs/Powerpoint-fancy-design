@@ -52,7 +52,7 @@ Forbidden:
 ## Typography
 
 ```html
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Inter:wght@200;300;400;500&family=DM+Mono:wght@300;400&family=Noto+Serif+SC:wght@400;700;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Inter:wght@200;300;400;500&family=DM+Mono:wght@300;400&family=Noto+Serif+SC:wght@400;700;900&family=Noto+Sans+SC:wght@300;400;500&display=swap" rel="stylesheet">
 ```
 
 | Role | Font | Weight |
@@ -62,6 +62,7 @@ Forbidden:
 | Body | Inter | 200 / 300 |
 | Label | DM Mono | 300 |
 | Chinese title | Noto Serif SC | 900 |
+| Chinese body | Noto Sans SC | 300 / 400 |
 
 Suggested sizes:
 
@@ -74,6 +75,13 @@ Label: 12-14px
 ```
 
 Use all-caps titles with wide tracking. Body copy should stay very light so the decorative lines remain important.
+
+### Chinese And English Pairing
+
+- Use `Noto Serif SC` for Chinese titles and `Noto Sans SC` for Chinese body copy. Do not set long Chinese passages in ultra-thin decorative serif styling.
+- Keep `Playfair Display` all-caps behavior for English only. Chinese should stay centered, formal, and compact without fake tracking.
+- In bilingual luxury slides, let Chinese lead the main title and place English as a smaller subtitle, crest line, or ceremonial label.
+- If the page feels crowded after adding both languages, reduce copy before reducing the centered elegance.
 
 ## Background Treatment
 

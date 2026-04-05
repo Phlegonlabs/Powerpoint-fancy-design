@@ -81,6 +81,13 @@ Label: 12-14px
 
 English labels should be all-caps with wide tracking, like cockpit labeling.
 
+### Chinese And English Pairing
+
+- Keep `Orbitron` and wide-tracked `Space Mono` for English-only titles, module names, and control-panel labels.
+- Use `Noto Sans SC` for Chinese titles and Chinese body copy. Chinese should stay cleaner and less letterspaced than the English UI layer.
+- In bilingual slides, let English handle the cockpit effect while Chinese handles the narrative sentence or explanation.
+- Avoid placing long Chinese lines inside tiny terminal labels. Chinese needs larger modules and more vertical breathing room.
+
 ## Background Treatment
 
 ### Background Mode

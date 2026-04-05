@@ -77,6 +77,13 @@ Label: 14-16px
 
 Display type should stay rounded and friendly. Titles may tilt, vary in size, or change color across words.
 
+### Chinese And English Pairing
+
+- Keep `Fredoka` for English-only display words and use `Noto Sans SC` for Chinese titles and body copy.
+- Do not try to make Chinese imitate rounded Latin whimsy through fake tracking or forced curvature. Let the playfulness come from layout and color instead.
+- In bilingual slides, keep Chinese headlines short and bold, and let playful English words live as separate accents, stickers, or secondary punchlines.
+- Increase spacing between Chinese text and decorative shapes, because Chinese text blocks read denser than the English accents in this style.
+
 ## Background Treatment
 
 ### Background Mode

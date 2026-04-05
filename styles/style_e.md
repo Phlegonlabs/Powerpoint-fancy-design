@@ -72,7 +72,7 @@ Pure white `#fff` is allowed only when `background_mode=white`.
 ## Typography
 
 ```html
-<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&family=DM+Mono:wght@300;400&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&family=Noto+Sans+SC:wght@300;400;500&family=DM+Mono:wght@300;400&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
 ```
 
 | Role | Font | Weight |
@@ -81,6 +81,7 @@ Pure white `#fff` is allowed only when `background_mode=white`.
 | English body | Inter | 300 / 400 |
 | Labels | DM Mono | 300 |
 | Chinese title | Noto Serif SC | 700 |
+| Chinese body | Noto Sans SC | 300 / 400 |
 
 Suggested sizes:
 
@@ -92,6 +93,13 @@ Label: 12-14px
 ```
 
 Keep type visually light. The handmade visuals should dominate, not heavy typography.
+
+### Chinese And English Pairing
+
+- Use `Noto Serif SC` for Chinese titles and `Noto Sans SC` for Chinese body copy. Chinese should feel warm and literary, not rigid.
+- Let `Playfair Display` act as an English brand cue or accent phrase, not as the main carrier of Chinese meaning.
+- In bilingual slides, English can name the brand while Chinese tells the story.
+- Increase spacing around Chinese text blocks, because this style depends on breathing room around the organic forms.
 
 ## Background Treatment
 

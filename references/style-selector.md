@@ -2,6 +2,8 @@
 
 Use this file before choosing a style. Recommend 2-3 candidates when the user has not already picked one.
 
+If the slide copy is Chinese or mixed Chinese and English, also read [`bilingual-typography.md`](./bilingual-typography.md).
+
 | Style | Name | Visual Description | Best For | `white` Support |
 |---|---|---|---|---|
 | A | Swiss International | Rational grid, disciplined typography, print-editorial feel, restrained accents | Business reports, finance, policy, newsroom summaries | Yes |
@@ -21,6 +23,13 @@ Use this file before choosing a style. Recommend 2-3 candidates when the user ha
 - Recommend `B` or `E` for calm, cultural, reflective, or brand-story content.
 - Recommend `C`, `G`, `H`, or `J` for energetic, campaign-led, youth, or event-driven material.
 - If the user explicitly wants a white background, bias toward `A`, `B`, `D`, or `G` first because they stay readable after removing paper texture.
+
+## Chinese And Bilingual Guidance
+
+- Recommend `A`, `B`, `E`, `F`, or `I` when the deck is Chinese-first and needs calm headline hierarchy or editorial tone.
+- Recommend `C`, `D`, `G`, or `J` when the Chinese copy should feel bold, short-line, graphic, and sans-serif.
+- Recommend `H` only when the content can tolerate English tech labels and darker sci-fi framing; let Chinese stay in the narrative layer instead of the UI layer.
+- In bilingual decks, pick one language to lead the hierarchy. Do not alternate Chinese and English word-by-word inside the main headline.
 
 ## Response Shape
 
