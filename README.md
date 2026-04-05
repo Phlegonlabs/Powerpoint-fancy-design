@@ -15,8 +15,7 @@ It is built for presentation work rather than document layout:
 - Generates one HTML file per slide: `slide_01.html`, `slide_02.html`, and so on
 - Keeps every slide at a fixed `1600x900` canvas
 - Supports 10 visual styles from editorial Swiss layouts to Memphis pop
-- Shows one standalone case board per style in the README
-- Includes a light style index graphic made of standalone motifs
+- Includes one PNG slide preview per style in the README
 - Uses a mandatory second-pass review for presentation safety
 - Exports to PowerPoint with strong visual fidelity
 
@@ -33,6 +32,7 @@ ppt-design/
 |  |- presentation-layout-rules.md
 |  `- html-review-checklist.md
 |- scripts/
+|  |- generate_style_previews.mjs
 |  |- render_slides.mjs
 |  `- export_ppt.mjs
 |- styles/
@@ -86,6 +86,12 @@ Or run both:
 npm run build:ppt
 ```
 
+Generate README style previews:
+
+```powershell
+npm run build:style-previews
+```
+
 ## Workflow
 
 1. Identify the topic, audience, and delivery format.
@@ -122,10 +128,6 @@ npm run build:ppt
 
 The skill uses these style families. Full rules live in [`references/style-selector.md`](./references/style-selector.md) and the detailed style specs in [`styles/`](./styles/).
 
-## Style Index
-
-![PPT Design style index](./assets/style-index.svg)
-
 | Style | Name | Visual Feel | Best For | `white` |
 |---|---|---|---|---|
 | A | Swiss International | rational, editorial, grid-first | business reports, finance, policy, newsroom summaries | Yes |
@@ -139,7 +141,7 @@ The skill uses these style families. Full rules live in [`references/style-selec
 | I | Dark Editorial | serious, premium, magazine-like | investigations, documentaries, deep research | No |
 | J | Memphis Pop | playful, bright, anti-grid, energetic | education, entertainment, social campaigns, festivals | Yes |
 
-Each style section below includes its own full case board. The index above is only for quick scanning, so it stays lighter and avoids crowded labels.
+Each style section below uses a single PNG template preview. The image itself should show what a PPT in that style looks like, so the README no longer relies on framed cards or SVG overview boards.
 
 ## Style Templates
 
@@ -147,9 +149,7 @@ These are GitHub-facing prompt templates. Each template is designed for one styl
 
 ### A. Swiss International
 
-![Swiss International case board](./assets/style-case-a.svg)
-
-Case focus: `ASEAN EV Market Outlook` for a regional investor briefing.
+![Swiss International preview](./assets/style-preview-a.png)
 
 Reference template:
 
@@ -181,9 +181,7 @@ Good fit:
 
 ### B. East Asian Minimalism
 
-![East Asian Minimalism case board](./assets/style-case-b.svg)
-
-Case focus: `Tea House Brand Philosophy` for a quiet founder story deck.
+![East Asian Minimalism preview](./assets/style-preview-b.png)
 
 Reference template:
 
@@ -215,9 +213,7 @@ Good fit:
 
 ### C. Risograph Print
 
-![Risograph Print case board](./assets/style-case-c.svg)
-
-Case focus: `Indie Festival Launch` for a creative pitch deck.
+![Risograph Print preview](./assets/style-preview-c.png)
 
 Reference template:
 
@@ -249,9 +245,7 @@ Good fit:
 
 ### D. Bauhaus Geometry
 
-![Bauhaus Geometry case board](./assets/style-case-d.svg)
-
-Case focus: `Modular Construction Systems` for a structural product strategy deck.
+![Bauhaus Geometry preview](./assets/style-preview-d.png)
 
 Reference template:
 
@@ -283,9 +277,7 @@ Good fit:
 
 ### E. Organic Handcrafted
 
-![Organic Handcrafted case board](./assets/style-case-e.svg)
-
-Case focus: `Wellness Retreat Story` for a tactile lifestyle narrative.
+![Organic Handcrafted preview](./assets/style-preview-e.png)
 
 Reference template:
 
@@ -317,9 +309,7 @@ Good fit:
 
 ### F. Art Deco Luxury
 
-![Art Deco Luxury case board](./assets/style-case-f.svg)
-
-Case focus: `Grand Ballroom Awards Night` for a premium event presentation.
+![Art Deco Luxury preview](./assets/style-preview-f.png)
 
 Reference template:
 
@@ -351,9 +341,7 @@ Good fit:
 
 ### G. Neo Brutalism
 
-![Neo Brutalism case board](./assets/style-case-g.svg)
-
-Case focus: `AI Workflow Tool Launch` for a fast-moving startup deck.
+![Neo Brutalism preview](./assets/style-preview-g.png)
 
 Reference template:
 
@@ -385,9 +373,7 @@ Good fit:
 
 ### H. Retro Futurism
 
-![Retro Futurism case board](./assets/style-case-h.svg)
-
-Case focus: `Space Game Reveal Deck` for a cinematic launch sequence.
+![Retro Futurism preview](./assets/style-preview-h.png)
 
 Reference template:
 
@@ -419,9 +405,7 @@ Good fit:
 
 ### I. Dark Editorial
 
-![Dark Editorial case board](./assets/style-case-i.svg)
-
-Case focus: `Ocean Surveillance Documentary` for a research storytelling deck.
+![Dark Editorial preview](./assets/style-preview-i.png)
 
 Reference template:
 
@@ -453,9 +437,7 @@ Good fit:
 
 ### J. Memphis Pop
 
-![Memphis Pop case board](./assets/style-case-j.svg)
-
-Case focus: `School Reading Campaign` for an energetic education deck.
+![Memphis Pop preview](./assets/style-preview-j.png)
 
 Reference template:
 
