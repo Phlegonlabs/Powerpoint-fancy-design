@@ -4,8 +4,12 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build:style-cases": "node ./scripts/generate_style_previews.mjs",
-    "build:style-previews": "node ./scripts/generate_style_previews.mjs",
+    "lint:lines": "node ./scripts/check_source_line_limits.mjs",
+    "review:twitter-cases": "npm run lint:lines && node ./scripts/build_review_sheets.mjs",
+    "build:twitter-cases": "npm run lint:lines && node ./scripts/build_twitter_style_cases.mjs",
+    "build:template-cases": "npm run lint:lines && node ./scripts/build_template_style_cases.mjs",
+    "build:style-cases": "npm run lint:lines && node ./scripts/generate_style_previews.mjs",
+    "build:style-previews": "npm run lint:lines && node ./scripts/generate_style_previews.mjs",
     "render:slides": "node ./scripts/render_slides.mjs",
     "export:ppt": "node ./scripts/export_ppt.mjs",
     "build:ppt": "npm run render:slides && npm run export:ppt"

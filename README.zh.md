@@ -1,178 +1,270 @@
 # PPT Design 中文说明
 
-語言： [English](./README.md) | **简体中文** | [繁體中文](./README.zh-TW.md)
+语言： [English](./README.md) | **简体中文** | [繁體中文](./README.zh-TW.md)
 
-`ppt-design` 是一个可复用的 Codex skill，用来把演示内容设计成 `1600x900` 的 HTML slide，并在需要时进一步导出成高保真的 PPTX。
+`ppt-design` 是一套面向演示稿设计的 skill，用来把按页组织好的 Markdown 转成 `1600x900` 的 HTML slides，并在需要时进一步导出成高保真的图片式 PPTX。
 
-英文版说明：[`README.md`](./README.md)
+它同时面向 Codex 和 Claude Code 工作流。仓库根目录是完整开发工作区；`skills/ppt-design/` 是可分发的 skill bundle，镜像了共享的 skill 内容。
 
-兼容 Claude Code，也支持通过 `skills.sh` 安装。
+## 快速开始
 
-它的重点不是做文档排版，而是做演示稿设计：
+1. 先执行 `npm install` 和 `npx playwright install chromium`。
+2. 准备一份按 `Page 1`、`Page 2` 组织好的 Markdown。
+3. 让 skill 自动推荐 style，或者直接指定 style。
+4. 先生成 HTML slides，审查后再按需导出 PNG 或 PPTX。
 
-- 先选择 style，再开始生成页面
-- 支持按 style 处理中文、英文和中英混排字体
-- 主要输入格式是按页组织好的 Markdown
-- 支持 `background_mode=paper|white`
-- 每一页生成后都要做版式 review，检查越界、碰撞和可读性
-- 最终可以导出成 PNG 和 PPTX
-
-## 关于
-
-这个 skill 是围绕“内容到演示稿”的流程设计的，不是围绕“空白画布自由创作”的流程设计的。
-
-推荐的输入方式是用户先交一份 Markdown，而且 Markdown 里面已经把内容按页组织好，比如：
-
-- `Page 1`
-- `Page 2`
-- `Page 3`
-
-系统拿到这份 Markdown 以后，会做这些事情：
-
-1. 读取每一页的内容。
-2. 判断这一页更像什么页面：
-   - 封面页
-   - 总结页
-   - 章节页
-   - 对比页
-   - 数据洞察页
-3. 选择或应用一个统一的视觉 style。
-4. 把原始 Markdown 重新编排成适合演示的 `1600x900` 页面，而不是照搬文档格式。
-5. 检查文字有没有越界、元素有没有碰撞、内容是不是太密、字号是否适合投影。
-6. 如果用户需要，再把结果导出成 PNG 和 PPTX。
-
-目标不是保留 Markdown 原来的文档样子，而是把它转换成一套更适合讲述、更适合展示、也更有视觉统一性的 PPT 页面。
-
-## 作为 Skill 安装
-
-这个仓库现在已经整理成可安装的 skill 结构，适合 Claude Code 和 `skills.sh` 的使用方式。
-
-兼容范围：
-
-- Claude Code
-- `skills.sh`
-- 基于 `SKILL.md` 的 skill 仓库安装方式
-
-安装命令：
-
-```bash
-npx skills add https://github.com/Phlegonlabs/Powerpoint-fancy-design --skill ppt-design
-```
-
-可分发的 skill bundle 在这里：
-
-- [`skills/ppt-design/SKILL.md`](./skills/ppt-design/SKILL.md)
-
-安装后拿到的内容包括：
-
-- `ppt-design` 的核心 skill prompt
-- style selector 和双语字体参考文档
-- 10 套 style 规则
-- 渲染与 PPT 导出脚本
-- 可直接套用的 Markdown deck 模板
-
-## 演示设计标准
-
-这个 skill 对外呈现出来的状态，应该像一套专业的 PowerPoint 设计系统，而不是一组松散的素材。
-
-这意味着：
-
-- 字体和图形不能抢同一个阅读焦点
-- 深色块和高饱和图形不能直接撞进正文阅读区，除非留白和对比是经过控制的
-- 装饰元素必须服务层级，而不是破坏层级
-- 每一张 preview 和每一页 slide 都应该像真的可以拿去做客户提案、产品汇报或正式演示
-- 就算 style 很大胆，阅读顺序和版式节奏也必须保持干净
+如果你想直接开始使用，建议先从 [`cases/templates/`](./cases/templates/) 里的通用模板入手。
 
 ## 它能做什么
 
-- 每一页输出一个 HTML 文件，例如 `slide_01.html`、`slide_02.html`
-- 固定使用 `1600x900` 画布
-- 支持 10 种 style
-- 在 README 中提供每种 style 的 PNG 预览图
-- 以 Markdown 作为多页 deck 的主要内容交接格式
-- 把页面级 Markdown 内容映射成 slide 级版式决策
-- 强制执行 second-pass review
-- 在需要时导出为 PowerPoint
+- 当用户未指定风格时，推荐合适的 style。
+- 以按页组织的 Markdown 作为主要输入格式。
+- 支持中文和中英混排，并按 style 应用不同字体配对规则。
+- 支持兼容浅色风格的 `background_mode=paper|white`。
+- 在写 HTML 前先识别每页内容角色，再选 layout prototype。
+- 强制使用安全内容边界，保证主内容停留在演示安全区内。
+- 每页生成后都做版式审查，检查越界、碰撞和可读性。
+- 最终把 HTML slides 导出成 PNG，再导出成 PPTX。
+
+## 典型使用场景
+
+- 需要严谨层级和投影可读性的商业汇报、政策简报、研究总结。
+- 需要比普通模板更强视觉方向的品牌、文化、展览型 deck。
+- 需要按风格处理中英文字体关系的中文或双语演示稿。
+- 需要通过静态 HTML 保真导出 PPTX，而不是依赖可编辑 PowerPoint 原生对象的场景。
+
+## 当前工作流
+
+核心工作流定义在：
+
+- [`SKILL.md`](./SKILL.md)
+- [`skills/ppt-design/SKILL.md`](./skills/ppt-design/SKILL.md)
+
+关键参考文件链路如下：
+
+1. [`references/style-selector.md`](./references/style-selector.md)
+2. [`references/bilingual-typography.md`](./references/bilingual-typography.md)（仅中文或双语 deck 需要）
+3. [`references/background-modes.md`](./references/background-modes.md)
+4. [`references/presentation-layout-rules.md`](./references/presentation-layout-rules.md)
+5. [`references/html-review-checklist.md`](./references/html-review-checklist.md)
+6. [`references/layout-prototypes.md`](./references/layout-prototypes.md)
+7. [`references/safe-zone.md`](./references/safe-zone.md)
+8. 选中的 style 文件，位于 [`styles/`](./styles/)
+
+整个流程是内容优先的：
+
+1. 读取按 `Page 1`、`Page 2` 组织的 Markdown。
+2. 识别每页属于 `cover`、`metric`、`comparison`、`closing` 等内容角色。
+3. 根据 style family 和内容角色选择 layout prototype。
+4. 保证主内容始终落在 slide safe zone 内。
+5. 每页输出一个 HTML 文件。
+6. 审查并修正后再交付。
+7. 只在需要时导出 PPT。
+
+## 版式与安全区约束
+
+当前系统已经不是“整页随意铺内容”的模板，而是固定的 slide 合同：
+
+- 画布：`1600 x 900`
+- 主内容区：`y = 108px` 到 `y = 804px`
+- 顶部预留区：`0-96px`
+- 底部预留区：`804-900px`
+- 所有主内容必须放在 `.main-frame` 内
+- chrome labels 由 `chrome=all|bookend|none` 控制
+- 默认 chrome 模式为 `bookend`
+
+详见：
+
+- [`references/layout-prototypes.md`](./references/layout-prototypes.md)
+- [`references/safe-zone.md`](./references/safe-zone.md)
+
+## 风格画廊
+
+当前 skill 内置 10 套 style。先看截图总览，再决定是否深入阅读每套 style 的细则，会更像在看一份产品文档而不是纯文本说明。
+
+### 一屏总览
+
+| A. Swiss International | B. East Asian Minimalism |
+|---|---|
+| ![Swiss International](./assets/style-preview-zh-a.png) | ![East Asian Minimalism](./assets/style-preview-zh-b.png) |
+| `editorial` • 网格明确、理性、编辑感 | `minimal` • 安静、留白大、克制 |
+
+| C. Risograph Print | D. Bauhaus Geometry |
+|---|---|
+| ![Risograph Print](./assets/style-preview-zh-c.png) | ![Bauhaus Geometry](./assets/style-preview-zh-d.png) |
+| `poster` • 独立印刷、分层、粗粝 | `geometry` • 结构强、大胆、现代主义 |
+
+| E. Organic Handcrafted | F. Art Deco Luxury |
+|---|---|
+| ![Organic Handcrafted](./assets/style-preview-zh-e.png) | ![Art Deco Luxury](./assets/style-preview-zh-f.png) |
+| `organic` • 温暖、有触感、人味重 | `luxury` • 深色、仪式感、对称 |
+
+| G. Neo Brutalism | H. Retro Futurism |
+|---|---|
+| ![Neo Brutalism](./assets/style-preview-zh-g.png) | ![Retro Futurism](./assets/style-preview-zh-h.png) |
+| `brutal` • 高对比、硬边界、很直接 | `future` • 霓虹、地平线网格、复古科技 |
+
+| I. Dark Editorial | J. Memphis Pop |
+|---|---|
+| ![Dark Editorial](./assets/style-preview-zh-i.png) | ![Memphis Pop](./assets/style-preview-zh-j.png) |
+| `dark-editorial` • 高级、严肃、杂志感 | `playful` • 明亮、反网格、活泼 |
+
+### 风格资料表
+
+| Style | 名称 | Family | 适合内容 | `white` |
+|---|---|---|---|---|
+| A | Swiss International | editorial | 商业报告、金融、政策、新闻总结 | Yes |
+| B | East Asian Minimalism | minimal | 品牌理念、展览、文化、哲思 | Yes |
+| C | Risograph Print | poster | 创意提案、独立品牌、活动预热 | Yes |
+| D | Bauhaus Geometry | geometry | 建筑、设计讲座、产品框架 | Yes |
+| E | Organic Handcrafted | organic | wellness、餐饮、文化、生活方式叙事 | Yes |
+| F | Art Deco Luxury | luxury | 奢侈品、酒店、颁奖、金融 prestige 场景 | No |
+| G | Neo Brutalism | brutal | 创业发布、强态度 deck、产品宣言 | Yes |
+| H | Retro Futurism | future | 游戏、科技发布、科幻主题、电子音乐 | No |
+| I | Dark Editorial | dark-editorial | 调查、纪录片、深度研究 | No |
+| J | Memphis Pop | playful | 教育、娱乐、社交 campaign、节庆 | Yes |
+
+详细规则位于：
+
+- [`references/style-selector.md`](./references/style-selector.md)
+- [`styles/`](./styles/)
 
 ## 仓库结构
 
 ```text
 ppt-design/
 |- SKILL.md
-|- README.md
-|- README.zh.md
-|- README.zh-TW.md
-|- agents/openai.yaml
+|- CLAUDE.md
+|- .claude/
+|  `- settings.json
+|- agents/
+|  `- openai.yaml
 |- references/
-|  |- style-selector.md
-|  |- bilingual-typography.md
 |  |- background-modes.md
+|  |- bilingual-typography.md
+|  |- deck-markdown-template.md
+|  |- html-review-checklist.md
+|  |- layout-prototypes.md
 |  |- presentation-layout-rules.md
-|  `- html-review-checklist.md
-|- scripts/
-|  |- generate_style_previews.mjs
-|  |- render_slides.mjs
-|  `- export_ppt.mjs
+|  |- safe-zone.md
+|  `- style-selector.md
 |- styles/
 |  |- style_a.md
 |  |- ...
 |  `- style_j.md
+|- scripts/
+|  |- render_slides.mjs
+|  |- export_ppt.mjs
+|  |- build_twitter_style_cases.mjs
+|  |- build_review_sheets.mjs
+|  |- generate_style_previews.mjs
+|  `- twitter_style_cases/
+|- skills/
+|  `- ppt-design/
+|     |- SKILL.md
+|     |- references/
+|     |- styles/
+|     `- scripts/
 `- outputs/
    |- html/
    |- rendered/
    `- ppt/
 ```
 
-## 安装与使用
+## 根目录与 skill bundle 的关系
 
-### 作为本地 Skill 使用
+仓库根目录是完整工作区，包含：
 
-把这个项目放在你的 workspace 里，并让 Codex 直接指向这个 skill 目录。
+- `package.json` 和 `package-lock.json`
+- 开发与审计脚本
+- 预览资源
+- 示例生成与审计脚本
+- Claude Code 项目入口
 
-核心入口：
+`skills/ppt-design/` 是可分发的 skill 内容包，包含：
+
+- 共享的 `SKILL.md`
+- 共享 references
+- 共享 styles
+- 共享的 `render_slides.mjs` 与 `export_ppt.mjs`
+
+这意味着：
+
+- 两边核心 skill 工作流一致
+- 根目录是完整超集
+- `skills/ppt-design/` 适合拿去分发或安装
+- 当前仓库里依赖安装仍然从根目录完成
+
+## Claude Code 与 Codex 入口
+
+Codex 风格入口：
 
 - [`SKILL.md`](./SKILL.md)
-
-Skill metadata：
-
 - [`agents/openai.yaml`](./agents/openai.yaml)
 
-### 安装依赖
+Claude Code 项目入口：
+
+- [`CLAUDE.md`](./CLAUDE.md)
+- [`.claude/settings.json`](./.claude/settings.json)
+
+## 环境准备
+
+安装依赖：
 
 ```powershell
 npm install
 npx playwright install chromium
 ```
 
-### 导出 HTML Slides 到 PPT
+## 常用命令
 
-先把 HTML 渲染成 PNG：
+HTML 渲染为 PNG：
 
 ```powershell
 node .\scripts\render_slides.mjs --input .\outputs\html --output .\outputs\rendered
 ```
 
-再生成 PPTX：
+PNG 导出为 PPTX：
 
 ```powershell
 node .\scripts\export_ppt.mjs --input .\outputs\rendered --output .\outputs\ppt\deck.pptx
 ```
 
-或者直接执行：
+两步一起执行：
 
 ```powershell
 npm run build:ppt
 ```
 
-生成 README 里的 style 预览图：
+生成 style 预览资源：
 
 ```powershell
 npm run build:style-previews
 ```
 
-## Markdown 输入流程
+运行完整的 10 套风格演示流水线：
 
-推荐用户提供一份已经按页组织好的 Markdown。
+```powershell
+npm run build:twitter-cases
+```
+
+## PPT 导出元数据
+
+PPT 作者与公司信息由环境变量控制：
+
+```powershell
+$env:PPT_AUTHOR = "Codex"
+$env:PPT_COMPANY = "OpenAI"
+```
+
+如果未设置，则回退为：
+
+- `PPT_AUTHOR`: `AI Agent`
+- `PPT_COMPANY`: `PPT Design Skill`
+
+## 推荐的 Markdown 输入方式
+
+建议用户提供一份已经按页组织好的 Markdown。
 
 例如：
 
@@ -186,7 +278,7 @@ npm run build:style-previews
 
 ## 要点
 - 电动车渗透率集中在三个城市群提升
-- 电池本地化让利润预期变得更清晰
+- 电池在地化让利润预期更清晰
 - 各国政策支持力度仍然不平均
 
 # Page 2
@@ -197,263 +289,59 @@ npm run build:style-previews
 ### 需求端
 - 车队采购
 - 城市充电增长
-
-### 供给端
-- 电池组装
-- 本地政策激励
 ```
 
-系统应该这样处理：
-
-1. 把每一个 `Page X` 识别成一页 slide。
-2. 判断这一页是什么类型：
-   - 封面页
-   - 总结页
-   - 对比页
-   - 章节页
-   - 数据洞察页
-3. 不照搬原始 Markdown 的排版，而是重组为演示级层级。
-4. 把同一个 style 一致地应用到整套 deck。
-5. 渲染后检查越界、碰撞、过密和阅读距离问题。
-
-可直接套用的模板文件：
+可复用模板：
 
 - [`references/deck-markdown-template.md`](./references/deck-markdown-template.md)
 
-## 工作流
+## 模板库
 
-1. 先确认主题、受众和交付格式。
-2. 读取用户给的 Markdown，并把每一个 `Page X` 识别成一页 slide。
-3. 如果用户还没选 style，就推荐 2-3 个方向。
-4. 默认用英文解释 style 的视觉特征和适用场景。
-5. 确认 `background_mode`：
-   - 默认 `paper`
-   - 只有浅色 style 支持 `white`
-6. 开始逐页生成 HTML slide。
-7. 每页生成后做一次 review：
-   - 不能有文字碰撞
-   - 不能有内容越界
-   - 字号要适合投影
-   - 长文本和表格式内容要重组
-8. 如果用户需要，再继续导出成 PPTX。
+现在仓库更强调“通用模板”作为起点，而不是把某一个具体主题案例当作产品基准。
 
-## 背景模式
+推荐起始文件：
 
-| 模式 | 含义 |
-|---|---|
-| `paper` | 保留纸张纹理、暖色纸底和编辑感表面 |
-| `white` | 切换到干净白底，并移除纸张特有纹理 |
+- [`references/deck-markdown-template.md`](./references/deck-markdown-template.md)
+- [`cases/templates/five-slide-generic.md`](./cases/templates/five-slide-generic.md)
+- [`cases/templates/five-slide-generic.zh.md`](./cases/templates/five-slide-generic.zh.md)
+- [`cases/templates/ten-slide-generic.zh.md`](./cases/templates/ten-slide-generic.zh.md)
 
-`white` 支持的 style：`A`、`B`、`C`、`D`、`E`、`G`、`J`
+这些模板适合：
 
-`F`、`H`、`I` 不支持 `white`，因为它们依赖暗色对比系统。
+- 需要一个不绑定具体主题的中性结构
+- 需要重复复用的 deck 骨架
+- 先确定版式和层级，再填充实际内容
 
-## 语言与字体
+如果你只是想做内部验证，`npm run build:twitter-cases` 仍然保留作为演示脚本，但它不再作为面向产品文档的主案例。
 
-- style 推荐与 style 描述默认用英文。
-- slide 正文默认保持用户原始语言，除非用户明确要求翻译。
-- 中文或中英混排时，先看 [`references/bilingual-typography.md`](./references/bilingual-typography.md)，再看各个 style 文档里的字体配对规则。
+## 质量标准
 
-## Style 总览
+这套 skill 比普通 HTML 生成器更严格。
 
-详细规则在 [`references/style-selector.md`](./references/style-selector.md) 和 [`styles/`](./styles/)。
+每一页最终都应满足：
 
-| Style | 名称 | 视觉感受 | 适合内容 | `white` |
-|---|---|---|---|---|
-| A | Swiss International | 理性、编辑感、网格明确 | 商业报告、金融、政策、新闻总结 | Yes |
-| B | East Asian Minimalism | 安静、留白大、克制 | 品牌理念、展览、文化、哲思 | Yes |
-| C | Risograph Print | 粗粝、分层、独立印刷感 | 创意提案、独立品牌、活动预热 | Yes |
-| D | Bauhaus Geometry | 大胆、海报感、结构明确 | 建筑、设计讲座、产品框架 | Yes |
-| E | Organic Handcrafted | 温暖、手作、触感强 | wellness、餐饮、文化、生活方式叙事 | Yes |
-| F | Art Deco Luxury | 深色、高级、对称、仪式感 | 奢侈品、酒店、颁奖、金融 prestige 场景 | No |
-| G | Neo Brutalism | 强对比、硬边界、直接 | 产品发布、Web3、强态度 deck | Yes |
-| H | Retro Futurism | 黑色科幻、CRT、地平线感 | 游戏、科技发布、太空、电子音乐 | No |
-| I | Dark Editorial | 深色编辑感、严肃、高级 | 调查、纪录片、深度研究 | No |
-| J | Memphis Pop | 明亮、 playful、反网格 | 教育、娱乐、社交 campaign、节庆 | Yes |
+- 文字不碰撞
+- 内容不裁切
+- 字号适合投影距离
+- 长文本有清晰层级
+- 留白与 padding 符合 slide 阅读逻辑
+- 主内容全部位于 `.main-frame`
+- 顶部和底部预留区没有误放正文
+- 相邻页面不重复同一个 layout prototype
 
-下面每个 style section 都配一张 PNG 预览图，用来说明“如果用这个 style 做 PPT，大概会长什么样”。
-
-## Style 模板
-
-这些 prompt template 仍然保留英文形式，方便直接给模型使用。
-
-### A. Swiss International
-
-![Swiss International preview](./assets/style-preview-zh-a.png)
-
-```text
-Create a [SLIDE_COUNT]-slide presentation in the Swiss International style.
-Topic: [TOPIC]
-Audience: [AUDIENCE]
-Goal: [GOAL]
-Tone: editorial, rational, data-driven
-Must include: [KEY_FACTS_OR_SECTIONS]
-Background mode: [paper or white]
-Content language: [LANGUAGE]
-Keep the layout asymmetrical, grid-first, and presentation-readable.
-```
-
-### B. East Asian Minimalism
-
-![East Asian Minimalism preview](./assets/style-preview-zh-b.png)
-
-```text
-Create a [SLIDE_COUNT]-slide presentation in the East Asian Minimalism style.
-Topic: [TOPIC]
-Audience: [AUDIENCE]
-Goal: [GOAL]
-Tone: quiet, spacious, reflective
-Must include: [KEY_MESSAGES]
-Background mode: [paper or white]
-Content language: [LANGUAGE]
-Keep one main visual focus per slide and preserve large negative space.
-```
-
-### C. Risograph Print
-
-![Risograph Print preview](./assets/style-preview-zh-c.png)
-
-```text
-Create a [SLIDE_COUNT]-slide presentation in the Risograph Print style.
-Topic: [TOPIC]
-Audience: [AUDIENCE]
-Goal: [GOAL]
-Tone: energetic, handmade, indie print
-Must include: [KEY_SECTIONS]
-Background mode: [paper or white]
-Content language: [LANGUAGE]
-Use two-ink visual logic, registration shift, and bold print-like composition.
-```
-
-### D. Bauhaus Geometry
-
-![Bauhaus Geometry preview](./assets/style-preview-zh-d.png)
-
-```text
-Create a [SLIDE_COUNT]-slide presentation in the Bauhaus Geometry style.
-Topic: [TOPIC]
-Audience: [AUDIENCE]
-Goal: [GOAL]
-Tone: structural, modernist, poster-like
-Must include: [KEY_SECTIONS]
-Background mode: [paper or white]
-Content language: [LANGUAGE]
-Use diagonal composition, bold geometry, and strong title hierarchy.
-```
-
-### E. Organic Handcrafted
-
-![Organic Handcrafted preview](./assets/style-preview-zh-e.png)
-
-```text
-Create a [SLIDE_COUNT]-slide presentation in the Organic Handcrafted style.
-Topic: [TOPIC]
-Audience: [AUDIENCE]
-Goal: [GOAL]
-Tone: warm, tactile, human-centered
-Must include: [KEY_STORY_POINTS]
-Background mode: [paper or white]
-Content language: [LANGUAGE]
-Use soft organic forms, visible texture, and generous breathing room.
-```
-
-### F. Art Deco Luxury
-
-![Art Deco Luxury preview](./assets/style-preview-zh-f.png)
-
-```text
-Create a [SLIDE_COUNT]-slide presentation in the Art Deco Luxury style.
-Topic: [TOPIC]
-Audience: [AUDIENCE]
-Goal: [GOAL]
-Tone: premium, ceremonial, symmetrical
-Must include: [KEY_SECTIONS]
-Background mode: paper
-Content language: [LANGUAGE]
-Keep the layout dark, centered, elegant, and linework-driven.
-```
-
-### G. Neo Brutalism
-
-![Neo Brutalism preview](./assets/style-preview-zh-g.png)
-
-```text
-Create a [SLIDE_COUNT]-slide presentation in the Neo Brutalism style.
-Topic: [TOPIC]
-Audience: [AUDIENCE]
-Goal: [GOAL]
-Tone: bold, raw, high-contrast
-Must include: [KEY_MESSAGES]
-Background mode: [paper or white]
-Content language: [LANGUAGE]
-Use thick borders, hard shadows, strong color blocks, and assertive hierarchy.
-```
-
-### H. Retro Futurism
-
-![Retro Futurism preview](./assets/style-preview-zh-h.png)
-
-```text
-Create a [SLIDE_COUNT]-slide presentation in the Retro Futurism style.
-Topic: [TOPIC]
-Audience: [AUDIENCE]
-Goal: [GOAL]
-Tone: cinematic, sci-fi, retro-tech
-Must include: [KEY_SECTIONS]
-Background mode: paper
-Content language: [LANGUAGE]
-Use a dark horizon-grid composition, restrained neon linework, and monospaced labels.
-```
-
-### I. Dark Editorial
-
-![Dark Editorial preview](./assets/style-preview-zh-i.png)
-
-```text
-Create a [SLIDE_COUNT]-slide presentation in the Dark Editorial style.
-Topic: [TOPIC]
-Audience: [AUDIENCE]
-Goal: [GOAL]
-Tone: serious, premium, investigative
-Must include: [KEY_ARGUMENTS_OR_FINDINGS]
-Background mode: paper
-Content language: [LANGUAGE]
-Use sharp editorial typography, dark space, and strong headline-body contrast.
-```
-
-### J. Memphis Pop
-
-![Memphis Pop preview](./assets/style-preview-zh-j.png)
-
-```text
-Create a [SLIDE_COUNT]-slide presentation in the Memphis Pop style.
-Topic: [TOPIC]
-Audience: [AUDIENCE]
-Goal: [GOAL]
-Tone: playful, loud, energetic
-Must include: [KEY_SECTIONS]
-Background mode: [paper or white]
-Content language: [LANGUAGE]
-Use bright collision color, scattered geometry, and fun headline rhythm.
-```
-
-## Review 标准
-
-生成每一页后，都要再检查一轮：
-
-- 文字不能碰撞
-- 内容不能越界
-- 字号要适合演示距离
-- 长文本和表格内容要重新组织
-- 修正可读性之后，style 不能被破坏
-
-对应规则文档：
+具体检查规则位于：
 
 - [`references/presentation-layout-rules.md`](./references/presentation-layout-rules.md)
 - [`references/html-review-checklist.md`](./references/html-review-checklist.md)
 
-## 输出位置
+## 输出目录
 
-- HTML slides: `outputs/html/`
-- rendered PNGs: `outputs/rendered/`
-- PPTX decks: `outputs/ppt/`
+- HTML slides: [`outputs/html/`](./outputs/html/)
+- rendered PNGs: [`outputs/rendered/`](./outputs/rendered/)
+- PPTX decks: [`outputs/ppt/`](./outputs/ppt/)
+
+## 备注
+
+- 根目录包含一些不在最小 skill 包中的辅助脚本与审计工具。
+- `outputs/html/` 里的历史 smoke-test 文件只是本地产物，不代表当前标准模板。
+- 一切最终行为以 `SKILL.md` 和 references 文档为准。

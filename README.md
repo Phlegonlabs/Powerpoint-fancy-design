@@ -2,172 +2,266 @@
 
 Language: **English** | [简体中文](./README.zh.md) | [繁體中文](./README.zh-TW.md)
 
-`ppt-design` is a reusable Codex skill for designing presentation slides as polished `1600x900` HTML pages, then exporting them to a high-fidelity image-based PPTX when needed.
+`ppt-design` is a presentation-design skill for turning page-structured Markdown into polished `1600x900` HTML slides, then exporting those slides to a high-fidelity image-based PPTX when needed.
 
-Claude Code compatible. `skills.sh` installable.
+It is designed to work in both Codex and Claude Code workflows. The repository root is the full development workspace. `skills/ppt-design/` is the distributable skill bundle that mirrors the shared skill content.
 
-It is built for presentation work rather than document layout:
+## Quick Start
 
-- choose a style before generating slides
-- explain what each style looks like and what content it fits in English by default
-- support Chinese and bilingual font pairing by style
-- accept page-by-page Markdown content as the primary input format
-- support `background_mode=paper|white` for compatible light styles
-- review every HTML slide after generation for overlap, clipping, and presentation readability
-- export finished HTML slides to PNG and then to PPTX
+1. Install dependencies with `npm install` and `npx playwright install chromium`.
+2. Prepare one Markdown file grouped by `Page 1`, `Page 2`, and so on.
+3. Let the skill choose a style or specify one directly.
+4. Generate HTML slides, review them, then export to PNG or PPTX when needed.
 
-## About
-
-This skill is designed around a content-to-deck workflow rather than a blank-canvas design workflow.
-
-The expected input is a Markdown document that already groups content by slide, usually with sections such as `Page 1`, `Page 2`, and so on. The skill reads that structure, interprets the role of each page, and turns it into a presentation page with stronger hierarchy, spacing, and visual direction.
-
-What this skill is responsible for:
-
-1. Reading page-by-page Markdown content.
-2. Inferring slide intent from that content:
-   - title slide
-   - summary slide
-   - section opener
-   - comparison slide
-   - data or insight slide
-3. Choosing or applying a visual style.
-4. Re-composing the page into a `1600x900` presentation layout instead of preserving raw Markdown formatting literally.
-5. Reviewing the result for clipping, overlap, density, and projection readability.
-6. Exporting the final deck to PNG and PPTX when requested.
-
-The goal is not to preserve the Markdown as a document. The goal is to transform the Markdown into presentation-ready slide layouts that are easier to scan, easier to present, and more visually coherent.
-
-## Install As A Skill
-
-This repository is packaged as an installable skill for Claude Code compatible workflows and the `skills.sh` ecosystem.
-
-Compatibility:
-
-- Claude Code
-- `skills.sh`
-- skill-style repository installs based on `SKILL.md`
-
-Install from `skills.sh`:
-
-```bash
-npx skills add https://github.com/Phlegonlabs/Powerpoint-fancy-design --skill ppt-design
-```
-
-The distributable skill bundle lives in:
-
-- [`skills/ppt-design/SKILL.md`](./skills/ppt-design/SKILL.md)
-
-What users get after installing:
-
-- the core `ppt-design` skill prompt
-- style selector and bilingual typography references
-- 10 style definition files
-- bundled render and PPT export scripts
-- a reusable Markdown deck template
-
-## Presentation Design Standard
-
-This skill should present itself like a professional presentation design system, not a loose asset pack.
-
-That means:
-
-- typography and shapes should not compete for the same focal area
-- dark or saturated blocks should not crash into reading zones unless the contrast and padding are intentional
-- decorative devices must support hierarchy instead of interrupting it
-- every preview and generated slide should feel usable in a real executive, product, or client-facing deck
-- expressive styles can stay bold, but they still need clean reading order and disciplined spacing
+If you want a ready-made starting point, begin with the generic deck templates in [`cases/templates/`](./cases/templates/).
 
 ## What It Does
 
-- Generates one HTML file per slide: `slide_01.html`, `slide_02.html`, and so on
-- Keeps every slide at a fixed `1600x900` canvas
-- Supports 10 visual styles from editorial Swiss layouts to Memphis pop
-- Includes one PNG slide preview per style in the README
-- Uses Markdown as the main content handoff format for multi-page decks
-- Maps page-level Markdown content into slide-level layout decisions
-- Uses a mandatory second-pass review for presentation safety
-- Exports to PowerPoint with strong visual fidelity
+- Recommends a fitting visual style when the user has not chosen one.
+- Accepts page-by-page Markdown as the primary content handoff format.
+- Supports Chinese and bilingual slide decks with per-style font pairing rules.
+- Supports `background_mode=paper|white` for compatible light styles.
+- Classifies each slide by content role before choosing a layout prototype.
+- Enforces a fixed safe content frame so primary content stays presentation-safe.
+- Reviews every generated HTML slide for overlap, clipping, and readability.
+- Exports finished HTML slides to PNG and then to PPTX.
+
+## Typical Use Cases
+
+- Business and policy decks that need disciplined hierarchy and presentation-safe typography.
+- Brand, culture, and exhibition decks that need stronger visual direction than standard slide templates.
+- Chinese and bilingual presentations that need style-aware font pairing instead of generic fallback fonts.
+- Static HTML-to-PPT workflows where final visual fidelity matters more than editable PowerPoint primitives.
+
+## Current Workflow
+
+The core workflow is defined in [`SKILL.md`](./SKILL.md) and mirrored in [`skills/ppt-design/SKILL.md`](./skills/ppt-design/SKILL.md).
+
+The important reference chain is:
+
+1. [`references/style-selector.md`](./references/style-selector.md)
+2. [`references/bilingual-typography.md`](./references/bilingual-typography.md) when the deck is Chinese or bilingual
+3. [`references/background-modes.md`](./references/background-modes.md)
+4. [`references/presentation-layout-rules.md`](./references/presentation-layout-rules.md)
+5. [`references/html-review-checklist.md`](./references/html-review-checklist.md)
+6. [`references/layout-prototypes.md`](./references/layout-prototypes.md)
+7. [`references/safe-zone.md`](./references/safe-zone.md)
+8. The chosen style file in [`styles/`](./styles/)
+
+The workflow is content-first:
+
+1. Read Markdown grouped by `Page 1`, `Page 2`, and so on.
+2. Infer the role of each slide, such as `cover`, `metric`, `comparison`, or `closing`.
+3. Select a layout prototype based on style family and content role.
+4. Keep primary content inside the slide safe zone.
+5. Generate one HTML file per slide.
+6. Review and revise before delivery.
+7. Export to PPT only when needed.
+
+## Layout And Safe Zone Contract
+
+The current system is no longer a loose “fill the page” template. It uses a fixed slide contract:
+
+- Slide canvas: `1600 x 900`
+- Main content frame: `y = 108px` to `y = 804px`
+- Top reserved zone: `0-96px`
+- Bottom reserved zone: `804-900px`
+- Primary content must live inside `.main-frame`
+- Chrome labels are controlled by `chrome=all|bookend|none`
+- Default chrome mode is `bookend`
+
+See:
+
+- [`references/layout-prototypes.md`](./references/layout-prototypes.md)
+- [`references/safe-zone.md`](./references/safe-zone.md)
+
+## Style Gallery
+
+The skill currently ships with 10 styles. The gallery below is the fastest way to understand the system visually before reading the full rules.
+
+### At A Glance
+
+| A. Swiss International | B. East Asian Minimalism |
+|---|---|
+| ![Swiss International](./assets/style-preview-a.png) | ![East Asian Minimalism](./assets/style-preview-b.png) |
+| `editorial` • grid-first, rational, asymmetrical | `minimal` • quiet, spacious, reflective |
+
+| C. Risograph Print | D. Bauhaus Geometry |
+|---|---|
+| ![Risograph Print](./assets/style-preview-c.png) | ![Bauhaus Geometry](./assets/style-preview-d.png) |
+| `poster` • indie print, layered, rough | `geometry` • structural, bold, modernist |
+
+| E. Organic Handcrafted | F. Art Deco Luxury |
+|---|---|
+| ![Organic Handcrafted](./assets/style-preview-e.png) | ![Art Deco Luxury](./assets/style-preview-f.png) |
+| `organic` • tactile, warm, human | `luxury` • dark, ceremonial, symmetrical |
+
+| G. Neo Brutalism | H. Retro Futurism |
+|---|---|
+| ![Neo Brutalism](./assets/style-preview-g.png) | ![Retro Futurism](./assets/style-preview-h.png) |
+| `brutal` • loud, hard-edged, startup-forward | `future` • neon, horizon-grid, retro-tech |
+
+| I. Dark Editorial | J. Memphis Pop |
+|---|---|
+| ![Dark Editorial](./assets/style-preview-i.png) | ![Memphis Pop](./assets/style-preview-j.png) |
+| `dark-editorial` • premium, serious, magazine-like | `playful` • bright, anti-grid, energetic |
+
+### Style Profiles
+
+| Style | Name | Family | Best For | `white` |
+|---|---|---|---|---|
+| A | Swiss International | editorial | business reports, finance, policy, newsroom summaries | Yes |
+| B | East Asian Minimalism | minimal | brand values, exhibitions, culture, philosophy | Yes |
+| C | Risograph Print | poster | creative proposals, indie brands, event promos | Yes |
+| D | Bauhaus Geometry | geometry | architecture, design talks, product frameworks | Yes |
+| E | Organic Handcrafted | organic | wellness, food, culture, lifestyle storytelling | Yes |
+| F | Art Deco Luxury | luxury | luxury, hospitality, awards, prestige finance | No |
+| G | Neo Brutalism | brutal | startup launches, opinionated decks, bold messaging | Yes |
+| H | Retro Futurism | future | gaming, tech launches, sci-fi themes, electronic music | No |
+| I | Dark Editorial | dark-editorial | investigations, documentaries, deep research | No |
+| J | Memphis Pop | playful | education, entertainment, social campaigns, festivals | Yes |
+
+Detailed selection guidance lives in:
+
+- [`references/style-selector.md`](./references/style-selector.md)
+- [`styles/`](./styles/)
 
 ## Repository Structure
 
 ```text
 ppt-design/
 |- SKILL.md
-|- README.md
-|- README.zh.md
-|- README.zh-TW.md
-|- agents/openai.yaml
+|- CLAUDE.md
+|- .claude/
+|  `- settings.json
+|- agents/
+|  `- openai.yaml
 |- references/
-|  |- style-selector.md
-|  |- bilingual-typography.md
 |  |- background-modes.md
+|  |- bilingual-typography.md
+|  |- deck-markdown-template.md
+|  |- html-review-checklist.md
+|  |- layout-prototypes.md
 |  |- presentation-layout-rules.md
-|  `- html-review-checklist.md
-|- scripts/
-|  |- generate_style_previews.mjs
-|  |- render_slides.mjs
-|  `- export_ppt.mjs
+|  |- safe-zone.md
+|  `- style-selector.md
 |- styles/
 |  |- style_a.md
 |  |- ...
 |  `- style_j.md
+|- scripts/
+|  |- render_slides.mjs
+|  |- export_ppt.mjs
+|  |- build_twitter_style_cases.mjs
+|  |- build_review_sheets.mjs
+|  |- generate_style_previews.mjs
+|  `- twitter_style_cases/
+|- skills/
+|  `- ppt-design/
+|     |- SKILL.md
+|     |- references/
+|     |- styles/
+|     `- scripts/
 `- outputs/
    |- html/
    |- rendered/
    `- ppt/
 ```
 
-## Install And Use
+## Root Workspace vs Skill Bundle
 
-### Use As A Local Skill
+The repository root is the full working project:
 
-Keep the project in your workspace and point Codex to this skill folder directly.
+- `package.json` and `package-lock.json`
+- development scripts
+- preview assets
+- example generation and audit scripts
+- Claude Code project entrypoint
 
-Core entry file:
+`skills/ppt-design/` is the portable skill payload:
+
+- shared `SKILL.md`
+- shared references
+- shared styles
+- shared `render_slides.mjs` and `export_ppt.mjs`
+
+This means:
+
+- the core skill workflow is identical in both places
+- the root is the complete superset
+- `skills/ppt-design/` is suitable as a distribution bundle
+- standalone dependency installation still happens from the root in this repo
+
+## Claude Code And Codex Entry Points
+
+For Codex-style skill usage:
 
 - [`SKILL.md`](./SKILL.md)
-
-Skill metadata:
-
 - [`agents/openai.yaml`](./agents/openai.yaml)
 
-### Install Dependencies
+For Claude Code project usage:
+
+- [`CLAUDE.md`](./CLAUDE.md)
+- [`.claude/settings.json`](./.claude/settings.json)
+
+## Setup
+
+Install dependencies:
 
 ```powershell
 npm install
 npx playwright install chromium
 ```
 
-### Export HTML Slides To PPT
+## Main Commands
 
-Render HTML to PNG:
+Render HTML slides to PNG:
 
 ```powershell
 node .\scripts\render_slides.mjs --input .\outputs\html --output .\outputs\rendered
 ```
 
-Build the PPTX:
+Export PNG slides to PPTX:
 
 ```powershell
 node .\scripts\export_ppt.mjs --input .\outputs\rendered --output .\outputs\ppt\deck.pptx
 ```
 
-Or run both:
+Run both:
 
 ```powershell
 npm run build:ppt
 ```
 
-Generate README style previews:
+Build style preview assets:
 
 ```powershell
 npm run build:style-previews
 ```
 
-## Markdown Input Workflow
+Build the full 10-style demo pipeline:
 
-The preferred handoff is one Markdown file that already groups content by slide.
+```powershell
+npm run build:twitter-cases
+```
+
+## PPT Export Metadata
+
+PPT author and company are environment-driven:
+
+```powershell
+$env:PPT_AUTHOR = "Codex"
+$env:PPT_COMPANY = "OpenAI"
+```
+
+If unset, the export falls back to:
+
+- `PPT_AUTHOR`: `AI Agent`
+- `PPT_COMPANY`: `PPT Design Skill`
+
+## Recommended Markdown Input
+
+The preferred input is one Markdown file already grouped by slide.
 
 Example:
 
@@ -192,433 +286,59 @@ Key Drivers
 ### Demand
 - Fleet adoption
 - Urban charging growth
-
-### Supply
-- Battery assembly
-- Local policy incentives
 ```
-
-What the skill should do with this input:
-
-1. Read each `Page X` block as one slide.
-2. Identify the content type of that page:
-   - title slide
-   - summary slide
-   - comparison slide
-   - section opener
-   - data or insight slide
-3. Recompose the page into presentation hierarchy instead of preserving raw Markdown formatting.
-4. Apply the chosen style consistently across the full deck.
-5. Review the rendered result and fix overlap, clipping, and density problems before delivery.
 
 Reusable template:
 
 - [`references/deck-markdown-template.md`](./references/deck-markdown-template.md)
 
-## Workflow
+## Template Library
 
-1. Identify the topic, audience, and delivery format.
-2. Parse the input Markdown and map each `Page X` section to one slide.
-3. Recommend 2-3 styles if the user has not chosen one.
-4. Explain each style in English by default.
-5. Confirm `background_mode`:
-   - `paper` is the default
-   - `white` is supported only by light styles
-6. Generate one HTML file per slide.
-7. Review every slide after generation:
-   - no text collision
-   - no clipping
-   - readable type for presentation
-   - better layout for tables and text-heavy slides
-8. Export to PPTX only if needed.
+This repo now treats templates as the primary starting point instead of a single named-topic benchmark.
 
-## Background Modes
+Recommended starting files:
 
-| Mode | Meaning |
-|---|---|
-| `paper` | Keeps paper grain, warm stock, print texture, and editorial surface feel |
-| `white` | Uses a clean white slide canvas and removes paper-specific texture |
+- [`references/deck-markdown-template.md`](./references/deck-markdown-template.md)
+- [`cases/templates/five-slide-generic.md`](./cases/templates/five-slide-generic.md)
+- [`cases/templates/five-slide-generic.zh.md`](./cases/templates/five-slide-generic.zh.md)
+- [`cases/templates/ten-slide-generic.zh.md`](./cases/templates/ten-slide-generic.zh.md)
 
-`white` is supported by styles `A`, `B`, `C`, `D`, `E`, `G`, and `J`.
+Use these when you want:
 
-`white` is **not** supported by styles `F`, `H`, and `I`, because those styles depend on dark-native contrast systems.
+- a neutral structure with no fixed subject matter
+- a reusable deck skeleton for internal workflows
+- a clean starting point before applying any specific style
 
-## Language Behavior
+If you need a full pipeline run for verification, `npm run build:twitter-cases` still exists as an internal demo script, but it is not the canonical product-facing example.
 
-- Style recommendations and style descriptions should default to English.
-- Generated slide copy should stay in the user's source language unless translation is explicitly requested.
-- Chinese or bilingual slides should follow [`references/bilingual-typography.md`](./references/bilingual-typography.md) and the per-style typography notes before choosing display fonts.
+## Quality Standard
 
-## Style Gallery
+This skill is intentionally stricter than a normal HTML generator.
 
-The skill uses these style families. Full rules live in [`references/style-selector.md`](./references/style-selector.md) and the detailed style specs in [`styles/`](./styles/).
-
-| Style | Name | Visual Feel | Best For | `white` |
-|---|---|---|---|---|
-| A | Swiss International | rational, editorial, grid-first | business reports, finance, policy, newsroom summaries | Yes |
-| B | East Asian Minimalism | quiet, spacious, reflective | brand values, exhibitions, culture, philosophy | Yes |
-| C | Risograph Print | rough, layered, indie print energy | creative proposals, indie brands, event promos | Yes |
-| D | Bauhaus Geometry | bold, poster-like, structural | architecture, design talks, product frameworks | Yes |
-| E | Organic Handcrafted | tactile, warm, human, painterly | wellness, food, culture, lifestyle storytelling | Yes |
-| F | Art Deco Luxury | dark, premium, symmetrical, ceremonial | luxury, hospitality, awards, prestige finance | No |
-| G | Neo Brutalism | loud, high-contrast, startup-forward | product launches, Web3, bold decks, opinionated messaging | Yes |
-| H | Retro Futurism | dark sci-fi, CRT glow, horizon drama | gaming, tech launches, space, electronic music | No |
-| I | Dark Editorial | serious, premium, magazine-like | investigations, documentaries, deep research | No |
-| J | Memphis Pop | playful, bright, anti-grid, energetic | education, entertainment, social campaigns, festivals | Yes |
-
-Each style section below uses a single PNG template preview. The image itself should show what a PPT in that style looks like, so the README no longer relies on framed cards or SVG overview boards.
-
-## Style Templates
-
-These are GitHub-facing prompt templates. Each template is designed for one style and can be copied directly, then filled with your own topic, audience, and slide requirements.
-
-### A. Swiss International
-
-![Swiss International preview](./assets/style-preview-a.png)
-
-Reference template:
-
-```text
-Create a [SLIDE_COUNT]-slide presentation in the Swiss International style.
-Topic: [TOPIC]
-Audience: [AUDIENCE]
-Goal: [GOAL]
-Tone: editorial, rational, data-driven
-Must include: [KEY_FACTS_OR_SECTIONS]
-Background mode: [paper or white]
-Content language: [LANGUAGE]
-Keep the layout asymmetrical, grid-first, and presentation-readable.
-```
-
-Example:
-
-```text
-Use the Swiss International style to create a 5-slide presentation about EV market growth in Southeast Asia.
-Keep it editorial and data-driven.
-Use background_mode=paper.
-```
-
-Good fit:
-
-- market analysis
-- policy summary
-- board updates
-
-### B. East Asian Minimalism
-
-![East Asian Minimalism preview](./assets/style-preview-b.png)
-
-Reference template:
-
-```text
-Create a [SLIDE_COUNT]-slide presentation in the East Asian Minimalism style.
-Topic: [TOPIC]
-Audience: [AUDIENCE]
-Goal: [GOAL]
-Tone: quiet, spacious, reflective
-Must include: [KEY_MESSAGES]
-Background mode: [paper or white]
-Content language: [LANGUAGE]
-Keep one main visual focus per slide and preserve large negative space.
-```
-
-Example:
-
-```text
-Create a 3-slide brand philosophy deck for a tea brand.
-Use the East Asian Minimalism style with quiet typography and large negative space.
-Use background_mode=white.
-```
-
-Good fit:
-
-- brand values
-- museum or exhibition decks
-- reflective storytelling
-
-### C. Risograph Print
-
-![Risograph Print preview](./assets/style-preview-c.png)
-
-Reference template:
-
-```text
-Create a [SLIDE_COUNT]-slide presentation in the Risograph Print style.
-Topic: [TOPIC]
-Audience: [AUDIENCE]
-Goal: [GOAL]
-Tone: energetic, handmade, indie print
-Must include: [KEY_SECTIONS]
-Background mode: [paper or white]
-Content language: [LANGUAGE]
-Use two-ink visual logic, registration shift, and bold print-like composition.
-```
-
-Example:
-
-```text
-Design a 4-slide creative pitch for an indie music festival.
-Use the Risograph Print style and keep the layout energetic and layered.
-Use background_mode=paper.
-```
-
-Good fit:
-
-- event launches
-- youth campaigns
-- indie creative proposals
-
-### D. Bauhaus Geometry
-
-![Bauhaus Geometry preview](./assets/style-preview-d.png)
-
-Reference template:
-
-```text
-Create a [SLIDE_COUNT]-slide presentation in the Bauhaus Geometry style.
-Topic: [TOPIC]
-Audience: [AUDIENCE]
-Goal: [GOAL]
-Tone: structural, modernist, poster-like
-Must include: [KEY_SECTIONS]
-Background mode: [paper or white]
-Content language: [LANGUAGE]
-Use diagonal composition, bold geometry, and strong title hierarchy.
-```
-
-Example:
-
-```text
-Create a 6-slide product strategy deck about modular construction systems.
-Use Bauhaus Geometry with strong blocks and clean structure.
-Use background_mode=white.
-```
-
-Good fit:
-
-- frameworks
-- architecture
-- product systems
-
-### E. Organic Handcrafted
-
-![Organic Handcrafted preview](./assets/style-preview-e.png)
-
-Reference template:
-
-```text
-Create a [SLIDE_COUNT]-slide presentation in the Organic Handcrafted style.
-Topic: [TOPIC]
-Audience: [AUDIENCE]
-Goal: [GOAL]
-Tone: warm, tactile, human-centered
-Must include: [KEY_STORY_POINTS]
-Background mode: [paper or white]
-Content language: [LANGUAGE]
-Use soft organic forms, visible texture, and generous breathing room.
-```
-
-Example:
-
-```text
-Design a 4-slide presentation for a wellness retreat brand story.
-Use the Organic Handcrafted style with warm shapes and tactile texture.
-Use background_mode=paper.
-```
-
-Good fit:
-
-- wellness
-- food and beverage
-- human-centered narratives
-
-### F. Art Deco Luxury
-
-![Art Deco Luxury preview](./assets/style-preview-f.png)
-
-Reference template:
-
-```text
-Create a [SLIDE_COUNT]-slide presentation in the Art Deco Luxury style.
-Topic: [TOPIC]
-Audience: [AUDIENCE]
-Goal: [GOAL]
-Tone: premium, ceremonial, symmetrical
-Must include: [KEY_SECTIONS]
-Background mode: paper
-Content language: [LANGUAGE]
-Keep the layout dark, centered, elegant, and linework-driven.
-```
-
-Example:
-
-```text
-Create a premium awards-night presentation for a hotel group.
-Use Art Deco Luxury with dark symmetry and gold linework.
-Keep the original dark background.
-```
-
-Good fit:
-
-- luxury brand decks
-- hospitality launches
-- ceremonial event presentations
-
-### G. Neo Brutalism
-
-![Neo Brutalism preview](./assets/style-preview-g.png)
-
-Reference template:
-
-```text
-Create a [SLIDE_COUNT]-slide presentation in the Neo Brutalism style.
-Topic: [TOPIC]
-Audience: [AUDIENCE]
-Goal: [GOAL]
-Tone: bold, raw, high-contrast
-Must include: [KEY_MESSAGES]
-Background mode: [paper or white]
-Content language: [LANGUAGE]
-Use thick borders, hard shadows, strong color blocks, and assertive hierarchy.
-```
-
-Example:
-
-```text
-Design a sharp 5-slide startup launch deck for an AI tool.
-Use Neo Brutalism with thick borders, bold hierarchy, and strong contrast.
-Use background_mode=white.
-```
-
-Good fit:
-
-- startup intros
-- product launches
-- bold manifesto-style presentations
-
-### H. Retro Futurism
-
-![Retro Futurism preview](./assets/style-preview-h.png)
-
-Reference template:
-
-```text
-Create a [SLIDE_COUNT]-slide presentation in the Retro Futurism style.
-Topic: [TOPIC]
-Audience: [AUDIENCE]
-Goal: [GOAL]
-Tone: cinematic, sci-fi, retro-tech
-Must include: [KEY_SECTIONS]
-Background mode: paper
-Content language: [LANGUAGE]
-Use a dark horizon-grid composition, restrained neon linework, and monospaced labels.
-```
-
-Example:
-
-```text
-Create a game reveal presentation with a retro-futurist visual system.
-Use dark CRT texture, horizon glow, and cinematic hierarchy.
-Keep the original dark background.
-```
-
-Good fit:
-
-- gaming
-- sci-fi concepts
-- electronic music and future-tech themes
-
-### I. Dark Editorial
-
-![Dark Editorial preview](./assets/style-preview-i.png)
-
-Reference template:
-
-```text
-Create a [SLIDE_COUNT]-slide presentation in the Dark Editorial style.
-Topic: [TOPIC]
-Audience: [AUDIENCE]
-Goal: [GOAL]
-Tone: serious, premium, investigative
-Must include: [KEY_ARGUMENTS_OR_FINDINGS]
-Background mode: paper
-Content language: [LANGUAGE]
-Use sharp editorial typography, dark space, and strong headline-body contrast.
-```
-
-Example:
-
-```text
-Design a 6-slide documentary pitch deck about ocean surveillance.
-Use the Dark Editorial style with serious magazine-like pacing.
-Keep the original dark background.
-```
-
-Good fit:
-
-- research storytelling
-- documentary decks
-- high-seriousness editorial content
-
-### J. Memphis Pop
-
-![Memphis Pop preview](./assets/style-preview-j.png)
-
-Reference template:
-
-```text
-Create a [SLIDE_COUNT]-slide presentation in the Memphis Pop style.
-Topic: [TOPIC]
-Audience: [AUDIENCE]
-Goal: [GOAL]
-Tone: playful, loud, energetic
-Must include: [KEY_SECTIONS]
-Background mode: [paper or white]
-Content language: [LANGUAGE]
-Use bright collision color, scattered geometry, and fun headline rhythm.
-```
-
-Example:
-
-```text
-Create a colorful school campaign presentation about reading habits.
-Use Memphis Pop with bright collisions, bold shapes, and playful rhythm.
-Use background_mode=white.
-```
-
-Good fit:
-
-- education
-- kids content
-- social campaigns
-- entertainment decks
-
-## Presentation Review Standard
-
-This skill is stricter than a normal HTML generator. After generating each slide, it must do a second-pass review using:
-
-- [`references/presentation-layout-rules.md`](./references/presentation-layout-rules.md)
-- [`references/html-review-checklist.md`](./references/html-review-checklist.md)
-
-That review checks:
+Every generated slide should satisfy:
 
 - no text collision
 - no clipping
 - readable type at presentation distance
-- better hierarchy for heavy text
-- better layout for table-like content
-- preserved style quality after readability fixes
+- strong hierarchy for text-heavy content
+- slide-safe spacing and padding
+- all main content inside `.main-frame`
+- no accidental text in reserved chrome zones
+- no repeated layout prototype on consecutive slides
 
-## Output
+The review rules live in:
 
-- HTML slides: `outputs/html/`
-- rendered PNGs: `outputs/rendered/`
-- PPTX decks: `outputs/ppt/`
+- [`references/presentation-layout-rules.md`](./references/presentation-layout-rules.md)
+- [`references/html-review-checklist.md`](./references/html-review-checklist.md)
 
-## Current Example Output
+## Outputs
 
-Smoke-test files in this repo:
+- HTML slides: [`outputs/html/`](./outputs/html/)
+- rendered PNGs: [`outputs/rendered/`](./outputs/rendered/)
+- PPTX decks: [`outputs/ppt/`](./outputs/ppt/)
 
-- [`outputs/html/slide_01.html`](./outputs/html/slide_01.html)
-- [`outputs/html/slide_02.html`](./outputs/html/slide_02.html)
-- [`outputs/ppt/deck.pptx`](./outputs/ppt/deck.pptx)
+## Notes
+
+- The root repo includes helper and audit scripts that are not part of the minimal distribution bundle.
+- Existing smoke-test HTML files under `outputs/html/` are just local artifacts, not the canonical layout template.
+- The canonical behavior should always be taken from `SKILL.md` plus the reference documents.

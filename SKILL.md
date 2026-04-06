@@ -1,6 +1,6 @@
 ---
 name: ppt-design
-description: Design presentation slides, infographic pages, and PPT-style visuals as 1600x900 HTML slides with optional PPT export. Use when Codex needs to pick or explain a slide style, recommend styles based on content, generate one or more static HTML slides, support `background_mode` paper or white for compatible light styles, or render finished slides into a high-fidelity image-based PPTX.
+description: Design presentation slides, infographic pages, and PPT-style visuals as 1600x900 HTML slides with optional PPT export. Use when the agent needs to pick or explain a slide style, recommend styles based on content, generate one or more static HTML slides, support `background_mode` paper or white for compatible light styles, or render finished slides into a high-fidelity image-based PPTX.
 version: 0.1.0
 ---
 
@@ -27,13 +27,15 @@ Design each slide as a standalone 1600x900 HTML file, then export to PPT only wh
 8. Read [background-modes.md](./references/background-modes.md).
 9. Read [presentation-layout-rules.md](./references/presentation-layout-rules.md).
 10. Read [html-review-checklist.md](./references/html-review-checklist.md).
-11. Read the chosen style file in `./styles/style_[a-j].md` before writing HTML. Do not rely on memory.
-12. When the slide copy is Chinese or bilingual, follow the style's Chinese and English pairing guidance rather than reusing the English display font everywhere.
-13. Recompose page content into slide hierarchy instead of preserving raw Markdown formatting literally.
-14. Generate one HTML file per slide in `./outputs/html/`.
-15. Review every generated HTML slide before delivery. Treat this as mandatory, not optional.
-16. Fix layout, spacing, typography, and hierarchy issues found in review.
-17. If the user wants PPT, render the HTML slides to PNG and package them into a PPTX.
+11. Read [layout-prototypes.md](./references/layout-prototypes.md). Classify each slide's content role and select a layout prototype before writing HTML. Do not repeat the same layout on consecutive slides.
+12. Read [safe-zone.md](./references/safe-zone.md). Enforce content boundaries on every slide: all primary content must live inside the main frame area (`y = 108px` to `y = 804px`). Include chrome labels only on cover and closing slides when `chrome=bookend`.
+13. Read the chosen style file in `./styles/style_[a-j].md` before writing HTML. Do not rely on memory.
+14. When the slide copy is Chinese or bilingual, follow the style's Chinese and English pairing guidance rather than reusing the English display font everywhere.
+15. Recompose page content into slide hierarchy instead of preserving raw Markdown formatting literally.
+16. Generate one HTML file per slide in `./outputs/html/`.
+17. Review every generated HTML slide before delivery. Treat this as mandatory, not optional.
+18. Fix layout, spacing, typography, and hierarchy issues found in review.
+19. If the user wants PPT, render the HTML slides to PNG and package them into a PPTX.
 
 ## Inputs
 
@@ -42,6 +44,7 @@ Use these fields when the user provides them or when you need to make them expli
 - `input_markdown`: the source Markdown for the deck, ideally grouped by `Page 1`, `Page 2`, and so on
 - `style`: `A-J` or a named style
 - `background_mode`: `paper` or `white`
+- `chrome`: `all`, `bookend`, or `none`
 - `deliverable`: `html`, `ppt`, or `both`
 
 Default behavior:
@@ -49,6 +52,7 @@ Default behavior:
 - `input_markdown`: infer page structure from headings when possible
 - `style`: recommend candidates first when unspecified
 - `background_mode`: `paper`
+- `chrome`: `bookend`
 - `deliverable`: `html`
 
 ## Style Selection
@@ -124,21 +128,61 @@ Use this base structure unless the style file overrides a specific detail:
       z-index: 50;
       pointer-events: none;
     }
-    .content {
-      position: relative;
-      z-index: 10;
-      width: 100%;
-      height: 100%;
+    .chrome-top, .chrome-bottom {
+      position: absolute;
+      left: var(--edge, 96px);
+      right: var(--edge, 96px);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 14px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted, #999);
+      z-index: 2;
+    }
+    .chrome-top { top: 28px; }
+    .chrome-bottom { bottom: 24px; }
+    .main-frame {
+      position: absolute;
+      left: var(--edge, 96px);
+      right: var(--edge, 96px);
+      top: 108px;
+      bottom: 96px;
+      z-index: 3;
     }
   </style>
 </head>
 <body>
   <div class="slide">
-    <div class="content"></div>
+    <!-- Include chrome-top and chrome-bottom on cover and closing slides only when chrome=bookend -->
+    <div class="chrome-top">
+      <div class="style-id">STYLE A / Swiss International</div>
+      <div class="meta-id">Cover</div>
+    </div>
+    <div class="chrome-bottom">
+      <div class="meta-id">hero-cover</div>
+      <div class="page-id">01 / 05</div>
+    </div>
+    <!-- Main content frame — present on EVERY slide -->
+    <main class="main-frame">
+      <!-- All primary content goes here -->
+    </main>
   </div>
 </body>
 </html>
 ```
+
+## Chrome Labels
+
+Read [safe-zone.md](./references/safe-zone.md).
+
+Apply these rules:
+
+- `chrome=bookend`: show `.chrome-top` and `.chrome-bottom` on cover and closing slides only.
+- `chrome=all`: show `.chrome-top` and `.chrome-bottom` on every slide.
+- `chrome=none`: omit chrome labels entirely.
+- The main content frame does not move when chrome visibility changes.
 
 ## Presentation Typography
 
@@ -223,3 +267,7 @@ The PPT export is intentionally image-based for fidelity. Each slide becomes one
 - A second-pass HTML review happened after generation, not only before.
 - PPT pages preserve the HTML composition without cropping or scaling errors.
 - Decorative blocks, especially dark or saturated ones, do not invade the primary reading zones unless that overlap is deliberate, padded, and presentation-safe.
+- All primary content stays within the main frame area (`108px` to `804px` vertically).
+- No text content appears in the top reserved zone (`0-96px`) or bottom reserved zone (`804-900px`) except chrome labels allowed by the current `chrome` mode.
+- Consecutive slides use different layout prototypes.
+- A 10-slide deck uses at least 5 distinct layout prototypes.

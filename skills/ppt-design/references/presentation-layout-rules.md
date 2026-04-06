@@ -1,5 +1,7 @@
 # Presentation Layout Rules
 
+For layout prototype selection (which spatial arrangement to use per slide), see [layout-prototypes.md](./layout-prototypes.md). This file covers typography, spacing, and density rules that apply regardless of layout prototype.
+
 Use this file before writing HTML whenever the output is meant for slides or presentation.
 
 ## Core Principle
@@ -24,6 +26,7 @@ Slides are not documents. Optimize for viewing distance, scanning speed, and spe
 - Keep consistent internal padding inside cards, panels, and comparison blocks.
 - Leave enough edge margin so large display text never feels cropped.
 - Avoid stacking too many alignments or decorative labels around the same focal area.
+- Respect the slide safe zones. The top `108px` and bottom `96px` of the slide are reserved. All primary content must fit within the `696px` main content area. See [safe-zone.md](./safe-zone.md) for exact pixel boundaries.
 
 ## Dense Content Rules
 

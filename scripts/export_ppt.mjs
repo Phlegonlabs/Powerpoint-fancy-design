@@ -32,8 +32,8 @@ async function main() {
 
   const pptx = new pptxgen();
   pptx.layout = "LAYOUT_WIDE";
-  pptx.author = "Codex";
-  pptx.company = "OpenAI";
+  pptx.author = process.env.PPT_AUTHOR || "AI Agent";
+  pptx.company = process.env.PPT_COMPANY || "PPT Design Skill";
   pptx.subject = "HTML slide export";
   pptx.title = path.basename(outputPath, path.extname(outputPath));
 

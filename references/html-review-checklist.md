@@ -18,6 +18,10 @@ If rendering tools are available, inspect the rendered result rather than trusti
 - Cards and panels have enough padding.
 - Alignment and spacing feel deliberate, not accidental.
 - The slide still matches the selected style after readability fixes.
+- All primary content (headlines, body, cards, panels, metrics) is inside `.main-frame` (`top: 108px` to `bottom: 804px`).
+- No text content appears in the top chrome zone (`0-96px`) except style label and meta label on cover or closing slides.
+- No text content appears in the bottom chrome zone (`804-900px`) except layout name and page number on cover or closing slides.
+- Content does not overflow `.main-frame`. If it does, split the slide or rebuild the hierarchy instead of expanding the frame.
 
 ## Failure Handling
 
