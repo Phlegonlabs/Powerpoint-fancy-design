@@ -359,3 +359,7 @@ $env:PPT_COMPANY = "OpenAI"
 如果這個倉庫對你有幫助，歡迎幫它點一個 Star。
 
 [![GitHub Repo stars](https://img.shields.io/github/stars/Phlegonlabs/Powerpoint-fancy-design?style=social)](https://github.com/Phlegonlabs/Powerpoint-fancy-design/stargazers)
+
+## Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=Phlegonlabs/Powerpoint-fancy-design&type=Date)](https://www.star-history.com/#Phlegonlabs/Powerpoint-fancy-design&Date)

@@ -356,3 +356,7 @@ The review rules live in:
 If this repo is useful for your workflow, star it on GitHub.
 
 [![GitHub Repo stars](https://img.shields.io/github/stars/Phlegonlabs/Powerpoint-fancy-design?style=social)](https://github.com/Phlegonlabs/Powerpoint-fancy-design/stargazers)
+
+## Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=Phlegonlabs/Powerpoint-fancy-design&type=Date)](https://www.star-history.com/#Phlegonlabs/Powerpoint-fancy-design&Date)
