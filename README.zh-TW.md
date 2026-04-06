@@ -2,7 +2,7 @@
 
 語言： [English](./README.md) | [简体中文](./README.zh.md) | **繁體中文**
 
-![Release](https://img.shields.io/badge/release-v0.2.1-1f2937)
+![Release](https://img.shields.io/badge/release-v0.3.0-1f2937)
 ![Skill](https://img.shields.io/badge/skill-ppt--design-b85038)
 ![Agents](https://img.shields.io/badge/agents-Codex%20%7C%20Claude%20Code-4b5563)
 
@@ -12,7 +12,7 @@
 
 當前版本：
 
-- [`v0.2.1 更新說明`](./RELEASE_NOTES_v0.2.1.md)
+- [`v0.3.0 更新說明`](./RELEASE_NOTES_v0.3.0.md)
 
 ## 快速開始
 
@@ -34,6 +34,7 @@
 - 當結構本身承載意義時，保留幾何敏感的圖示與嚴格表格。
 - 每頁生成後都做版式審查，檢查越界、碰撞與可讀性。
 - 最終把 HTML slides 匯出成 PNG，再匯出成 PPTX。
+- public-stage demo 預設作為內部 benchmark 與 release gate，不作為倉庫對外 showcase。
 
 ## 典型使用場景
 
@@ -71,6 +72,17 @@
 6. 每頁輸出一個 HTML 檔案。
 7. 審查並修正後再交付。
 8. 只在需要時匯出 PPT。
+
+## Public-Stage 任務流程
+
+當目標是公開 presentation 時，預設流程不再是「生成一次後直接匯出」，而是：
+
+1. Draft generation
+2. Polish pass
+3. Audit gate
+4. Render / export
+
+對應的 benchmark 產物預設寫入內部輸出目錄，用於品質驗收，而不是預設對外發布。
 
 ## 版式與安全區約束
 
@@ -244,10 +256,10 @@ npm run build:ppt
 npm run build:style-previews
 ```
 
-執行完整的 10 套風格演示流水線：
+執行完整的 public-stage 內部 benchmark：
 
 ```powershell
-npm run build:twitter-cases
+npm run build:public-stage
 ```
 
 ## PPT 匯出中繼資料
@@ -314,7 +326,13 @@ $env:PPT_COMPANY = "Your Team"
 - 需要可重複使用的 deck 骨架
 - 先確定版式與層級，再填入實際內容
 
-如果你只是要做內部驗證，`npm run build:twitter-cases` 仍然保留作為演示腳本，但它不再作為面向產品文件的主案例。
+如果你要跑完整的產品級驗證，`npm run build:public-stage` 是新的標準入口。
+
+倉庫中的 demo builder 現在更明確地作為內部 benchmark / release gate：
+
+- public-stage 流程固定為 `draft -> polish -> audit -> render / export`
+- 它們預設不承擔對外展示倉庫能力的 marketing 角色
+- `twitter` / `template` builder 仍可作為內部對照案例保留
 
 ## 品質標準
 
@@ -335,6 +353,7 @@ $env:PPT_COMPANY = "Your Team"
 
 - [`references/presentation-layout-rules.md`](./references/presentation-layout-rules.md)
 - [`references/html-review-checklist.md`](./references/html-review-checklist.md)
+- [`references/presentation-quality-rubric.md`](./references/presentation-quality-rubric.md)
 
 ## 輸出目錄
 

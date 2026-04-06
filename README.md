@@ -2,7 +2,7 @@
 
 Language: **English** | [简体中文](./README.zh.md) | [繁體中文](./README.zh-TW.md)
 
-![Release](https://img.shields.io/badge/release-v0.2.1-1f2937)
+![Release](https://img.shields.io/badge/release-v0.3.0-1f2937)
 ![Skill](https://img.shields.io/badge/skill-ppt--design-b85038)
 ![Agents](https://img.shields.io/badge/agents-Codex%20%7C%20Claude%20Code-4b5563)
 
@@ -12,7 +12,7 @@ It is designed to work in both Codex and Claude Code workflows. The repository r
 
 Current release:
 
-- [`v0.2.1 release notes`](./RELEASE_NOTES_v0.2.1.md)
+- [`v0.3.0 release notes`](./RELEASE_NOTES_v0.3.0.md)
 
 ## Quick Start
 
@@ -33,6 +33,9 @@ If you want a ready-made starting point, begin with the generic deck templates i
 - Enforces a fixed safe content frame so primary content stays presentation-safe.
 - Preserves geometry-sensitive diagrams and strict tables when structure carries meaning.
 - Reviews every generated HTML slide for overlap, clipping, and readability.
+- Supports `presentation_scenario`, `quality_tier`, brand locks, and speaker-notes sidecars for public-stage decks.
+- Produces rubric-based audit reports for public-stage review instead of relying on layout checks alone.
+- Treats bundled public-stage demos as internal benchmark artifacts, not default public showcase material.
 - Exports finished HTML slides to PNG and then to PPTX.
 
 ## Typical Use Cases
@@ -55,10 +58,11 @@ The important reference chain is:
 3. [`references/background-modes.md`](./references/background-modes.md)
 4. [`references/presentation-layout-rules.md`](./references/presentation-layout-rules.md)
 5. [`references/html-review-checklist.md`](./references/html-review-checklist.md)
-6. [`references/layout-prototypes.md`](./references/layout-prototypes.md)
-7. [`references/safe-zone.md`](./references/safe-zone.md)
-8. [`references/geometry-preserve.md`](./references/geometry-preserve.md) for diagrams and strict tables
-9. The chosen style file in [`styles/`](./styles/)
+6. [`references/presentation-quality-rubric.md`](./references/presentation-quality-rubric.md)
+7. [`references/layout-prototypes.md`](./references/layout-prototypes.md)
+8. [`references/safe-zone.md`](./references/safe-zone.md)
+9. [`references/geometry-preserve.md`](./references/geometry-preserve.md) for diagrams and strict tables
+10. The chosen style file in [`styles/`](./styles/)
 
 The workflow is content-first:
 
@@ -70,6 +74,29 @@ The workflow is content-first:
 6. Generate one HTML file per slide.
 7. Review and revise before delivery.
 8. Export to PPT only when needed.
+
+## Public-Stage Task Flow
+
+For public-facing decks, the canonical flow is no longer "generate once and export".
+Use a task pipeline instead:
+
+1. Draft generation
+2. Polish pass
+3. Audit gate
+4. Render / export
+
+The public-stage builder writes task artifacts per style directory:
+
+- `task-report.md`
+- `task-report.json`
+- `deck-manifest.json`
+- `speaker-notes.md`
+
+Run the full public-stage benchmark pipeline with:
+
+```powershell
+npm run build:public-stage
+```
 
 ## Layout And Safe Zone Contract
 
@@ -153,6 +180,7 @@ ppt-design/
 |  |- geometry-preserve.md
 |  |- html-review-checklist.md
 |  |- layout-prototypes.md
+|  |- presentation-quality-rubric.md
 |  |- presentation-layout-rules.md
 |  |- safe-zone.md
 |  `- style-selector.md
@@ -245,13 +273,13 @@ Build style preview assets:
 npm run build:style-previews
 ```
 
-Build the full 10-style demo pipeline:
+Build the full public-stage internal benchmark:
 
 ```powershell
-npm run build:twitter-cases
+npm run build:public-stage
 ```
 
-Check that both demo pipelines still route through the shared engine:
+Check that all pipelines still route through the shared engine:
 
 ```powershell
 npm run check:shared-engine
@@ -321,13 +349,17 @@ Use these when you want:
 - a reusable deck skeleton for internal workflows
 - a clean starting point before applying any specific style
 
-If you need a full pipeline run for verification, `npm run build:twitter-cases` still exists as an internal demo script, but it is not the canonical product-facing example.
+If you need a full product-grade verification run, the canonical benchmark is now:
 
-The repo demo builders are fixed showcase pipelines:
+```powershell
+npm run build:public-stage
+```
 
-- they render with `chrome=bookend`
-- they validate HTML before PNG/PPT export
-- they do not expose every skill input as a CLI flag
+The repo demo builders are fixed internal benchmark pipelines:
+
+- they exist as internal benchmark and release-gate pipelines
+- public-stage runs use `draft -> polish -> audit -> render/export`
+- they are not the default outward-facing demo story for the repository
 
 ## Quality Standard
 
@@ -348,6 +380,7 @@ The review rules live in:
 
 - [`references/presentation-layout-rules.md`](./references/presentation-layout-rules.md)
 - [`references/html-review-checklist.md`](./references/html-review-checklist.md)
+- [`references/presentation-quality-rubric.md`](./references/presentation-quality-rubric.md)
 
 ## Outputs
 

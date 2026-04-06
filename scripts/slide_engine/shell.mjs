@@ -1,5 +1,6 @@
 import { SAFE_ZONE } from "./safe_zone.mjs";
 import { darkThemes } from "./styles.mjs";
+import { getPublicStageShellCss } from "./public_stage_shell.mjs";
 import { renderPageBody } from "./renderers.mjs";
 
 function escapeHtml(value) {
@@ -28,10 +29,10 @@ function variantCss(theme) {
     d: `.theme-d .hero-cover{grid-template-columns:1fr 1fr}.theme-d .section-header,.theme-d .hero-intro{position:relative}.theme-d .headline{font-size:78px;max-width:840px}.theme-d .comparison-bands .band-card,.theme-d .ledger-columns .ledger-card{clip-path:polygon(0 0,100% 0,96% 100%,0 100%)}.theme-d .metric-commentary .metric-card{align-self:start;min-height:420px;clip-path:polygon(8% 0,100% 0,100% 100%,0 100%,0 14%)}.theme-d .manifesto-wall .pillar-grid{gap:16px}.theme-d .mosaic-card:nth-child(1){clip-path:polygon(0 0,100% 0,92% 100%,0 100%)}.theme-d .mosaic-card:nth-child(2){clip-path:polygon(10% 0,100% 0,100% 100%,0 100%,0 12%)}.theme-d .mosaic-card:nth-child(3){clip-path:polygon(0 0,100% 0,100% 88%,6% 100%)}.theme-d .mosaic-card:nth-child(4){clip-path:polygon(0 0,94% 0,100% 100%,0 100%)}`,
     e: `.theme-e .hero-cover{grid-template-columns:1.18fr .82fr}.theme-e .headline{max-width:760px}.theme-e .story-rail{grid-template-columns:.72fr 1.28fr}.theme-e .rail-card-stack{grid-template-columns:1fr}.theme-e .panel,.theme-e .band-card,.theme-e .pillar-card,.theme-e .mosaic-card{border-style:solid;box-shadow:none}.theme-e .mosaic-card:nth-child(odd){transform:rotate(-1deg)}.theme-e .mosaic-card:nth-child(even){transform:rotate(.8deg)}.theme-e .card-constellation .mosaic-grid{gap:22px}.theme-e .section-header::after{content:"";width:128px;height:2px;background:rgba(52,45,40,.24);margin-top:4px}.theme-e .manifesto-wall .pillar-grid{padding:0 12px}.theme-e .manifesto-wall .pillar-card{border-radius:30px;transform:none}`,
     f: `.theme-f .layout-root{position:relative}.theme-f .layout-root::before{content:"";position:absolute;left:50%;top:0;bottom:0;width:1px;background:rgba(196,162,101,.18);transform:translateX(-50%)}.theme-f .hero-cover,.theme-f .editorial-thesis{grid-template-columns:1fr 1fr}.theme-f .hero-intro,.theme-f .thesis-copy,.theme-f .section-header{text-align:center;align-items:center;justify-items:center}.theme-f .subhead,.theme-f .body-copy,.theme-f .lead-copy,.theme-f .footer-copy{max-width:760px;text-align:center}.theme-f .stacked-notes{align-content:center}.theme-f .comparison-bands .band-card{grid-template-columns:1fr}.theme-f .band-label{text-align:center}.theme-f .manifesto-wall .pillar-card,.theme-f .mosaic-card{text-align:center}.theme-f .card-constellation .mosaic-grid,.theme-f .manifesto-wall .pillar-grid{grid-template-columns:repeat(4,1fr)}.theme-f .mosaic-card{grid-column:span 1!important;grid-row:span 1!important;min-height:220px}`,
-    g: `.theme-g .hero-cover{grid-template-columns:1fr 1fr}.theme-g .hero-intro{padding-top:18px}.theme-g .metric-commentary{grid-template-columns:.88fr 1.12fr}.theme-g .comparison-bands .band-stack{gap:12px;padding:14px 14px 0}.theme-g .comparison-bands .band-card{grid-template-columns:1fr}.theme-g .card-constellation .mosaic-grid,.theme-g .manifesto-wall .pillar-grid{gap:14px;padding:10px 14px 0}.theme-g .band-card:nth-child(1),.theme-g .mosaic-card:nth-child(1),.theme-g .pillar-card:nth-child(1){background:#ffe156;transform:rotate(-.4deg)}.theme-g .band-card:nth-child(2),.theme-g .mosaic-card:nth-child(2),.theme-g .pillar-card:nth-child(2){background:#ff6b6b;transform:rotate(.35deg)}.theme-g .band-card:nth-child(3),.theme-g .mosaic-card:nth-child(3),.theme-g .pillar-card:nth-child(3){background:#4ecdc4;transform:rotate(-.3deg)}.theme-g .band-card:nth-child(4),.theme-g .mosaic-card:nth-child(4),.theme-g .pillar-card:nth-child(4){background:#ffffff;transform:rotate(.45deg)}`,
+    g: `.theme-g .hero-cover{grid-template-columns:1fr 1fr}.theme-g .hero-intro{padding-top:18px}.theme-g .metric-commentary{grid-template-columns:.88fr 1.12fr}.theme-g .comparison-bands .band-stack{gap:12px;padding:14px 14px 0}.theme-g .comparison-bands .band-card{grid-template-columns:1fr}.theme-g .card-constellation .mosaic-grid,.theme-g .manifesto-wall .pillar-grid{gap:14px;padding:10px 14px 0}.theme-g .band-card:nth-child(1),.theme-g .mosaic-card:nth-child(1),.theme-g .pillar-card:nth-child(1){background:#ffe156;transform:rotate(-.4deg)}.theme-g .band-card:nth-child(2),.theme-g .mosaic-card:nth-child(2),.theme-g .pillar-card:nth-child(2){background:#ff6b6b;transform:rotate(.35deg)}.theme-g .band-card:nth-child(3),.theme-g .mosaic-card:nth-child(3),.theme-g .pillar-card:nth-child(3){background:#4ecdc4;transform:rotate(-.3deg)}.theme-g .band-card:nth-child(4),.theme-g .mosaic-card:nth-child(4),.theme-g .pillar-card:nth-child(4){background:#ffffff;transform:rotate(.45deg)}.theme-g[data-quality-tier="public-stage"] .eyebrow,.theme-g[data-quality-tier="public-stage"] .panel-label,.theme-g[data-quality-tier="public-stage"] .figure-overline,.theme-g[data-quality-tier="public-stage"] .rail-label,.theme-g[data-quality-tier="public-stage"] .thesis-statement,.theme-g[data-quality-tier="public-stage"] .figure-stamp{color:#a83d31}`,
     h: `.theme-h .hero-cover{grid-template-columns:1.16fr .84fr}.theme-h .story-rail{grid-template-columns:.76fr 1.24fr}.theme-h .comparison-bands .band-card{grid-template-columns:1fr}.theme-h .metric-commentary .metric-card{backdrop-filter:blur(2px)}.theme-h .panel,.theme-h .band-card,.theme-h .ledger-card,.theme-h .pillar-card,.theme-h .mosaic-card,.theme-h .metric-card{background:rgba(6,15,36,.28);border-color:rgba(64,232,208,.28)}.theme-h .metric-copy,.theme-h .section-header{max-width:760px}.theme-h .manifesto-wall .pillar-card{background:rgba(10,22,44,.48)}`,
     i: `.theme-i .hero-cover{grid-template-columns:1.2fr .8fr}.theme-i .headline{max-width:860px}.theme-i .comparison-bands .band-card{grid-template-columns:1fr}.theme-i .story-rail{grid-template-columns:.7fr 1.3fr}.theme-i .panel,.theme-i .band-card,.theme-i .ledger-card,.theme-i .pillar-card,.theme-i .mosaic-card{background:transparent;border-left:0;border-right:0;border-bottom:0;padding:18px 0}.theme-i .stacked-notes{gap:10px}.theme-i .manifesto-wall .pillar-card,.theme-i .ledger-columns .ledger-card{background:transparent}.theme-i .card-constellation .mosaic-grid,.theme-i .manifesto-wall .ledger-grid{gap:24px}`,
-    j: `.theme-j .hero-cover{grid-template-columns:1fr 1fr}.theme-j .headline{font-size:74px}.theme-j .stacked-notes{gap:12px}.theme-j .comparison-bands .band-card{grid-template-columns:1fr}.theme-j .process-ribbon .ribbon-grid{gap:12px}.theme-j .manifesto-wall .pillar-grid{gap:16px}.theme-j .band-card:nth-child(1),.theme-j .mosaic-card:nth-child(1),.theme-j .pillar-card:nth-child(1){background:#ffd23f;transform:rotate(-1.5deg)}.theme-j .band-card:nth-child(2),.theme-j .mosaic-card:nth-child(2),.theme-j .pillar-card:nth-child(2){background:#ffffff;transform:rotate(1.2deg)}.theme-j .band-card:nth-child(3),.theme-j .mosaic-card:nth-child(3),.theme-j .pillar-card:nth-child(3){background:#b8a9c9;transform:rotate(-.8deg)}.theme-j .band-card:nth-child(4),.theme-j .mosaic-card:nth-child(4),.theme-j .pillar-card:nth-child(4){background:#2ec4b6;transform:rotate(1.6deg)}.theme-j .mosaic-grid,.theme-j .bright-compare-grid,.theme-j .pillar-grid{padding:6px 10px 0}`,
+    j: `.theme-j .hero-cover{grid-template-columns:1fr 1fr}.theme-j .headline{font-size:74px}.theme-j .stacked-notes{gap:12px}.theme-j .comparison-bands .band-card{grid-template-columns:1fr}.theme-j .process-ribbon .ribbon-grid{gap:12px}.theme-j .manifesto-wall .pillar-grid{gap:16px}.theme-j .band-card:nth-child(1),.theme-j .mosaic-card:nth-child(1),.theme-j .pillar-card:nth-child(1){background:#ffd23f;transform:rotate(-1.5deg)}.theme-j .band-card:nth-child(2),.theme-j .mosaic-card:nth-child(2),.theme-j .pillar-card:nth-child(2){background:#ffffff;transform:rotate(1.2deg)}.theme-j .band-card:nth-child(3),.theme-j .mosaic-card:nth-child(3),.theme-j .pillar-card:nth-child(3){background:#b8a9c9;transform:rotate(-.8deg)}.theme-j .band-card:nth-child(4),.theme-j .mosaic-card:nth-child(4),.theme-j .pillar-card:nth-child(4){background:#2ec4b6;transform:rotate(1.6deg)}.theme-j .mosaic-grid,.theme-j .bright-compare-grid,.theme-j .pillar-grid{padding:6px 10px 0}.theme-j[data-quality-tier="public-stage"] .eyebrow,.theme-j[data-quality-tier="public-stage"] .panel-label,.theme-j[data-quality-tier="public-stage"] .figure-overline,.theme-j[data-quality-tier="public-stage"] .rail-label,.theme-j[data-quality-tier="public-stage"] .thesis-statement,.theme-j[data-quality-tier="public-stage"] .figure-stamp,.theme-j[data-quality-tier="public-stage"] .memphis-year{color:#c14474}.theme-j[data-quality-tier="public-stage"] .badge-card,.theme-j[data-quality-tier="public-stage"] .badge-card p{color:#202020}`,
   };
   return map[theme.id] || "";
 }
@@ -76,10 +77,13 @@ function shellCss(theme) {
     .chrome-top,.chrome-bottom{position:absolute;left:var(--edge);right:var(--edge);display:flex;align-items:center;justify-content:space-between;font-family:var(--labelFont);font-size:14px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);z-index:2}
     .chrome-top{top:28px}
     .chrome-bottom{bottom:24px}
-    .style-id,.meta-id,.page-id{opacity:.9}
+    .chrome-left,.chrome-right{display:flex;align-items:center;gap:16px;min-width:0}
+    .style-id,.meta-id,.page-id,.brand-id,.brand-footer{opacity:.9}
+    .brand-id,.brand-footer{letter-spacing:.14em}
+    .brand-id{padding:4px 10px;border:1px solid var(--line);border-radius:999px}
     .main-frame{position:absolute;left:var(--edge);right:var(--edge);top:var(--contentTop);bottom:var(--contentBottom);z-index:3}
     .layout-root{position:relative;width:100%;height:100%;display:grid;gap:28px;align-content:stretch}
-    .eyebrow,.panel-label,.figure-overline,.rail-label{font-family:var(--labelFont);font-size:13px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent)}
+    .eyebrow,.panel-label,.figure-overline,.rail-label{font-family:var(--labelFont);font-size:16px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent)}
     .headline{margin:0;font-family:var(--titleFont);font-size:72px;line-height:.96;letter-spacing:-.04em;max-width:900px}
     .headline-tight{max-width:760px}
     .headline-wide{max-width:1040px}
@@ -100,7 +104,7 @@ function shellCss(theme) {
     .hero-cover,.editorial-thesis,.metric-commentary,.comparison-bands,.ledger-columns,.evidence-quote{grid-template-columns:1.08fr .92fr}
     .hero-intro,.thesis-copy,.metric-copy,.quote-column,.rail-copy,.section-header{display:grid;align-content:start;gap:18px}
     .stacked-notes,.thesis-rail,.future-rail,.evidence-column{display:grid;align-content:start;gap:16px}
-    .figure-overline{font-size:15px;color:var(--muted)}
+    .figure-overline{font-size:16px;color:var(--muted)}
     .figure-stamp,.rail-number,.quote-figure,.metric-number{font-family:var(--accentFont);color:var(--accent);line-height:.9}
     .figure-stamp{font-size:84px;letter-spacing:-.05em;padding-top:8px}
     .rail-number,.quote-figure{font-size:96px;letter-spacing:-.06em}
@@ -120,8 +124,7 @@ function shellCss(theme) {
     .offset-3{margin-top:44px}
     .story-rail{grid-template-columns:.72fr 1.28fr;align-items:start}
     .rail-figure{display:grid;align-content:start;gap:14px;padding-right:24px;border-right:1px solid var(--line)}
-    .rail-card-stack,
-    .rail-card-stack-vertical{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+    .rail-card-stack,.rail-card-stack-vertical{display:grid;grid-template-columns:1fr 1fr;gap:14px}
     .rail-card-stack-vertical{grid-template-columns:1fr}
     .band-stack,.bright-compare-grid,.poster-columns,.pillar-grid,.ledger-grid,.matrix-grid,.ribbon-grid,.mosaic-grid,.organic-stack{display:grid;gap:18px;align-items:start}
     .band-stack,.poster-columns{grid-template-columns:1fr}
@@ -134,8 +137,9 @@ function shellCss(theme) {
     .mosaic-card.span-4{grid-column:span 6;grid-row:span 1}
     .organic-stack{grid-template-columns:1.1fr .9fr .9fr}
     .organic-card{border-radius:28px}
-    .ribbon-step{position:relative;padding-top:42px}
-    .ribbon-step::before{content:"";position:absolute;left:24px;right:24px;top:22px;height:2px;background:var(--accent);opacity:.35}
+    .ribbon-step{position:relative;padding-top:56px}
+    .ribbon-step::before{content:"";position:absolute;left:24px;right:24px;top:24px;height:2px;background:var(--accent);opacity:.35}
+    .process-ribbon .ribbon-step .panel-label{display:inline-block;width:max-content;position:relative;z-index:1;padding-right:12px;background:linear-gradient(90deg, var(--panelStrong) 0%, var(--panelStrong) 88%, transparent 100%)}
     .comparison-bands .body-copy,
     .manifesto-wall .body-copy,
     .ledger-columns .body-copy,
@@ -362,6 +366,7 @@ function shellCss(theme) {
     .badge-card .panel-label{margin-bottom:6px}
     .badge-card p{font-size:18px;line-height:1.32;margin:0}
 
+    ${getPublicStageShellCss()}
     ${theme.shellCss}
     ${variantCss(theme)}
   `;
@@ -371,12 +376,19 @@ export function renderHtml(theme, plan, options = {}) {
   const pageNumber = String(plan.index).padStart(2, "0");
   const pageCount = String(options.pageCount ?? plan.pageCount ?? 0).padStart(2, "0");
   const chromeMode = options.chromeMode ?? plan.chromeMode ?? "bookend";
+  const brandProfile = options.brandProfile ?? {};
   const showChrome = chromeMode === "all" || (chromeMode === "bookend" && (plan.role === "cover" || plan.role === "closing"));
+  const brandHeader = brandProfile.showHeaderLogo
+    ? `<div class="brand-id" data-brand-mark="true">${escapeHtml(brandProfile.logoText || brandProfile.brandName || "")}</div>`
+    : "";
+  const brandFooter = brandProfile.showFooterBrand
+    ? `<div class="brand-footer" data-brand-footer="true">${escapeHtml(brandProfile.footerText || brandProfile.brandName || "")}</div>`
+    : "";
   const chromeTop = showChrome
-    ? `<div class="chrome-top"><div class="style-id">STYLE ${theme.id.toUpperCase()} / ${escapeHtml(theme.zhName)}</div><div class="meta-id">${escapeHtml(plan.metaLabel)}</div></div>`
+    ? `<div class="chrome-top"><div class="chrome-left">${brandHeader}<div class="style-id">STYLE ${theme.id.toUpperCase()} / ${escapeHtml(theme.zhName)}</div></div><div class="chrome-right"><div class="meta-id">${escapeHtml(plan.metaLabel)}</div></div></div>`
     : "";
   const chromeBottom = showChrome
-    ? `<div class="chrome-bottom"><div class="meta-id">${escapeHtml(plan.layoutId)}</div><div class="page-id">${pageNumber} / ${pageCount}</div></div>`
+    ? `<div class="chrome-bottom"><div class="chrome-left"><div class="meta-id">${escapeHtml(plan.layoutId)}</div></div><div class="chrome-right">${brandFooter}<div class="page-id">${pageNumber} / ${pageCount}</div></div></div>`
     : "";
-  return `<!doctype html><html lang="zh-Hans"><head><meta charset="utf-8" /><meta name="viewport" content="width=1600, initial-scale=1" /><link rel="icon" href="data:," /><link rel="preconnect" href="https://fonts.googleapis.com" /><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin /><link href="${theme.fonts}" rel="stylesheet" /><title>${escapeHtml(plan.blocks[1].text)} - ${escapeHtml(theme.zhName)}</title><style>${shellCss(theme)}</style></head><body><div class="slide theme-${theme.id} family-${theme.family}">${theme.ornaments}<div class="safe-top"></div><div class="safe-bottom"></div>${chromeTop}${chromeBottom}<main class="main-frame">${renderPageBody(plan).replace('class="layout-root ', `class="layout-root role-${plan.role} `)}</main></div></body></html>`;
+  return `<!doctype html><html lang="zh-Hans"><head><meta charset="utf-8" /><meta name="viewport" content="width=1600, initial-scale=1" /><link rel="icon" href="data:," /><link rel="preconnect" href="https://fonts.googleapis.com" /><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin /><link href="${theme.fonts}" rel="stylesheet" /><title>${escapeHtml(plan.blocks[1].text)} - ${escapeHtml(theme.zhName)}</title><style>${shellCss(theme)}</style></head><body><div class="slide theme-${theme.id} family-${theme.family}" data-presentation-scenario="${escapeHtml(options.presentationScenario || plan.presentationScenario || "")}" data-quality-tier="${escapeHtml(options.qualityTier || plan.qualityTier || "")}" data-style-id="${escapeHtml(theme.id)}">${theme.ornaments}<div class="safe-top"></div><div class="safe-bottom"></div>${chromeTop}${chromeBottom}<main class="main-frame">${renderPageBody(plan).replace('class="layout-root ', `class="layout-root role-${plan.role} `)}</main></div></body></html>`;
 }

@@ -1,3 +1,5 @@
+import { publicStageRenderers } from "./public_stage_renderers.mjs";
+
 function escapeHtml(value) {
   return String(value)
     .replaceAll("&", "&amp;")
@@ -210,6 +212,7 @@ const renderers = {
   "cover-horizon-signal": renderCoverHorizonSignal,
   "cover-editorial-ledger": renderCoverEditorialLedger,
   "cover-memphis-splash": renderCoverMemphisSplash,
+  ...publicStageRenderers,
 };
 
 export function renderPageBody(plan) {

@@ -6,24 +6,22 @@ import { buildPagePlan } from "./layout_selection.mjs";
 import { styles } from "./styles.mjs";
 import { renderHtml } from "./shell.mjs";
 import { validateHtmlDir } from "./validation.mjs";
+import {
+  buildDeckContextFromOptions,
+  copyToOutput,
+  ensureDir,
+  writeDeckArtifacts,
+} from "../slide_engine/deck_files.mjs";
 
 const defaultOutputDir = path.join("outputs", "twitter-style-cases");
-
-async function ensureDir(dir) {
-  await fs.mkdir(dir, { recursive: true });
-}
-
-async function copyToOutput(sourcePath, targetPath) {
-  await fs.mkdir(path.dirname(targetPath), { recursive: true });
-  await fs.copyFile(sourcePath, targetPath);
-}
 
 export async function main(options = {}) {
   const moduleDir = path.dirname(fileURLToPath(import.meta.url));
   const repoRoot = path.resolve(moduleDir, "..", "..");
   const outputRoot = path.resolve(options.output || defaultOutputDir);
   const validate = options.validate ?? true;
-  const chromeMode = options.chromeMode ?? "bookend";
+  const deckContext = buildDeckContextFromOptions(options);
+  const chromeMode = deckContext.chromeMode;
 
   await fs.mkdir(outputRoot, { recursive: true });
   await copyToOutput(
@@ -46,6 +44,8 @@ export async function main(options = {}) {
     `安全区：top=${SAFE_ZONE.top}px, bottom=${SAFE_ZONE.bottom}px, main=${SAFE_ZONE.innerTop}px..${SAFE_ZONE.innerBottom}px`,
     "",
     `验证：${validate ? "已启用安全区几何检查" : "未启用安全区几何检查"}`,
+    `场景：${deckContext.presentationScenario}`,
+    `质量等级：${deckContext.qualityTier}`,
   ];
   await fs.writeFile(path.join(outputRoot, "README.txt"), manifestLines.join("\n"), "utf8");
 
@@ -59,13 +59,33 @@ export async function main(options = {}) {
     await fs.mkdir(renderedDir, { recursive: true });
     await fs.mkdir(pptDir, { recursive: true });
 
+    const plans = [];
     let previousLayout = null;
     for (const [index, spec] of pageSpecs.entries()) {
-      const plan = buildPagePlan(style, spec, index + 1, previousLayout);
+      const plan = buildPagePlan(style, spec, index + 1, previousLayout, deckContext);
       previousLayout = plan.layoutId;
+      plans.push(plan);
       const fileName = `slide_${String(index + 1).padStart(2, "0")}.html`;
-      await fs.writeFile(path.join(htmlDir, fileName), renderHtml(style, plan, { chromeMode, pageCount: pageSpecs.length }), "utf8");
+      await fs.writeFile(
+        path.join(htmlDir, fileName),
+        renderHtml(style, plan, {
+          chromeMode,
+          pageCount: pageSpecs.length,
+          brandProfile: deckContext.brandProfile,
+          presentationScenario: deckContext.presentationScenario,
+          qualityTier: deckContext.qualityTier,
+        }),
+        "utf8",
+      );
     }
+
+    await writeDeckArtifacts({
+      styleDir,
+      deckTitle: "Twitter History Deck",
+      style,
+      plans,
+      deckContext,
+    });
 
     if (validate) {
       await validateHtmlDir(htmlDir);
@@ -81,10 +101,24 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === path.resolve(process.a
     options: {
       output: { type: "string", default: defaultOutputDir },
       validate: { type: "boolean", default: true },
+      "presentation-scenario": { type: "string" },
+      "quality-tier": { type: "string" },
+      "speaker-notes-mode": { type: "string" },
+      "chrome-mode": { type: "string" },
+      "brand-profile": { type: "string" },
     },
   });
 
-  main(values).catch((error) => {
+  const normalizedValues = {
+    ...values,
+    presentationScenario: values["presentation-scenario"],
+    qualityTier: values["quality-tier"],
+    speakerNotesMode: values["speaker-notes-mode"],
+    chromeMode: values["chrome-mode"],
+    brandProfile: values["brand-profile"] ? JSON.parse(values["brand-profile"]) : undefined,
+  };
+
+  main(normalizedValues).catch((error) => {
     console.error(error);
     process.exit(1);
   });

@@ -2,26 +2,33 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { pageSpecs, SAFE_ZONE } from "./page_specs.mjs";
-import { buildPagePlan } from "./layout_selection.mjs";
+import { buildPagePlan } from "../slide_engine/layout_selection.mjs";
 import { styles } from "../twitter_style_cases/styles.mjs";
-import { renderHtml } from "./shell.mjs";
-import { validateHtmlDir } from "../twitter_style_cases/validation.mjs";
+import { renderHtml } from "../slide_engine/shell.mjs";
+import { validateHtmlDir } from "../slide_engine/validation.mjs";
 import {
   buildDeckContextFromOptions,
   copyToOutput,
   ensureDir,
   writeDeckArtifacts,
 } from "../slide_engine/deck_files.mjs";
+import { polishDeckPlans } from "../slide_engine/polish.mjs";
+import { addTask, createTaskState, writeTaskState } from "../slide_engine/task_artifacts.mjs";
 
-const defaultOutputDir = path.join("outputs", "template-style-cases");
+const defaultOutputDir = path.join("outputs", "public-stage-brand-launch");
 
 export async function main(options = {}) {
   const moduleDir = path.dirname(fileURLToPath(import.meta.url));
   const repoRoot = path.resolve(moduleDir, "..", "..");
   const outputRoot = path.resolve(options.output || defaultOutputDir);
   const validate = options.validate ?? true;
-  const deckContext = buildDeckContextFromOptions(options);
-  const chromeMode = deckContext.chromeMode;
+  const deckContext = buildDeckContextFromOptions({
+    presentationScenario: "brand-launch",
+    qualityTier: "public-stage",
+    speakerNotesMode: options.speakerNotesMode || "outline",
+    chromeMode: options.chromeMode || "all",
+    brandProfile: options.brandProfile,
+  });
   const styleFilter = options.style ? String(options.style).toLowerCase() : null;
   const selectedStyles = styleFilter
     ? styles.filter((style) => style.id === styleFilter || style.slug === styleFilter)
@@ -31,31 +38,27 @@ export async function main(options = {}) {
     throw new Error(`Unknown style filter: ${options.style}`);
   }
 
-  await fs.mkdir(outputRoot, { recursive: true });
-  await copyToOutput(
-    path.join(repoRoot, "cases", "templates", "ten-slide-generic.zh.md"),
-    path.join(outputRoot, "template-generic.zh.md"),
-  );
+  await ensureDir(outputRoot);
   await copyToOutput(
     path.join(repoRoot, "cases", "templates", "README.md"),
     path.join(outputRoot, "templates-readme.md"),
   );
 
-  const manifestLines = [
-    "PPT 通用模板 10 套 Style 案例",
-    "",
-    "生成方式：",
-    "- 使用中性模板内容，不绑定任何单一主题。",
-    "- 页面采用独立构图，不复用同一套固定排版。",
-    "- 正文只能落在固定主内容区，顶部与底部为硬安全区。",
+  const readme = [
+    "Public Stage Brand Launch Benchmark",
     "",
     `安全区：top=${SAFE_ZONE.top}px, bottom=${SAFE_ZONE.bottom}px, main=${SAFE_ZONE.innerTop}px..${SAFE_ZONE.innerBottom}px`,
-    "",
-    `验证：${validate ? "已启用安全区几何检查" : "未启用安全区几何检查"}`,
     `场景：${deckContext.presentationScenario}`,
     `质量等级：${deckContext.qualityTier}`,
+    `Speaker notes：${deckContext.speakerNotesMode}`,
+    `品牌：${deckContext.brandProfile.brandName}`,
+    "",
+    "用途：",
+    "- 验证 style 是否足够 public-stage。",
+    "- 验证品牌锁定、speaker notes 与 rubric 审计。",
+    "- 对比 10 套 style 在同一 launch 叙事下的适配度。",
   ];
-  await fs.writeFile(path.join(outputRoot, "README.txt"), manifestLines.join("\n"), "utf8");
+  await fs.writeFile(path.join(outputRoot, "README.txt"), `${readme.join("\n")}\n`, "utf8");
 
   for (const style of selectedStyles) {
     const styleDir = path.join(outputRoot, style.slug);
@@ -67,17 +70,38 @@ export async function main(options = {}) {
     await ensureDir(renderedDir);
     await ensureDir(pptDir);
 
-    const plans = [];
+    const taskState = createTaskState(deckContext);
+    const draftPlans = [];
     let previousLayout = null;
+
     for (const [index, spec] of pageSpecs.entries()) {
       const plan = buildPagePlan(style, spec, index + 1, previousLayout, deckContext);
       previousLayout = plan.layoutId;
-      plans.push(plan);
-      const fileName = `slide_${String(index + 1).padStart(2, "0")}.html`;
+      draftPlans.push(plan);
+    }
+
+    addTask(taskState, {
+      id: "draft",
+      title: "Draft Generation",
+      details: [
+        `Built ${draftPlans.length} draft slide plans.`,
+        `Draft layouts: ${draftPlans.map((plan) => plan.layoutId).join(", ")}`,
+      ],
+    });
+
+    const { polishedPlans, changes } = polishDeckPlans(draftPlans, deckContext);
+    addTask(taskState, {
+      id: "polish",
+      title: "Polish Pass",
+      details: changes.length > 0 ? changes : ["No structural polish changes were required."],
+    });
+
+    for (const plan of polishedPlans) {
+      const fileName = `slide_${String(plan.index).padStart(2, "0")}.html`;
       await fs.writeFile(
         path.join(htmlDir, fileName),
         renderHtml(style, plan, {
-          chromeMode,
+          chromeMode: deckContext.chromeMode,
           pageCount: pageSpecs.length,
           brandProfile: deckContext.brandProfile,
           presentationScenario: deckContext.presentationScenario,
@@ -89,18 +113,30 @@ export async function main(options = {}) {
 
     await writeDeckArtifacts({
       styleDir,
-      deckTitle: "Generic Business Deck",
+      deckTitle: "Public Stage Brand Launch",
       style,
-      plans,
+      plans: polishedPlans,
       deckContext,
     });
 
     if (validate) {
       await validateHtmlDir(htmlDir);
     }
+
+    addTask(taskState, {
+      id: "html-output",
+      title: "HTML Output",
+      details: [`Wrote polished HTML slides to ${path.relative(repoRoot, htmlDir)}`],
+      artifacts: [
+        path.join(style.slug, "html"),
+        path.join(style.slug, "deck-manifest.json"),
+        path.join(style.slug, "speaker-notes.md"),
+      ],
+    });
+    await writeTaskState(styleDir, taskState);
   }
 
-  console.log(`Generated ${selectedStyles.length} style case directories at ${outputRoot}`);
+  console.log(`Generated ${selectedStyles.length} public-stage style case directories at ${outputRoot}`);
 }
 
 if (process.argv[1] && fileURLToPath(import.meta.url) === path.resolve(process.argv[1])) {
@@ -110,24 +146,18 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === path.resolve(process.a
       output: { type: "string", default: defaultOutputDir },
       style: { type: "string" },
       validate: { type: "boolean", default: true },
-      "presentation-scenario": { type: "string" },
-      "quality-tier": { type: "string" },
       "speaker-notes-mode": { type: "string" },
       "chrome-mode": { type: "string" },
       "brand-profile": { type: "string" },
     },
   });
 
-  const normalizedValues = {
+  main({
     ...values,
-    presentationScenario: values["presentation-scenario"],
-    qualityTier: values["quality-tier"],
     speakerNotesMode: values["speaker-notes-mode"],
     chromeMode: values["chrome-mode"],
     brandProfile: values["brand-profile"] ? JSON.parse(values["brand-profile"]) : undefined,
-  };
-
-  main(normalizedValues).catch((error) => {
+  }).catch((error) => {
     console.error(error);
     process.exit(1);
   });

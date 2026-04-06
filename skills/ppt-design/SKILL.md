@@ -1,7 +1,7 @@
 ---
 name: ppt-design
 description: Design presentation slides, infographic pages, and PPT-style visuals as 1600x900 HTML slides with optional PPT export. Use when the agent needs to pick or explain a slide style, recommend styles based on content, generate one or more static HTML slides, support `background_mode` paper or white for compatible light styles, or render finished slides into a high-fidelity image-based PPTX.
-version: 0.2.1
+version: 0.3.0
 ---
 
 # PPT Design
@@ -31,17 +31,28 @@ Files in `./styles/style_[a-j].md` remain human-facing design references and mus
 8. Read [background-modes.md](./references/background-modes.md).
 9. Read [presentation-layout-rules.md](./references/presentation-layout-rules.md).
 10. Read [html-review-checklist.md](./references/html-review-checklist.md).
-11. Read [layout-prototypes.md](./references/layout-prototypes.md). Classify each slide's content role and select a layout prototype before writing HTML. Do not repeat the same layout on consecutive slides.
-12. Read [safe-zone.md](./references/safe-zone.md). Enforce content boundaries on every slide: all primary content must live inside the main frame area (`y = 108px` to `y = 804px`). Include chrome labels only on cover and closing slides when `chrome=bookend`.
-13. If a slide contains strict tables, org charts, framework diagrams, or other geometry-sensitive structures, read [geometry-preserve.md](./references/geometry-preserve.md) before writing that slide.
-14. Read the chosen style file in `./styles/style_[a-j].md` before writing HTML. Treat it as the design reference for mood, typography, and ornament logic; runtime behavior is enforced by the shared slide engine.
-15. Preserve the chosen style's native whitespace, ornament density, contrast, and pacing. Do not normalize all styles toward the same layout density.
-16. When the slide copy is Chinese or bilingual, follow the style's Chinese and English pairing guidance rather than reusing the English display font everywhere.
-17. Recompose page content into slide hierarchy instead of preserving raw Markdown formatting literally, except when geometry-sensitive structure should be preserved.
-18. Generate one HTML file per slide in `./outputs/html/`.
-19. Review every generated HTML slide before delivery. Treat this as mandatory, not optional.
-20. Fix layout, spacing, typography, hierarchy, and geometry issues found in review using the smallest change that keeps the slide true to the chosen style.
-21. If the user wants PPT, render the HTML slides to PNG and package them into a PPTX.
+11. When the deck is `client-facing` or `public-stage`, read [presentation-quality-rubric.md](./references/presentation-quality-rubric.md).
+12. Read [layout-prototypes.md](./references/layout-prototypes.md). Classify each slide's content role and select a layout prototype before writing HTML. Do not repeat the same layout on consecutive slides.
+13. Read [safe-zone.md](./references/safe-zone.md). Enforce content boundaries on every slide: all primary content must live inside the main frame area (`y = 108px` to `y = 804px`). Include chrome labels only on cover and closing slides when `chrome=bookend`.
+14. If a slide contains strict tables, org charts, framework diagrams, or other geometry-sensitive structures, read [geometry-preserve.md](./references/geometry-preserve.md) before writing that slide.
+15. Read the chosen style file in `./styles/style_[a-j].md` before writing HTML. Treat it as the design reference for mood, typography, and ornament logic; runtime behavior is enforced by the shared slide engine.
+16. Preserve the chosen style's native whitespace, ornament density, contrast, and pacing. Do not normalize all styles toward the same layout density.
+17. When the slide copy is Chinese or bilingual, follow the style's Chinese and English pairing guidance rather than reusing the English display font everywhere.
+18. Recompose page content into slide hierarchy instead of preserving raw Markdown formatting literally, except when geometry-sensitive structure should be preserved.
+19. Generate one HTML file per slide in `./outputs/html/`.
+20. Review every generated HTML slide before delivery. Treat this as mandatory, not optional.
+21. Fix layout, spacing, typography, hierarchy, and geometry issues found in review using the smallest change that keeps the slide true to the chosen style.
+22. When `speaker_notes_mode` is enabled, generate a sidecar notes file for presenter use.
+23. If the user wants PPT, render the HTML slides to PNG and package them into a PPTX.
+
+For `public-stage` work, treat the flow as a task pipeline:
+
+1. draft generation
+2. polish pass
+3. audit gate
+4. render / export
+
+Do not skip the polish pass and do not export before the audit gate passes.
 
 ## Inputs
 
@@ -52,6 +63,10 @@ Use these fields when the user provides them or when you need to make them expli
 - `background_mode`: `paper` or `white`
 - `chrome`: `all`, `bookend`, or `none`
 - `geometry_mode`: `auto`, `preserve`, or `recompose`
+- `presentation_scenario`: `brand-launch`, `investor-board`, `client-pitch`, or `research-brief`
+- `quality_tier`: `internal`, `client-facing`, or `public-stage`
+- `speaker_notes_mode`: `none`, `outline`, or `full`
+- `brand_profile`: brand lock settings for logo, footer, palette, and font policy
 - `deliverable`: `html`, `ppt`, or `both`
 
 Default behavior:
@@ -61,11 +76,14 @@ Default behavior:
 - `background_mode`: `paper`
 - `chrome`: `bookend`
 - `geometry_mode`: `auto`
+- `presentation_scenario`: `brand-launch`
+- `quality_tier`: `public-stage`
+- `speaker_notes_mode`: `outline`
 - `deliverable`: `html`
 
 Repo note:
 
-- The bundled demo builders in `./scripts/build_template_style_cases.mjs` and `./scripts/build_twitter_style_cases.mjs` are fixed showcase pipelines.
+- The bundled demo builders in `./scripts/build_template_style_cases.mjs` and `./scripts/build_twitter_style_cases.mjs` are fixed internal benchmark pipelines.
 - They currently render with `chrome=bookend` and validate HTML before PNG/PPT export.
 - They do not expose every skill input as a CLI flag.
 

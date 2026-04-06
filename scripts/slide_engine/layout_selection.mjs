@@ -119,7 +119,7 @@ function supportsLayout(spec, layoutId) {
   return requirements[layoutId]?.() ?? false;
 }
 
-export function buildPagePlan(style, spec, index, previousLayout) {
+export function buildPagePlan(style, spec, index, previousLayout, context = {}) {
   const coverOverride = spec.role === "cover" && style.coverPrototype ? style.coverPrototype : null;
   const familyChoice = coverOverride ?? familyLayoutMap[style.family]?.[spec.role];
   const familyCandidates = [spec.forcedLayout, familyChoice, ...spec.preferredLayouts].filter(Boolean);
@@ -128,5 +128,16 @@ export function buildPagePlan(style, spec, index, previousLayout) {
   );
   const layoutId = uniqueCandidates.find((candidate) => candidate !== previousLayout) ?? uniqueCandidates[0];
 
-  return { ...spec, index, layoutId, family: style.family, styleId: style.id, componentDialect: style.componentDialect ?? style.family };
+  return {
+    ...spec,
+    index,
+    layoutId,
+    family: style.family,
+    styleId: style.id,
+    componentDialect: style.componentDialect ?? style.family,
+    presentationScenario: context.presentationScenario,
+    qualityTier: context.qualityTier,
+    speakerNotesMode: context.speakerNotesMode,
+    chromeMode: context.chromeMode,
+  };
 }

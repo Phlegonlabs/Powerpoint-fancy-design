@@ -29,6 +29,23 @@ function classifyMinimum(node) {
   return null;
 }
 
+function classifyRole(node) {
+  const classes = node.className || "";
+  const tag = node.tagName?.toLowerCase() || "";
+
+  if (classes.includes("headline") || tag === "h1") return "headline";
+  if (
+    classes.includes("body-copy")
+    || classes.includes("lead-copy")
+    || classes.includes("thesis-statement")
+    || classes.includes("metric-note")
+    || classes.includes("rail-note")
+    || tag === "p"
+    || tag === "li"
+  ) return "body";
+  return "support";
+}
+
 function parseExpectedRatio(value) {
   if (value == null || value === "") return null;
   if (value.includes("/")) {
@@ -41,15 +58,81 @@ function parseExpectedRatio(value) {
   return Number.isFinite(numeric) ? numeric : null;
 }
 
+function parseColor(value) {
+  const match = String(value).match(/rgba?\(([^)]+)\)/i);
+  if (!match) return null;
+  const parts = match[1].split(",").map((part) => Number.parseFloat(part.trim()));
+  if (parts.length < 3 || parts.some((part, index) => index < 3 && !Number.isFinite(part))) {
+    return null;
+  }
+  return {
+    r: parts[0],
+    g: parts[1],
+    b: parts[2],
+    a: Number.isFinite(parts[3]) ? parts[3] : 1,
+  };
+}
+
+function relativeLuminance(channel) {
+  const value = channel / 255;
+  return value <= 0.03928 ? value / 12.92 : ((value + 0.055) / 1.055) ** 2.4;
+}
+
+function contrastRatio(foreground, background) {
+  const luminance = (channel) => {
+    const value = channel / 255;
+    return value <= 0.03928 ? value / 12.92 : ((value + 0.055) / 1.055) ** 2.4;
+  };
+  const fgL = 0.2126 * luminance(foreground.r)
+    + 0.7152 * luminance(foreground.g)
+    + 0.0722 * luminance(foreground.b);
+  const bgL = 0.2126 * luminance(background.r)
+    + 0.7152 * luminance(background.g)
+    + 0.0722 * luminance(background.b);
+  const lighter = Math.max(fgL, bgL);
+  const darker = Math.min(fgL, bgL);
+  return (lighter + 0.05) / (darker + 0.05);
+}
+
+function resolveBackgroundColor(node) {
+  const parseInlineColor = (value) => {
+    const match = String(value).match(/rgba?\(([^)]+)\)/i);
+    if (!match) return null;
+    const parts = match[1].split(",").map((part) => Number.parseFloat(part.trim()));
+    if (parts.length < 3 || parts.some((part, index) => index < 3 && !Number.isFinite(part))) {
+      return null;
+    }
+    return {
+      r: parts[0],
+      g: parts[1],
+      b: parts[2],
+      a: Number.isFinite(parts[3]) ? parts[3] : 1,
+    };
+  };
+  let current = node;
+  while (current) {
+    const color = parseInlineColor(window.getComputedStyle(current).backgroundColor);
+    if (color && color.a > 0.75) {
+      return color;
+    }
+    current = current.parentElement;
+  }
+  return parseInlineColor(window.getComputedStyle(document.body).backgroundColor) || { r: 255, g: 255, b: 255, a: 1 };
+}
+
 export async function inspectSlide(page, htmlPath) {
   await page.goto(pathToFileURL(htmlPath).href, { waitUntil: "load" });
   await page.evaluate(async () => {
     if (document.fonts?.ready) await document.fonts.ready;
   });
 
-  return page.evaluate(({ classifyMinimumSource, parseExpectedRatioSource }) => {
+  return page.evaluate(({ classifyMinimumSource, classifyRoleSource, parseExpectedRatioSource, parseColorSource, resolveBackgroundColorSource, contrastRatioSource }) => {
     const classifyMinimumFn = eval(`(${classifyMinimumSource})`);
+    const classifyRoleFn = eval(`(${classifyRoleSource})`);
     const parseExpectedRatioFn = eval(`(${parseExpectedRatioSource})`);
+    const parseColorFn = eval(`(${parseColorSource})`);
+    const resolveBackgroundColorFn = eval(`(${resolveBackgroundColorSource})`);
+    const contrastRatioFn = eval(`(${contrastRatioSource})`);
     const mainFrame = document.querySelector(".main-frame");
     if (!mainFrame) return { issues: ["Missing .main-frame"], metrics: {} };
 
@@ -121,17 +204,67 @@ export async function inspectSlide(page, htmlPath) {
       ),
     ];
     let minFont = Number.POSITIVE_INFINITY;
+    let minBodyFont = Number.POSITIVE_INFINITY;
+    const bodyFonts = [];
+    const headlineFonts = [];
+    const contrastSamples = [];
+    let contrastFailures = 0;
+    let criticalContrastFailures = 0;
+    let textChars = 0;
     for (const node of textNodes) {
       const minimum = classifyMinimumFn(node);
       if (minimum == null) continue;
       const text = (node.textContent || "").trim();
       if (!text) continue;
+      textChars += text.length;
       const fontSize = Number.parseFloat(window.getComputedStyle(node).fontSize);
       minFont = Math.min(minFont, fontSize);
+      const role = classifyRoleFn(node);
+      if (role === "headline") headlineFonts.push(fontSize);
+      if (role === "body") {
+        bodyFonts.push(fontSize);
+        minBodyFont = Math.min(minBodyFont, fontSize);
+      }
       if (fontSize + 0.1 < minimum) {
         issues.push(`Small text "${text.slice(0, 42)}" at ${fontSize}px (< ${minimum}px)`);
       }
+
+      const foreground = parseColorFn(window.getComputedStyle(node).color);
+      const background = resolveBackgroundColorFn(node);
+      if (foreground && background) {
+        const ratio = contrastRatioFn(foreground, background);
+        contrastSamples.push(ratio);
+        const minContrast = role === "support"
+          ? 3
+          : (fontSize >= 28 ? 3 : 4.5);
+        if (ratio + 0.01 < minContrast) {
+          contrastFailures += 1;
+          if (role !== "support") criticalContrastFailures += 1;
+        }
+      }
     }
+
+    const focalNodes = textNodes.filter((node) => {
+      const text = (node.textContent || "").trim();
+      if (!text) return false;
+      const styles = window.getComputedStyle(node);
+      const fontSize = Number.parseFloat(styles.fontSize);
+      return fontSize >= 72 || node.className.includes("metric-number") || node.className.includes("quote-figure");
+    });
+    const competingFocalPoints = focalNodes.length;
+    const headlineMax = headlineFonts.length ? Math.max(...headlineFonts) : null;
+    const bodyAvg = bodyFonts.length ? bodyFonts.reduce((sum, value) => sum + value, 0) / bodyFonts.length : null;
+    const averageContrast = contrastSamples.length
+      ? contrastSamples.reduce((sum, value) => sum + value, 0) / contrastSamples.length
+      : null;
+    const brandMarksVisible = [...document.querySelectorAll("[data-brand-mark]")].filter((node) => {
+      const rect = node.getBoundingClientRect();
+      return rect.width > 4 && rect.height > 4;
+    }).length;
+    const footerBrandVisible = [...document.querySelectorAll("[data-brand-footer]")].filter((node) => {
+      const rect = node.getBoundingClientRect();
+      return rect.width > 4 && rect.height > 4;
+    }).length;
 
     let coverPrototypeId = null;
     let coverBottomGapPx = null;
@@ -171,13 +304,29 @@ export async function inspectSlide(page, htmlPath) {
         blocks: rects.length,
         geometryGroups: geometryGroups.length,
         minFont: Number.isFinite(minFont) ? minFont : null,
+        minBodyFont: Number.isFinite(minBodyFont) ? minBodyFont : null,
+        bodyAvgSize: bodyAvg != null ? Number(bodyAvg.toFixed(2)) : null,
+        headlineCount: headlineFonts.length,
+        headlineToBodyRatio: headlineMax && bodyAvg ? Number((headlineMax / bodyAvg).toFixed(2)) : 0,
+        contrastFailures,
+        criticalContrastFailures,
+        averageContrast: averageContrast != null ? Number(averageContrast.toFixed(2)) : null,
+        textChars,
+        mainItemCount: blocks.length,
+        competingFocalPoints,
+        brandMarksVisible,
+        footerBrandVisible,
         coverPrototypeId,
         coverBottomGapPx,
       },
     };
   }, {
     classifyMinimumSource: classifyMinimum.toString(),
+    classifyRoleSource: classifyRole.toString(),
     parseExpectedRatioSource: parseExpectedRatio.toString(),
+    parseColorSource: parseColor.toString(),
+    resolveBackgroundColorSource: resolveBackgroundColor.toString(),
+    contrastRatioSource: contrastRatio.toString(),
   });
 }
 

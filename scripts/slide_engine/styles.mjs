@@ -1,6 +1,99 @@
 export const darkThemes = new Set(["f", "h", "i"]);
 
-export const styles = [
+const qualityMeta = {
+  a: {
+    allowedScenarios: ["brand-launch", "investor-board", "client-pitch", "research-brief"],
+    toneTags: ["serious", "analytical", "public", "editorial"],
+    seriousnessScore: 9,
+    projectorRiskFlags: [],
+    densityCeiling: "medium",
+    ornamentCeiling: 2,
+    contrastPolicy: { minAverageContrast: 4.5 },
+  },
+  b: {
+    allowedScenarios: ["brand-launch", "client-pitch"],
+    toneTags: ["brand", "calm", "cultural", "public"],
+    seriousnessScore: 6,
+    projectorRiskFlags: ["low-energy-stage"],
+    densityCeiling: "low",
+    ornamentCeiling: 1,
+    contrastPolicy: { minAverageContrast: 4.3 },
+  },
+  c: {
+    allowedScenarios: ["brand-launch", "client-pitch"],
+    toneTags: ["campaign", "launch", "youth", "public"],
+    seriousnessScore: 5,
+    projectorRiskFlags: ["texture-noise"],
+    densityCeiling: "medium",
+    ornamentCeiling: 3,
+    contrastPolicy: { minAverageContrast: 4.2 },
+  },
+  d: {
+    allowedScenarios: ["brand-launch", "investor-board", "client-pitch", "research-brief"],
+    toneTags: ["structured", "design", "analytical", "public"],
+    seriousnessScore: 8,
+    projectorRiskFlags: [],
+    densityCeiling: "medium",
+    ornamentCeiling: 2,
+    contrastPolicy: { minAverageContrast: 4.5 },
+  },
+  e: {
+    allowedScenarios: ["brand-launch", "client-pitch"],
+    toneTags: ["brand", "story", "warm", "public"],
+    seriousnessScore: 6,
+    projectorRiskFlags: ["soft-contrast"],
+    densityCeiling: "low",
+    ornamentCeiling: 2,
+    contrastPolicy: { minAverageContrast: 4.2 },
+  },
+  f: {
+    allowedScenarios: ["brand-launch", "investor-board", "client-pitch"],
+    toneTags: ["premium", "serious", "ceremonial", "public"],
+    seriousnessScore: 8,
+    projectorRiskFlags: ["dark-projector"],
+    densityCeiling: "low",
+    ornamentCeiling: 2,
+    contrastPolicy: { minAverageContrast: 4.8 },
+  },
+  g: {
+    allowedScenarios: ["brand-launch", "client-pitch"],
+    toneTags: ["launch", "campaign", "bold", "public"],
+    seriousnessScore: 6,
+    projectorRiskFlags: ["multi-focal-risk"],
+    densityCeiling: "low",
+    ornamentCeiling: 3,
+    contrastPolicy: { minAverageContrast: 4.4 },
+  },
+  h: {
+    allowedScenarios: ["brand-launch"],
+    toneTags: ["future", "launch", "tech", "public"],
+    seriousnessScore: 6,
+    projectorRiskFlags: ["dark-projector", "glow-bloom"],
+    densityCeiling: "low",
+    ornamentCeiling: 2,
+    contrastPolicy: { minAverageContrast: 5 },
+  },
+  i: {
+    allowedScenarios: ["brand-launch", "investor-board", "research-brief"],
+    toneTags: ["serious", "research", "premium", "public"],
+    seriousnessScore: 9,
+    projectorRiskFlags: ["dark-projector"],
+    densityCeiling: "low",
+    ornamentCeiling: 1,
+    contrastPolicy: { minAverageContrast: 4.9 },
+  },
+  j: {
+    allowedScenarios: ["brand-launch", "client-pitch"],
+    toneTags: ["campaign", "education", "festival", "public"],
+    seriousnessScore: 4,
+    projectorRiskFlags: ["multi-focal-risk"],
+    densityCeiling: "low",
+    ornamentCeiling: 3,
+    contrastPolicy: { minAverageContrast: 4.3 },
+  },
+};
+
+const rawStyles = [
   { id: "a", zhName: "瑞士国际主义", enName: "Swiss International", slug: "style-a-swiss-international", family: "editorial", coverPrototype: "cover-swiss-rail", componentDialect: "editorial",
     fonts: "https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Inter:wght@400;500;700;800&family=Noto+Sans+SC:wght@400;500;700;900&family=Noto+Serif+SC:wght@400;700;900&family=Playfair+Display:wght@700;900&display=swap",
     vars: { bg:"#f0ebe2", fg:"#2a2a30", accent:"#b85038", accent2:"#8b6d55", muted:"#5b524a", line:"rgba(42,42,48,0.16)", panel:"rgba(255,255,255,0.44)", panelStrong:"rgba(255,255,255,0.62)", edge:"94px", titleFont:'"Noto Serif SC","Playfair Display",serif', bodyFont:'"Noto Sans SC","Inter",sans-serif', labelFont:'"DM Mono","Noto Sans SC",monospace', accentFont:'"Playfair Display","Noto Serif SC",serif' },
@@ -52,3 +145,8 @@ export const styles = [
     shellCss: `.theme-j .mem-dot,.theme-j .mem-square,.theme-j .mem-tri,.theme-j .mem-zig{position:absolute}.theme-j .mem-dot{left:68px;top:110px;width:60px;height:60px;border-radius:50%;background:#2ec4b6;border:4px solid #202020}.theme-j .mem-square{right:156px;top:104px;width:74px;height:74px;background:#4a90d9;border:4px solid #202020;transform:rotate(-8deg)}.theme-j .mem-tri{right:52px;top:44px;width:0;height:0;border-left:52px solid transparent;border-right:52px solid transparent;border-bottom:92px solid #ffd23f}.theme-j .mem-zig{left:120px;bottom:56px;width:210px;height:28px;background:linear-gradient(135deg, transparent 0 16%, #ff8a5c 16% 32%, transparent 32% 48%, #ff8a5c 48% 64%, transparent 64% 80%, #ff8a5c 80% 100%)}`,
     ornaments: '<div class="mem-dot"></div><div class="mem-square"></div><div class="mem-tri"></div><div class="mem-zig"></div>' },
 ];
+
+export const styles = rawStyles.map((style) => ({
+  ...style,
+  ...qualityMeta[style.id],
+}));

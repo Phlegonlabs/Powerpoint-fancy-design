@@ -1,6 +1,6 @@
 {
   "name": "ppt-design-skill",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "private": true,
   "type": "module",
   "scripts": {
@@ -9,6 +9,7 @@
     "review:twitter-cases": "npm run lint:lines && node ./scripts/build_review_sheets.mjs",
     "build:twitter-cases": "npm run lint:lines && node ./scripts/build_twitter_style_cases.mjs",
     "build:template-cases": "npm run lint:lines && node ./scripts/build_template_style_cases.mjs",
+    "build:public-stage": "npm run lint:lines && node ./scripts/build_public_stage_cases.mjs",
     "build:geometry-stress": "npm run lint:lines && node ./scripts/build_geometry_stress_test.mjs",
     "build:style-cases": "npm run lint:lines && node ./scripts/generate_style_previews.mjs",
     "build:style-previews": "npm run lint:lines && node ./scripts/generate_style_previews.mjs",
