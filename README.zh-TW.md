@@ -353,3 +353,9 @@ $env:PPT_COMPANY = "OpenAI"
 - 根目錄包含一些不在最小 skill 包中的輔助腳本與審計工具。
 - `outputs/html/` 中的歷史 smoke-test 檔案只是本地產物，不代表當前標準模板。
 - 一切最終行為以 `SKILL.md` 與 references 文件為準。
+
+## GitHub Star
+
+如果這個倉庫對你有幫助，歡迎幫它點一個 Star。
+
+[![GitHub Repo stars](https://img.shields.io/github/stars/Phlegonlabs/Powerpoint-fancy-design?style=social)](https://github.com/Phlegonlabs/Powerpoint-fancy-design/stargazers)

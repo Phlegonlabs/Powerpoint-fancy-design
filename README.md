@@ -350,3 +350,9 @@ The review rules live in:
 - The root repo includes helper and audit scripts that are not part of the minimal distribution bundle.
 - Existing smoke-test HTML files under `outputs/html/` are just local artifacts, not the canonical layout template.
 - The canonical behavior should always be taken from `SKILL.md` plus the reference documents.
+
+## GitHub Star
+
+If this repo is useful for your workflow, star it on GitHub.
+
+[![GitHub Repo stars](https://img.shields.io/github/stars/Phlegonlabs/Powerpoint-fancy-design?style=social)](https://github.com/Phlegonlabs/Powerpoint-fancy-design/stargazers)
