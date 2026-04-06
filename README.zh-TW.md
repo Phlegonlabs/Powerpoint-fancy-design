@@ -105,49 +105,50 @@
 
 ## 風格畫廊
 
-當前 skill 內建 10 套 style。先看截圖總覽，再決定是否深入閱讀每套 style 的細則，會更像在看一份產品文件而不是純文字說明。
+當前 skill 內建 10 套 style。這裡的畫廊更適合被理解成「能力地圖」：
+不是 10 套對外 campaign 成品，而是 10 套可進入 `draft -> polish -> audit` 流程的演示語言。
 
 ### 一屏總覽
 
 | A. Swiss International | B. East Asian Minimalism |
 |---|---|
 | ![Swiss International](./assets/style-preview-zh-tw-a.png) | ![East Asian Minimalism](./assets/style-preview-zh-tw-b.png) |
-| `editorial` • 網格明確、理性、編輯感 | `minimal` • 安靜、留白大、克制 |
+| `editorial` • 克制、理性、管理層友好 | `minimal` • 安靜、留白大、展陳感 |
 
 | C. Risograph Print | D. Bauhaus Geometry |
 |---|---|
 | ![Risograph Print](./assets/style-preview-zh-tw-c.png) | ![Bauhaus Geometry](./assets/style-preview-zh-tw-d.png) |
-| `poster` • 獨立印刷、分層、粗礫 | `geometry` • 結構強、大膽、現代主義 |
+| `poster` • 獨立、分層、活動傳播感強 | `geometry` • 結構強、銳利、適合 keynote |
 
 | E. Organic Handcrafted | F. Art Deco Luxury |
 |---|---|
 | ![Organic Handcrafted](./assets/style-preview-zh-tw-e.png) | ![Art Deco Luxury](./assets/style-preview-zh-tw-f.png) |
-| `organic` • 溫暖、有觸感、人味重 | `luxury` • 深色、儀式感、對稱 |
+| `organic` • 溫暖、有觸感、品牌敘事友好 | `luxury` • 深色、儀式感、偏高端 |
 
 | G. Neo Brutalism | H. Retro Futurism |
 |---|---|
 | ![Neo Brutalism](./assets/style-preview-zh-tw-g.png) | ![Retro Futurism](./assets/style-preview-zh-tw-h.png) |
-| `brutal` • 高對比、硬邊界、很直接 | `future` • 霓虹、地平線網格、復古科技 |
+| `brutal` • 高對比、硬邊界、發布會氣質強 | `future` • 科技感、電影感、暗場表現強 |
 
 | I. Dark Editorial | J. Memphis Pop |
 |---|---|
 | ![Dark Editorial](./assets/style-preview-zh-tw-i.png) | ![Memphis Pop](./assets/style-preview-zh-tw-j.png) |
-| `dark-editorial` • 高級、嚴肅、雜誌感 | `playful` • 明亮、反網格、活潑 |
+| `dark-editorial` • 高級、嚴肅、紀錄片感 | `playful` • 明亮、活潑、公共傳播感強 |
 
 ### 風格資料表
 
-| Style | 名稱 | Family | 適合內容 | `white` |
-|---|---|---|---|---|
-| A | Swiss International | editorial | 商業報告、金融、政策、新聞摘要 | Yes |
-| B | East Asian Minimalism | minimal | 品牌理念、展覽、文化、哲思 | Yes |
-| C | Risograph Print | poster | 創意提案、獨立品牌、活動預熱 | Yes |
-| D | Bauhaus Geometry | geometry | 建築、設計講座、產品框架 | Yes |
-| E | Organic Handcrafted | organic | wellness、餐飲、文化、生活方式敘事 | Yes |
-| F | Art Deco Luxury | luxury | 奢侈品、酒店、頒獎、金融 prestige 場景 | No |
-| G | Neo Brutalism | brutal | 創業發布、強態度 deck、產品宣言 | Yes |
-| H | Retro Futurism | future | 遊戲、科技發布、科幻主題、電子音樂 | No |
-| I | Dark Editorial | dark-editorial | 調查、紀錄片、深度研究 | No |
-| J | Memphis Pop | playful | 教育、娛樂、社交 campaign、節慶 | Yes |
+| Style | 名稱 | Family | 適合內容 | Public-Stage 適配度 | `white` |
+|---|---|---|---|---|---|
+| A | Swiss International | editorial | 管理層發布、政策型公開說明、研究型 reveal | 很高 | Yes |
+| B | East Asian Minimalism | minimal | 品牌敘事、展陳式發布、文化內容 | 高 | Yes |
+| C | Risograph Print | poster | campaign reveal、創意發布、獨立品牌公告 | 高 | Yes |
+| D | Bauhaus Geometry | geometry | 產品框架、設計 keynote、結構型發布故事 | 很高 | Yes |
+| E | Organic Handcrafted | organic | 生活方式發布、品牌故事、創始人敘事 | 高 | Yes |
+| F | Art Deco Luxury | luxury | 高端品牌發布、禮賓場景、儀式型活動 | 高 | No |
+| G | Neo Brutalism | brutal | 創業發布、宣言型 deck、強態度 keynote | 高 | Yes |
+| H | Retro Futurism | future | 未來科技 reveal、遊戲發布、暗場 tech deck | 中 | No |
+| I | Dark Editorial | dark-editorial | 紀錄片式敘事、調查型發布、嚴肅主題故事 | 很高 | No |
+| J | Memphis Pop | playful | 教育發布、社交 campaign、娛樂節目場景 | 高 | Yes |
 
 詳細規則位於：
 
@@ -316,7 +317,8 @@ $env:PPT_COMPANY = "Your Team"
 
 ## 模板庫
 
-現在倉庫更強調「通用模板」作為起點，而不是把某一個具體主題案例當作產品基準。
+現在倉庫更強調「通用模板」作為生產起點，而不是把某一個具體主題案例當作對外代表作。
+這些模板的任務是縮短成稿時間、統一資訊層級，並為後續 polish 提供穩定骨架。
 
 推薦起始檔案：
 

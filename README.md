@@ -118,49 +118,50 @@ See:
 
 ## Style Gallery
 
-The skill currently ships with 10 styles. The gallery below is the fastest way to understand the system visually before reading the full rules.
+The skill currently ships with 10 styles. Treat the gallery as a visual capability map:
+not ten public campaign examples, but ten controlled presentation languages that can be applied to different delivery contexts after the polish and audit passes.
 
 ### At A Glance
 
 | A. Swiss International | B. East Asian Minimalism |
 |---|---|
 | ![Swiss International](./assets/style-preview-a.png) | ![East Asian Minimalism](./assets/style-preview-b.png) |
-| `editorial` • grid-first, rational, asymmetrical | `minimal` • quiet, spacious, reflective |
+| `editorial` • disciplined, executive, asymmetrical | `minimal` • calm, spacious, gallery-like |
 
 | C. Risograph Print | D. Bauhaus Geometry |
 |---|---|
 | ![Risograph Print](./assets/style-preview-c.png) | ![Bauhaus Geometry](./assets/style-preview-d.png) |
-| `poster` • indie print, layered, rough | `geometry` • structural, bold, modernist |
+| `poster` • layered, indie, campaign-forward | `geometry` • structural, sharp, keynote-ready |
 
 | E. Organic Handcrafted | F. Art Deco Luxury |
 |---|---|
 | ![Organic Handcrafted](./assets/style-preview-e.png) | ![Art Deco Luxury](./assets/style-preview-f.png) |
-| `organic` • tactile, warm, human | `luxury` • dark, ceremonial, symmetrical |
+| `organic` • warm, tactile, human-centered | `luxury` • dark, ceremonial, premium |
 
 | G. Neo Brutalism | H. Retro Futurism |
 |---|---|
 | ![Neo Brutalism](./assets/style-preview-g.png) | ![Retro Futurism](./assets/style-preview-h.png) |
-| `brutal` • loud, hard-edged, startup-forward | `future` • neon, horizon-grid, retro-tech |
+| `brutal` • loud, hard-edged, launch-first | `future` • cinematic, tech-forward, dark-stage |
 
 | I. Dark Editorial | J. Memphis Pop |
 |---|---|
 | ![Dark Editorial](./assets/style-preview-i.png) | ![Memphis Pop](./assets/style-preview-j.png) |
-| `dark-editorial` • premium, serious, magazine-like | `playful` • bright, anti-grid, energetic |
+| `dark-editorial` • premium, serious, documentary-like | `playful` • bright, energetic, public-facing |
 
 ### Style Profiles
 
-| Style | Name | Family | Best For | `white` |
-|---|---|---|---|---|
-| A | Swiss International | editorial | business reports, finance, policy, newsroom summaries | Yes |
-| B | East Asian Minimalism | minimal | brand values, exhibitions, culture, philosophy | Yes |
-| C | Risograph Print | poster | creative proposals, indie brands, event promos | Yes |
-| D | Bauhaus Geometry | geometry | architecture, design talks, product frameworks | Yes |
-| E | Organic Handcrafted | organic | wellness, food, culture, lifestyle storytelling | Yes |
-| F | Art Deco Luxury | luxury | luxury, hospitality, awards, prestige finance | No |
-| G | Neo Brutalism | brutal | startup launches, opinionated decks, bold messaging | Yes |
-| H | Retro Futurism | future | gaming, tech launches, sci-fi themes, electronic music | No |
-| I | Dark Editorial | dark-editorial | investigations, documentaries, deep research | No |
-| J | Memphis Pop | playful | education, entertainment, social campaigns, festivals | Yes |
+| Style | Name | Family | Best For | Public-Stage Fit | `white` |
+|---|---|---|---|---|---|
+| A | Swiss International | editorial | executive launches, policy-style reveals, research-backed public briefings | Very High | Yes |
+| B | East Asian Minimalism | minimal | brand narratives, exhibition-style launches, reflective storytelling | High | Yes |
+| C | Risograph Print | poster | campaign reveals, creative launches, indie brand announcements | High | Yes |
+| D | Bauhaus Geometry | geometry | product frameworks, design keynotes, structured launch stories | Very High | Yes |
+| E | Organic Handcrafted | organic | hospitality reveals, lifestyle launches, founder-led brand stories | High | Yes |
+| F | Art Deco Luxury | luxury | luxury launches, premium ceremonies, hospitality flagships | High | No |
+| G | Neo Brutalism | brutal | startup launches, manifesto decks, bold keynote moments | High | Yes |
+| H | Retro Futurism | future | future-tech reveals, gaming launches, cinematic dark-stage decks | Medium | No |
+| I | Dark Editorial | dark-editorial | documentary narratives, investigative launches, high-seriousness stories | Very High | No |
+| J | Memphis Pop | playful | education launches, social campaigns, entertainment programs | High | Yes |
 
 Detailed selection guidance lives in:
 
@@ -336,7 +337,8 @@ Reusable template:
 
 ## Template Library
 
-This repo now treats templates as the primary starting point instead of a single named-topic benchmark.
+This repo now treats templates as reusable starting structures instead of outward-facing story demos.
+They are meant to shorten production time, standardize hierarchy, and feed the draft step of the pipeline before polishing.
 
 Recommended starting files:
 
@@ -351,7 +353,7 @@ Use these when you want:
 - a reusable deck skeleton for internal workflows
 - a clean starting point before applying any specific style
 
-If you need a full product-grade verification run, the canonical benchmark is now:
+If you need product-grade validation of the repository itself, the canonical benchmark is:
 
 ```powershell
 npm run build:public-stage
