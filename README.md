@@ -31,6 +31,7 @@ If you want a ready-made starting point, begin with the generic deck templates i
 - Supports `background_mode=paper|white` for compatible light styles.
 - Classifies each slide by content role before choosing a layout prototype.
 - Enforces a fixed safe content frame so primary content stays presentation-safe.
+- Preserves geometry-sensitive diagrams and strict tables when structure carries meaning.
 - Reviews every generated HTML slide for overlap, clipping, and readability.
 - Exports finished HTML slides to PNG and then to PPTX.
 
@@ -44,6 +45,8 @@ If you want a ready-made starting point, begin with the generic deck templates i
 ## Current Workflow
 
 The core workflow is defined in [`SKILL.md`](./SKILL.md) and mirrored in [`skills/ppt-design/SKILL.md`](./skills/ppt-design/SKILL.md).
+Runtime behavior is enforced by the shared engine under [`scripts/slide_engine/`](./scripts/slide_engine/).
+The Markdown style files in [`styles/`](./styles/) remain design references and must stay manually synced with that executable manifest.
 
 The important reference chain is:
 
@@ -54,7 +57,8 @@ The important reference chain is:
 5. [`references/html-review-checklist.md`](./references/html-review-checklist.md)
 6. [`references/layout-prototypes.md`](./references/layout-prototypes.md)
 7. [`references/safe-zone.md`](./references/safe-zone.md)
-8. The chosen style file in [`styles/`](./styles/)
+8. [`references/geometry-preserve.md`](./references/geometry-preserve.md) for diagrams and strict tables
+9. The chosen style file in [`styles/`](./styles/)
 
 The workflow is content-first:
 
@@ -62,9 +66,10 @@ The workflow is content-first:
 2. Infer the role of each slide, such as `cover`, `metric`, `comparison`, or `closing`.
 3. Select a layout prototype based on style family and content role.
 4. Keep primary content inside the slide safe zone.
-5. Generate one HTML file per slide.
-6. Review and revise before delivery.
-7. Export to PPT only when needed.
+5. Preserve diagram geometry when the page contains framework maps, box structures, org charts, or strict tables.
+6. Generate one HTML file per slide.
+7. Review and revise before delivery.
+8. Export to PPT only when needed.
 
 ## Layout And Safe Zone Contract
 
@@ -82,6 +87,7 @@ See:
 
 - [`references/layout-prototypes.md`](./references/layout-prototypes.md)
 - [`references/safe-zone.md`](./references/safe-zone.md)
+- [`references/geometry-preserve.md`](./references/geometry-preserve.md)
 
 ## Style Gallery
 
@@ -140,14 +146,11 @@ Detailed selection guidance lives in:
 ppt-design/
 |- SKILL.md
 |- CLAUDE.md
-|- .claude/
-|  `- settings.json
-|- agents/
-|  `- openai.yaml
 |- references/
 |  |- background-modes.md
 |  |- bilingual-typography.md
 |  |- deck-markdown-template.md
+|  |- geometry-preserve.md
 |  |- html-review-checklist.md
 |  |- layout-prototypes.md
 |  |- presentation-layout-rules.md
@@ -161,8 +164,10 @@ ppt-design/
 |  |- render_slides.mjs
 |  |- export_ppt.mjs
 |  |- build_twitter_style_cases.mjs
+|  |- check_shared_engine_usage.mjs
 |  |- build_review_sheets.mjs
 |  |- generate_style_previews.mjs
+|  |- slide_engine/
 |  `- twitter_style_cases/
 |- skills/
 |  `- ppt-design/
@@ -200,17 +205,10 @@ This means:
 - `skills/ppt-design/` is suitable as a distribution bundle
 - standalone dependency installation still happens from the root in this repo
 
-## Claude Code And Codex Entry Points
+## Entry Points
 
-For Codex-style skill usage:
-
-- [`SKILL.md`](./SKILL.md)
-- [`agents/openai.yaml`](./agents/openai.yaml)
-
-For Claude Code project usage:
-
-- [`CLAUDE.md`](./CLAUDE.md)
-- [`.claude/settings.json`](./.claude/settings.json)
+- [`SKILL.md`](./SKILL.md) is the core skill workflow.
+- [`CLAUDE.md`](./CLAUDE.md) contains repo-local guidance for assistant-driven development.
 
 ## Setup
 
@@ -253,13 +251,19 @@ Build the full 10-style demo pipeline:
 npm run build:twitter-cases
 ```
 
+Check that both demo pipelines still route through the shared engine:
+
+```powershell
+npm run check:shared-engine
+```
+
 ## PPT Export Metadata
 
 PPT author and company are environment-driven:
 
 ```powershell
-$env:PPT_AUTHOR = "Codex"
-$env:PPT_COMPANY = "OpenAI"
+$env:PPT_AUTHOR = "Your Name"
+$env:PPT_COMPANY = "Your Team"
 ```
 
 If unset, the export falls back to:
@@ -319,6 +323,12 @@ Use these when you want:
 
 If you need a full pipeline run for verification, `npm run build:twitter-cases` still exists as an internal demo script, but it is not the canonical product-facing example.
 
+The repo demo builders are fixed showcase pipelines:
+
+- they render with `chrome=bookend`
+- they validate HTML before PNG/PPT export
+- they do not expose every skill input as a CLI flag
+
 ## Quality Standard
 
 This skill is intentionally stricter than a normal HTML generator.
@@ -350,13 +360,3 @@ The review rules live in:
 - The root repo includes helper and audit scripts that are not part of the minimal distribution bundle.
 - Existing smoke-test HTML files under `outputs/html/` are just local artifacts, not the canonical layout template.
 - The canonical behavior should always be taken from `SKILL.md` plus the reference documents.
-
-## GitHub Star
-
-If this repo is useful for your workflow, star it on GitHub.
-
-[![GitHub Repo stars](https://img.shields.io/github/stars/Phlegonlabs/Powerpoint-fancy-design?style=social)](https://github.com/Phlegonlabs/Powerpoint-fancy-design/stargazers)
-
-## Star History
-
-[![Star History Chart](https://api.star-history.com/svg?repos=Phlegonlabs/Powerpoint-fancy-design&type=Date)](https://www.star-history.com/#Phlegonlabs/Powerpoint-fancy-design&Date)

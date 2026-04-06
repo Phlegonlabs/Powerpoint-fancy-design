@@ -71,11 +71,19 @@ Forbidden:
 Suggested sizes:
 
 ```text
-Display title: 88-140px
-Chinese display title: 48-64px
-Subtitle: 28-36px
-Body: 18-22px
-Label: 11-14px
+Display Title (EN):   88-140px
+Display Title (CN):   48-64px
+Section Heading:      28-36px
+Body (EN):            22-24px
+Body (CN):            24-26px
+Table Header (EN):    22-24px
+Table Header (CN):    24-26px
+Table Cell (EN):      20-22px
+Table Cell (CN):      22-24px
+Support Copy:         18-20px
+Label / Caption (EN): 16-18px
+Label / Caption (CN): 18-20px
+Page Number:          14-16px
 ```
 
 The critical move is weight contrast: `900` headline against `200` body.
@@ -161,7 +169,7 @@ The critical move is weight contrast: `900` headline against `200` body.
 .big-number-label {
   font-family: 'DM Mono', monospace;
   font-weight: 300;
-  font-size: 12px;
+  font-size: 16px;
   color: var(--text-muted);
   letter-spacing: 5px;
   text-transform: uppercase;
@@ -198,7 +206,7 @@ The critical move is weight contrast: `900` headline against `200` body.
 - Data module: giant Playfair number with a DM Mono label above.
 - List marker: tiny metallic dash.
 - Quote: `0.5px` metallic vertical rule and generous inset.
-- Page number: DM Mono `11px` in metallic tone.
+- Page number: DM Mono `14px` in metallic tone.
 
 ## Prohibited Elements
 

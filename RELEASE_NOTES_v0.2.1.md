@@ -4,7 +4,7 @@ This release tightens the generic template output, improves style fidelity acros
 
 ## Highlights
 
-- Polishes the topic-neutral A-J template case pipeline into a more presentable demo set.
+- Polishes the topic-neutral A-J template pipeline into a more presentable release set.
 - Adds per-style build support so template cases can be refined one style at a time.
 - Strengthens style-fidelity rules so open, restrained styles stay restrained instead of being normalized toward one shared density.
 - Hardens review guidance around text priority, divider collisions, and dark-on-dark contrast failures.
@@ -37,6 +37,6 @@ This release tightens the generic template output, improves style fidelity acros
 
 ## Notes
 
-- The canonical demo output remains the topic-neutral template case pipeline under `build:template-cases`.
+- The primary release showcase remains the topic-neutral template pipeline under `build:template-cases`.
 - Existing `v0.2.0` release notes remain as the major-system update milestone.
 - `v0.2.1` is the polish-and-fidelity follow-up release.

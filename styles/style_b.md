@@ -59,10 +59,19 @@ Pure white `#fff` is allowed only when `background_mode=white`.
 Suggested sizes:
 
 ```text
-Chinese title: 48-64px
-English subhead: 24-32px
-Body: 20-24px
-Label: 12-14px
+Display Title (CN):   48-64px
+Display Title (EN):   44-56px
+Section Heading:      28-32px
+Body (EN):            22-24px
+Body (CN):            24-26px
+Table Header (EN):    22-24px
+Table Header (CN):    24-26px
+Table Cell (EN):      20-22px
+Table Cell (CN):      22-24px
+Support Copy:         18-20px
+Label / Caption (EN): 16-18px
+Label / Caption (CN): 18-20px
+Page Number:          14-16px
 ```
 
 Keep the typography small and quiet. Titles should feel deliberate, not loud. Place text near edges or corners rather than in the center.
@@ -182,7 +191,7 @@ Use the stronger displacement so edges feel like ink spreading on absorbent pape
 
 ## Component Patterns
 
-- Labels: DM Mono `12px` with a short vermilion dash.
+- Labels: DM Mono `16px` with a short vermilion dash.
 - Lists: `3px` vermilion dots with generous vertical spacing.
 - Quote block: `2px` vermilion left rule with open padding.
 

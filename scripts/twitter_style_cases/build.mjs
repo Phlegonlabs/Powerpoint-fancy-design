@@ -7,11 +7,7 @@ import { styles } from "./styles.mjs";
 import { renderHtml } from "./shell.mjs";
 import { validateHtmlDir } from "./validation.mjs";
 
-const defaultOutputDir = path.join(
-  process.env.USERPROFILE || path.join("C:", "Users", "mps19"),
-  "Desktop",
-  "Twitter-发展史-10套Style案例",
-);
+const defaultOutputDir = path.join("outputs", "twitter-style-cases");
 
 async function ensureDir(dir) {
   await fs.mkdir(dir, { recursive: true });
@@ -27,6 +23,7 @@ export async function main(options = {}) {
   const repoRoot = path.resolve(moduleDir, "..", "..");
   const outputRoot = path.resolve(options.output || defaultOutputDir);
   const validate = options.validate ?? true;
+  const chromeMode = options.chromeMode ?? "bookend";
 
   await fs.mkdir(outputRoot, { recursive: true });
   await copyToOutput(
@@ -67,7 +64,7 @@ export async function main(options = {}) {
       const plan = buildPagePlan(style, spec, index + 1, previousLayout);
       previousLayout = plan.layoutId;
       const fileName = `slide_${String(index + 1).padStart(2, "0")}.html`;
-      await fs.writeFile(path.join(htmlDir, fileName), renderHtml(style, plan), "utf8");
+      await fs.writeFile(path.join(htmlDir, fileName), renderHtml(style, plan, { chromeMode, pageCount: pageSpecs.length }), "utf8");
     }
 
     if (validate) {

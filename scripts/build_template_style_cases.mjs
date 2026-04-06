@@ -4,11 +4,7 @@ import { parseArgs } from "node:util";
 import { main as buildHtml } from "./template_style_cases/build.mjs";
 import { styles } from "./twitter_style_cases/styles.mjs";
 
-const defaultRoot = path.join(
-  process.env.USERPROFILE || path.join("C:", "Users", "mps19"),
-  "Desktop",
-  "PPT-通用模板-10套Style案例",
-);
+const defaultRoot = path.join("outputs", "template-style-cases");
 
 const { values } = parseArgs({
   options: {
@@ -78,7 +74,7 @@ async function main() {
     throw new Error(`Unknown style filter: ${values.style}`);
   }
 
-  await buildHtml({ output: outputRoot, style: styleFilter, validate: false });
+  await buildHtml({ output: outputRoot, style: styleFilter, validate: true });
 
   const collectionDir = path.join(outputRoot, "pptx-collection");
   await ensureDir(collectionDir);

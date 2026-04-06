@@ -81,10 +81,19 @@ Pure white `#fff` is allowed only when `background_mode=white`.
 Suggested sizes:
 
 ```text
-Display title: 64-96px
-Chinese display title: 42-56px
-Body: 20-24px
-Label: 14-16px
+Display Title (EN):   64-96px
+Display Title (CN):   42-56px
+Section Heading:      28-36px
+Body (EN):            22-24px
+Body (CN):            24-26px
+Table Header (EN):    22-24px
+Table Header (CN):    24-26px
+Table Cell (EN):      20-22px
+Table Cell (CN):      22-24px
+Support Copy:         18-20px
+Label / Caption (EN): 16-18px
+Label / Caption (CN): 18-20px
+Page Number:          14-16px
 ```
 
 Use bold sans-serif all-caps for major titles with slightly compressed letter spacing.

@@ -4,11 +4,7 @@ import { parseArgs } from "node:util";
 import { main as buildHtml } from "./twitter_style_cases/build.mjs";
 import { styles } from "./twitter_style_cases/styles.mjs";
 
-const defaultRoot = path.join(
-  process.env.USERPROFILE || path.join("C:", "Users", "mps19"),
-  "Desktop",
-  "Twitter-发展史-10套Style案例",
-);
+const defaultRoot = path.join("outputs", "twitter-style-cases");
 
 const { values } = parseArgs({
   options: {
@@ -68,7 +64,7 @@ async function buildStyleArtifacts(style) {
 }
 
 async function main() {
-  await buildHtml({ output: outputRoot, validate: false });
+  await buildHtml({ output: outputRoot, validate: true });
 
   const collectionDir = path.join(outputRoot, "pptx-collection");
   await ensureDir(collectionDir);
@@ -86,6 +82,8 @@ async function main() {
   await runNodeScript(path.join(root, "scripts", "audit_twitter_style_cases.mjs"), [
     "--root",
     outputRoot,
+    "--output",
+    path.join(outputRoot, "audit", "twitter-style-audit.md"),
   ]);
 
   if (values.previews) {

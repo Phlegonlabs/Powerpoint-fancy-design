@@ -1,6 +1,6 @@
 # v0.1.0
 
-Initial public release of `ppt-design`, a Codex skill for turning page-by-page Markdown into styled `1600x900` presentation slides, PNG previews, and exportable PPTX decks.
+Initial public release of `ppt-design`, a presentation-design skill for turning page-by-page Markdown into styled `1600x900` presentation slides, PNG previews, and exportable PPTX decks.
 
 ## Highlights
 

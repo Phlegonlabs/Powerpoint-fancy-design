@@ -37,6 +37,8 @@ Left and right edges are controlled by `--edge`, usually between `92px` and `108
 - `all`: show chrome labels on every slide.
 - `none`: show no chrome labels on any slide.
 
+In this repo's demo builders, `bookend` is the implemented default in the shared slide engine.
+
 Regardless of mode, the safe-zone geometry does not change.
 
 ## CSS Reference

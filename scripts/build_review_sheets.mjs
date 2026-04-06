@@ -4,11 +4,7 @@ import { pathToFileURL } from "node:url";
 import { parseArgs } from "node:util";
 import { chromium } from "playwright";
 
-const defaultRoot = path.join(
-  process.env.USERPROFILE || path.join("C:", "Users", "mps19"),
-  "Desktop",
-  "Twitter-发展史-10套Style案例",
-);
+const defaultRoot = path.join("outputs", "twitter-style-cases");
 
 const { values } = parseArgs({
   options: {

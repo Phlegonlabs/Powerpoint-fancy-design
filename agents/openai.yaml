@@ -1,7 +1,0 @@
-interface:
-  display_name: "PPT Design"
-  short_description: "Choose a slide style, design HTML slides, and export PPT"
-  default_prompt: "Use $ppt-design to recommend a fitting slide style, explain what that style looks like, generate HTML slides, and export them to PPT if needed."
-env:
-  PPT_AUTHOR: "Codex"
-  PPT_COMPANY: "OpenAI"

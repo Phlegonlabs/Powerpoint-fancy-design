@@ -4,10 +4,12 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "check:shared-engine": "node ./scripts/check_shared_engine_usage.mjs",
     "lint:lines": "node ./scripts/check_source_line_limits.mjs",
     "review:twitter-cases": "npm run lint:lines && node ./scripts/build_review_sheets.mjs",
     "build:twitter-cases": "npm run lint:lines && node ./scripts/build_twitter_style_cases.mjs",
     "build:template-cases": "npm run lint:lines && node ./scripts/build_template_style_cases.mjs",
+    "build:geometry-stress": "npm run lint:lines && node ./scripts/build_geometry_stress_test.mjs",
     "build:style-cases": "npm run lint:lines && node ./scripts/generate_style_previews.mjs",
     "build:style-previews": "npm run lint:lines && node ./scripts/generate_style_previews.mjs",
     "render:slides": "node ./scripts/render_slides.mjs",

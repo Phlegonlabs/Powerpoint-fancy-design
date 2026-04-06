@@ -70,13 +70,20 @@ Pure white `#fff` is allowed only when `background_mode=white`.
 Suggested sizes:
 
 ```text
-Giant number: 140-180px
-English display title: 88-110px
-Chinese display title: 42-48px
-Section title: 30-36px
-Body: 22-24px
-Support copy: 18-20px
-Label: 14-16px
+Display Title (EN):   88-110px
+Display Title (CN):   42-48px
+Giant Number:         140-180px
+Section Heading:      30-36px
+Body (EN):            22-24px
+Body (CN):            24-26px
+Table Header (EN):    22-24px
+Table Header (CN):    24-26px
+Table Cell (EN):      20-22px
+Table Cell (CN):      22-24px
+Support Copy:         18-20px
+Label / Caption (EN): 16-18px
+Label / Caption (CN): 18-20px
+Page Number:          16-18px
 ```
 
 Use serif and sans-serif contrast inside the same headline when possible. Inter Black plus Playfair italic is the preferred signature move.

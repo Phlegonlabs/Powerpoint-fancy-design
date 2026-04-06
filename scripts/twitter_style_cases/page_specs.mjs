@@ -196,6 +196,7 @@ export const pageSpecs = [
     role: "chronology",
     density: "medium",
     emphasis: "takeaway",
+    forcedLayout: "evidence-quote",
     preferredLayouts: ["story-rail", "evidence-quote"],
     mustKeep: ["$44B", "2022.10.28", "the bird is freed"],
     blocks: [

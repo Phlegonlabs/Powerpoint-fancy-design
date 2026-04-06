@@ -67,11 +67,19 @@ Forbidden:
 Suggested sizes:
 
 ```text
-Display title: 72-110px
-Chinese display title: 42-56px
-Subtitle: 24-32px
-Body: 18-22px
-Label: 12-14px
+Display Title (EN):   72-110px
+Display Title (CN):   42-56px
+Section Heading:      28-36px
+Body (EN):            22-24px
+Body (CN):            24-26px
+Table Header (EN):    22-24px
+Table Header (CN):    24-26px
+Table Cell (EN):      20-22px
+Table Cell (CN):      22-24px
+Support Copy:         18-20px
+Label / Caption (EN): 16-18px
+Label / Caption (CN): 18-20px
+Page Number:          14-16px
 ```
 
 Use all-caps titles with wide tracking. Body copy should stay very light so the decorative lines remain important.

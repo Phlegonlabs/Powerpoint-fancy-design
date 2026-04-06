@@ -8,6 +8,10 @@ version: 0.2.1
 
 Design each slide as a standalone 1600x900 HTML file, then export to PPT only when the user asks for it.
 
+In this repo, the executable slide contract lives in `./scripts/slide_engine/`.
+The shared JS manifest and shared renderers are the runtime source of truth.
+Files in `./styles/style_[a-j].md` remain human-facing design references and must stay manually aligned with that executable manifest.
+
 ## Workflow
 
 1. Identify the topic, audience, and deliverable.
@@ -29,14 +33,15 @@ Design each slide as a standalone 1600x900 HTML file, then export to PPT only wh
 10. Read [html-review-checklist.md](./references/html-review-checklist.md).
 11. Read [layout-prototypes.md](./references/layout-prototypes.md). Classify each slide's content role and select a layout prototype before writing HTML. Do not repeat the same layout on consecutive slides.
 12. Read [safe-zone.md](./references/safe-zone.md). Enforce content boundaries on every slide: all primary content must live inside the main frame area (`y = 108px` to `y = 804px`). Include chrome labels only on cover and closing slides when `chrome=bookend`.
-13. Read the chosen style file in `./styles/style_[a-j].md` before writing HTML. Treat that file as the visual source of truth. Do not rely on memory.
-14. Preserve the chosen style's native whitespace, ornament density, contrast, and pacing. Do not normalize all styles toward the same layout density.
-15. When the slide copy is Chinese or bilingual, follow the style's Chinese and English pairing guidance rather than reusing the English display font everywhere.
-16. Recompose page content into slide hierarchy instead of preserving raw Markdown formatting literally.
-17. Generate one HTML file per slide in `./outputs/html/`.
-18. Review every generated HTML slide before delivery. Treat this as mandatory, not optional.
-19. Fix layout, spacing, typography, and hierarchy issues found in review using the smallest change that keeps the slide true to the chosen style.
-20. If the user wants PPT, render the HTML slides to PNG and package them into a PPTX.
+13. If a slide contains strict tables, org charts, framework diagrams, or other geometry-sensitive structures, read [geometry-preserve.md](./references/geometry-preserve.md) before writing that slide.
+14. Read the chosen style file in `./styles/style_[a-j].md` before writing HTML. Treat it as the design reference for mood, typography, and ornament logic; runtime behavior is enforced by the shared slide engine.
+15. Preserve the chosen style's native whitespace, ornament density, contrast, and pacing. Do not normalize all styles toward the same layout density.
+16. When the slide copy is Chinese or bilingual, follow the style's Chinese and English pairing guidance rather than reusing the English display font everywhere.
+17. Recompose page content into slide hierarchy instead of preserving raw Markdown formatting literally, except when geometry-sensitive structure should be preserved.
+18. Generate one HTML file per slide in `./outputs/html/`.
+19. Review every generated HTML slide before delivery. Treat this as mandatory, not optional.
+20. Fix layout, spacing, typography, hierarchy, and geometry issues found in review using the smallest change that keeps the slide true to the chosen style.
+21. If the user wants PPT, render the HTML slides to PNG and package them into a PPTX.
 
 ## Inputs
 
@@ -46,6 +51,7 @@ Use these fields when the user provides them or when you need to make them expli
 - `style`: `A-J` or a named style
 - `background_mode`: `paper` or `white`
 - `chrome`: `all`, `bookend`, or `none`
+- `geometry_mode`: `auto`, `preserve`, or `recompose`
 - `deliverable`: `html`, `ppt`, or `both`
 
 Default behavior:
@@ -54,7 +60,14 @@ Default behavior:
 - `style`: recommend candidates first when unspecified
 - `background_mode`: `paper`
 - `chrome`: `bookend`
+- `geometry_mode`: `auto`
 - `deliverable`: `html`
+
+Repo note:
+
+- The bundled demo builders in `./scripts/build_template_style_cases.mjs` and `./scripts/build_twitter_style_cases.mjs` are fixed showcase pipelines.
+- They currently render with `chrome=bookend` and validate HTML before PNG/PPT export.
+- They do not expose every skill input as a CLI flag.
 
 ## Style Selection
 
@@ -162,7 +175,7 @@ Use this base structure unless the style file overrides a specific detail:
       <div class="meta-id">Cover</div>
     </div>
     <div class="chrome-bottom">
-      <div class="meta-id">hero-cover</div>
+      <div class="meta-id">cover-swiss-rail</div>
       <div class="page-id">01 / 05</div>
     </div>
     <!-- Main content frame — present on EVERY slide -->
@@ -189,7 +202,7 @@ Apply these rules:
 
 Apply these rules on every slide:
 
-- The chosen style file is the source of truth for visual behavior.
+- The shared engine manifest is the executable source of truth; the chosen style file is the human design reference.
 - Preserve the style's native whitespace strategy. Minimal and editorial styles should stay restrained.
 - Preserve ornament logic. Decorative rules, frames, and accents should support the composition, not dominate it.
 - When fixing density or collisions, prefer content edits, card count changes, or local spacing adjustments over turning every style into the same template.
@@ -208,14 +221,20 @@ Apply these rules on every slide:
 - If a slide is text-heavy, redesign the hierarchy instead of shrinking everything.
 - If a slide contains table-like information, convert it into presentation-friendly structure unless the user explicitly requires a literal dense table.
 
-For presentation use, default minimums are:
+For presentation use, apply the full typography scale from [presentation-layout-rules.md](./references/presentation-layout-rules.md). The eight roles and their hard minimums are:
 
-- Main title: about `44px` or larger
-- Section heading: about `28px` or larger
-- Body text: about `22px` or larger
-- Small labels and notes: avoid going below `16px` unless the style explicitly depends on microtype and the slide stays readable
+| Role | EN Min | CN Min |
+|---|---|---|
+| Display Title | `44px` | `40px` |
+| Section Heading | `28px` | `28px` |
+| Body | `22px` | `24px` |
+| Table Header | `20px` | `22px` |
+| Table Cell | `18px` | `20px` |
+| Support Copy | `18px` | `20px` |
+| Label / Caption | `16px` | `18px` |
+| Page Number (chrome only) | `14px` | `14px` |
 
-When the chosen style is intentionally fancy or experimental, preserve the style but still protect legibility.
+Do not shrink any role below its minimum. If content does not fit, reduce content, split the slide, or rebuild the hierarchy. When the chosen style is intentionally fancy or experimental, preserve the style but still protect legibility.
 
 ## Tables And Text-Heavy Content
 
@@ -230,6 +249,19 @@ When the user asks for tables, comparisons, or many words:
 - Maintain generous padding inside cells or cards so text never feels cramped.
 - For dense content, prefer 3-6 major points per slide rather than squeezing everything into one page.
 
+## Geometry-Sensitive Content
+
+Read [geometry-preserve.md](./references/geometry-preserve.md) when a slide contains diagrams, framework maps, org charts, box-and-arrow structures, or strict tables.
+
+Apply these rules:
+
+- `geometry_mode=auto`: preserve geometry when box size, connector position, or table structure carries meaning.
+- `geometry_mode=preserve`: keep the structural skeleton intact even if that means reducing copy or splitting the figure across slides.
+- `geometry_mode=recompose`: reinterpret the content into slide-friendly cards or bands only when the user explicitly wants that.
+- For geometry-sensitive slides, style changes surface treatment only. Do not distort the diagram's core proportions just to match a preferred layout prototype.
+- Use explicit tracks, coordinates, or bounded box sizes for the diagram skeleton instead of leaving box proportions fully driven by text length.
+- If content does not fit inside the diagram cleanly, shorten labels, split the figure, or move detail into notes. Do not compress the geometry until the structure becomes misleading.
+
 ## Mandatory HTML Review
 
 Read [html-review-checklist.md](./references/html-review-checklist.md).
@@ -239,9 +271,11 @@ After generating each slide, perform a second-pass review before delivery:
 1. Check for overlap, collision, clipping, and crowding.
 2. Check that typography is large enough for presentation.
 3. Check that text-heavy or table-heavy content has been reformatted for slides.
-4. Check that the chosen style is still intact after readability adjustments.
-5. When tools allow it, render the HTML and inspect the actual visual result instead of relying only on source review.
-6. Revise the HTML if any item fails.
+4. Check that geometry-sensitive diagrams or tables still preserve their intended proportions.
+5. Check that the chosen style is still intact after readability adjustments.
+6. When tools allow it, render the HTML and inspect the actual visual result instead of relying only on source review.
+7. If exporting to PPT, confirm the rendered PNG aspect ratio matches the final PPT slide.
+8. Revise the HTML if any item fails.
 
 Never hand off first-draft HTML without this review pass.
 

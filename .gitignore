@@ -1,2 +1,6 @@
 node_modules/
 outputs/
+cases/
+.claude/
+agents/
+.playwright-mcp/

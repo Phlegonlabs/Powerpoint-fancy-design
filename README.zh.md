@@ -31,6 +31,7 @@
 - 支持兼容浅色风格的 `background_mode=paper|white`。
 - 在写 HTML 前先识别每页内容角色，再选 layout prototype。
 - 强制使用安全内容边界，保证主内容停留在演示安全区内。
+- 当结构本身承载含义时，保留几何敏感的图示与严格表格。
 - 每页生成后都做版式审查，检查越界、碰撞和可读性。
 - 最终把 HTML slides 导出成 PNG，再导出成 PPTX。
 
@@ -57,7 +58,8 @@
 5. [`references/html-review-checklist.md`](./references/html-review-checklist.md)
 6. [`references/layout-prototypes.md`](./references/layout-prototypes.md)
 7. [`references/safe-zone.md`](./references/safe-zone.md)
-8. 选中的 style 文件，位于 [`styles/`](./styles/)
+8. [`references/geometry-preserve.md`](./references/geometry-preserve.md)（图示和严格表格需要）
+9. 选中的 style 文件，位于 [`styles/`](./styles/)
 
 整个流程是内容优先的：
 
@@ -65,9 +67,10 @@
 2. 识别每页属于 `cover`、`metric`、`comparison`、`closing` 等内容角色。
 3. 根据 style family 和内容角色选择 layout prototype。
 4. 保证主内容始终落在 slide safe zone 内。
-5. 每页输出一个 HTML 文件。
-6. 审查并修正后再交付。
-7. 只在需要时导出 PPT。
+5. 如果页面是框图、组织图或严格表格，优先保留几何结构。
+6. 每页输出一个 HTML 文件。
+7. 审查并修正后再交付。
+8. 只在需要时导出 PPT。
 
 ## 版式与安全区约束
 
@@ -85,6 +88,7 @@
 
 - [`references/layout-prototypes.md`](./references/layout-prototypes.md)
 - [`references/safe-zone.md`](./references/safe-zone.md)
+- [`references/geometry-preserve.md`](./references/geometry-preserve.md)
 
 ## 风格画廊
 
@@ -143,14 +147,11 @@
 ppt-design/
 |- SKILL.md
 |- CLAUDE.md
-|- .claude/
-|  `- settings.json
-|- agents/
-|  `- openai.yaml
 |- references/
 |  |- background-modes.md
 |  |- bilingual-typography.md
 |  |- deck-markdown-template.md
+|  |- geometry-preserve.md
 |  |- html-review-checklist.md
 |  |- layout-prototypes.md
 |  |- presentation-layout-rules.md
@@ -203,17 +204,10 @@ ppt-design/
 - `skills/ppt-design/` 适合拿去分发或安装
 - 当前仓库里依赖安装仍然从根目录完成
 
-## Claude Code 与 Codex 入口
+## 入口文件
 
-Codex 风格入口：
-
-- [`SKILL.md`](./SKILL.md)
-- [`agents/openai.yaml`](./agents/openai.yaml)
-
-Claude Code 项目入口：
-
-- [`CLAUDE.md`](./CLAUDE.md)
-- [`.claude/settings.json`](./.claude/settings.json)
+- [`SKILL.md`](./SKILL.md) 是核心 skill 工作流。
+- [`CLAUDE.md`](./CLAUDE.md) 是仓库内的 assistant 协作说明。
 
 ## 环境准备
 
@@ -261,8 +255,8 @@ npm run build:twitter-cases
 PPT 作者与公司信息由环境变量控制：
 
 ```powershell
-$env:PPT_AUTHOR = "Codex"
-$env:PPT_COMPANY = "OpenAI"
+$env:PPT_AUTHOR = "Your Name"
+$env:PPT_COMPANY = "Your Team"
 ```
 
 如果未设置，则回退为：
@@ -353,13 +347,3 @@ $env:PPT_COMPANY = "OpenAI"
 - 根目录包含一些不在最小 skill 包中的辅助脚本与审计工具。
 - `outputs/html/` 里的历史 smoke-test 文件只是本地产物，不代表当前标准模板。
 - 一切最终行为以 `SKILL.md` 和 references 文档为准。
-
-## GitHub Star
-
-如果这个仓库对你有帮助，欢迎给它点一个 Star。
-
-[![GitHub Repo stars](https://img.shields.io/github/stars/Phlegonlabs/Powerpoint-fancy-design?style=social)](https://github.com/Phlegonlabs/Powerpoint-fancy-design/stargazers)
-
-## Star History
-
-[![Star History Chart](https://api.star-history.com/svg?repos=Phlegonlabs/Powerpoint-fancy-design&type=Date)](https://www.star-history.com/#Phlegonlabs/Powerpoint-fancy-design&Date)

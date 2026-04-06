@@ -1,10 +1,10 @@
 # v0.2.0
 
-This release turns `ppt-design` from an initial style-driven skill into a more complete presentation-design system with dual-agent support, layout prototype guidance, safe-zone enforcement, and generic template case generation.
+This release turns `ppt-design` from an initial style-driven skill into a more complete presentation-design system with layout prototype guidance, safe-zone enforcement, and generic template generation.
 
 ## Highlights
 
-- Adds explicit support for both Codex and Claude Code project workflows.
+- Clarifies assistant-driven workflows and repo-level guidance.
 - Introduces layout prototype guidance so slide structure is chosen by content role instead of repeating the same layout pattern.
 - Adds safe-zone documentation and review rules to keep primary content inside a fixed presentation-safe frame.
 - Refreshes repository documentation into a more product-style format with gallery, quick start, and template-library entry points.
@@ -43,7 +43,7 @@ This release turns `ppt-design` from an initial style-driven skill into a more c
 ## New Validation And Demo Paths
 
 - `npm run build:twitter-cases`
-  - builds the historical 10-style internal demo pipeline
+  - builds the historical 10-style example pipeline
 - `npm run build:template-cases`
   - builds the topic-neutral 10-style generic template pipeline
 - `npm run build:style-previews`

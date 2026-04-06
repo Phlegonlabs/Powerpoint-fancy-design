@@ -12,6 +12,12 @@ If rendering tools are available, inspect the rendered result rather than trusti
 - No headline, label, body text, number, or caption overlaps another element.
 - No text is clipped by the slide edge, masked by decoration, or trapped inside a panel that is too small.
 - Text sizes still work for presentation, especially on body copy and labels.
+  - Body text is at least `22px` (EN) or `24px` (CN).
+  - Labels, captions, and footnotes are at least `16px` (EN) or `18px` (CN).
+  - Support copy (kickers, taglines) is at least `18px` (EN) or `20px` (CN).
+  - Table header cells are at least `20px` (EN) or `22px` (CN).
+  - Table body cells are at least `18px` (EN) or `20px` (CN).
+  - Page numbers in chrome zones may be as small as `14px`; no other content in the main area goes below `16px`.
 - Line breaks feel intentional; no awkward orphaned words or compressed Chinese lines.
 - Decorative shapes support the composition instead of fighting with the content.
 - Tables or dense comparisons have been redesigned for slide readability when possible.
@@ -24,6 +30,9 @@ If rendering tools are available, inspect the rendered result rather than trusti
 - Content does not overflow `.main-frame`. If it does, split the slide or rebuild the hierarchy instead of expanding the frame.
 - The slide still clearly belongs to the chosen style family after revisions.
 - Decorative dividers, rules, and accent lines do not visually collide with nearby text.
+- On geometry-sensitive slides, box sizes, connector positions, and relative layout proportions still match the intended structure.
+- If the slide is exported, the HTML view, rendered PNG, and final PPT page still present the same geometry without visible stretching.
+- Text remains the first readable layer; diagrams, boxes, ornaments, and background graphics must not collapse into the copy.
 
 ## Failure Handling
 
@@ -32,3 +41,8 @@ If any item fails:
 1. Revise the HTML.
 2. Re-check the slide.
 3. Only deliver once the revised version passes.
+
+Repo pipeline note:
+
+- The shared engine validates HTML before PNG and PPT export.
+- Post-render audit is a second gate, not the first time failures should be discovered.

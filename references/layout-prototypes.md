@@ -31,7 +31,31 @@ Instruction: identify the content role for every slide first, then select a layo
 
 Left column: eyebrow, headline, subtitle, body copy.
 Right column: stacked info panels.
-Use for: `cover` slides with title, framing, and metadata.
+Use for: `cover` slides — **fallback only**. Prefer a style-specific cover prototype (see table below).
+
+---
+
+## Style-Specific Cover Prototypes
+
+Each style maps to its own cover prototype with a distinct DOM skeleton. The script pipeline reads `style.coverPrototype` directly; the AI agent should select the matching prototype from this table.
+The executable mapping lives in the shared slide engine manifest, while this document is the human-readable reference.
+
+| Style | Cover Prototype | Grid / Structure |
+|-------|----------------|-----------------|
+| A (editorial) | `cover-swiss-rail` | 3-row: header bar / main headline / 3-col note rail |
+| B (minimal) | `cover-zen-void` | 3-row flex: spacer / content anchored center-low / bottom rule + body |
+| C (poster) | `cover-riso-poster` | 2-col (0.65fr / 0.35fr): headline left / year + note stack right |
+| D (geometry) | `cover-bauhaus-frame` | 2×2 grid: meta+year / geo-block / headline / notes |
+| E (organic) | `cover-organic-cluster` | Flex column: title block / bubble note cards (organic border-radius) |
+| F (luxury) | `cover-deco-axis` | Single centered column: rule / headline / notes (symmetric) / rule |
+| G (brutal) | `cover-brutal-stack` | Vertical stack: headline (104px) / 3 sticker cards / subhead |
+| H (future) | `cover-horizon-signal` | 2-row split: sky (headline) / 4-col signal grid below horizon |
+| I (dark-editorial) | `cover-editorial-ledger` | 3-equal-col grid: year+headline / subhead+body / note stack |
+| J (playful) | `cover-memphis-splash` | 2-col grid top / full-width badge row bottom |
+
+**Cover whitespace rule**: the last direct live child of `.layout-root` must have its `bottom` >= 60% of `.main-frame` height. Covers that leave the lower 40% completely empty are considered a layout failure.
+
+---
 
 ### 2. `editorial-thesis`
 
@@ -164,16 +188,16 @@ Use for: `thesis` or `comparison` slides with structured labeled statements.
 
 | Style | Family | Cover | Chronology | Comparison | Metric | Thesis | Synthesis | Closing |
 |-------|--------|-------|------------|------------|--------|--------|-----------|---------|
-| A | editorial | hero-cover | offset-timeline | comparison-bands | metric-commentary | editorial-thesis | card-constellation | manifesto-wall |
-| B | minimal | hero-cover | story-rail | ledger-columns | editorial-thesis | editorial-thesis | story-rail | ledger-columns |
-| C | poster | hero-cover | offset-timeline | comparison-bands | evidence-quote | editorial-thesis | card-constellation | manifesto-wall |
-| D | geometry | hero-cover | offset-timeline | comparison-bands | metric-commentary | ledger-columns | card-constellation | ledger-columns |
-| E | organic | hero-cover | story-rail | comparison-bands | metric-commentary | editorial-thesis | card-constellation | manifesto-wall |
-| F | luxury | hero-cover | offset-timeline | comparison-bands | metric-commentary | editorial-thesis | ledger-columns | manifesto-wall |
-| G | brutal | hero-cover | story-rail | comparison-bands | metric-commentary | editorial-thesis | card-constellation | manifesto-wall |
-| H | future | hero-cover | offset-timeline | comparison-bands | metric-commentary | editorial-thesis | card-constellation | manifesto-wall |
-| I | dark-editorial | hero-cover | offset-timeline | comparison-bands | metric-commentary | editorial-thesis | ledger-columns | manifesto-wall |
-| J | playful | hero-cover | offset-timeline | comparison-bands | metric-commentary | editorial-thesis | card-constellation | manifesto-wall |
+| A | editorial | cover-swiss-rail | offset-timeline | comparison-bands | metric-commentary | editorial-thesis | card-constellation | manifesto-wall |
+| B | minimal | cover-zen-void | story-rail | ledger-columns | editorial-thesis | editorial-thesis | story-rail | ledger-columns |
+| C | poster | cover-riso-poster | offset-timeline | comparison-bands | evidence-quote | editorial-thesis | card-constellation | manifesto-wall |
+| D | geometry | cover-bauhaus-frame | offset-timeline | comparison-bands | metric-commentary | ledger-columns | card-constellation | ledger-columns |
+| E | organic | cover-organic-cluster | story-rail | comparison-bands | metric-commentary | editorial-thesis | card-constellation | manifesto-wall |
+| F | luxury | cover-deco-axis | offset-timeline | comparison-bands | metric-commentary | editorial-thesis | ledger-columns | manifesto-wall |
+| G | brutal | cover-brutal-stack | story-rail | comparison-bands | metric-commentary | editorial-thesis | card-constellation | manifesto-wall |
+| H | future | cover-horizon-signal | offset-timeline | comparison-bands | metric-commentary | editorial-thesis | card-constellation | manifesto-wall |
+| I | dark-editorial | cover-editorial-ledger | offset-timeline | comparison-bands | metric-commentary | editorial-thesis | ledger-columns | manifesto-wall |
+| J | playful | cover-memphis-splash | offset-timeline | comparison-bands | metric-commentary | editorial-thesis | card-constellation | manifesto-wall |
 
 ## Diversity Rules
 

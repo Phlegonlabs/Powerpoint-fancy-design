@@ -72,11 +72,19 @@ Forbidden:
 Suggested sizes:
 
 ```text
-Display title: 56-88px
-Chinese display title: 36-48px
-Subtitle: 24-32px
-Body: 18-22px
-Label: 12-14px
+Display Title (EN):   56-88px
+Display Title (CN):   40-48px
+Section Heading:      28-32px
+Body (EN):            22-24px
+Body (CN):            24-26px
+Table Header (EN):    22-24px
+Table Header (CN):    24-26px
+Table Cell (EN):      20-22px
+Table Cell (CN):      22-24px
+Support Copy:         18-20px
+Label / Caption (EN): 16-18px
+Label / Caption (CN): 18-20px
+Page Number:          14-16px
 ```
 
 English labels should be all-caps with wide tracking, like cockpit labeling.
@@ -242,7 +250,7 @@ Keep the glow subtle. Blur should stay in the `4-12px` range.
 - Data label: Space Mono inside a thin cyan bordered rectangle.
 - List marker: short cyan dash.
 - Divider: `0.5px` cyan rule with a faint glow.
-- Page number: Space Mono `12px`, all-caps, dark blue-gray.
+- Page number: Space Mono `14px`, all-caps, dark blue-gray.
 
 ## Prohibited Elements
 

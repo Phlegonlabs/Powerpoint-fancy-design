@@ -86,10 +86,19 @@ Pure white `#fff` is allowed only when `background_mode=white`.
 Suggested sizes:
 
 ```text
-Brand or main title: 48-72px
-Subtitle: 24-32px
-Body: 18-22px
-Label: 12-14px
+Display Title (EN):   48-72px
+Display Title (CN):   40-56px
+Section Heading:      28-32px
+Body (EN):            22-24px
+Body (CN):            24-26px
+Table Header (EN):    22-24px
+Table Header (CN):    24-26px
+Table Cell (EN):      20-22px
+Table Cell (CN):      22-24px
+Support Copy:         18-20px
+Label / Caption (EN): 16-18px
+Label / Caption (CN): 18-20px
+Page Number:          14-16px
 ```
 
 Keep type visually light. The handmade visuals should dominate, not heavy typography.

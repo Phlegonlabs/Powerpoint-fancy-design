@@ -1,56 +1,56 @@
 # Page 1
 ## Title
-[Presentation Title]
+[Project / Proposal Title]
 
 ## Subtitle
-[Short supporting subtitle]
+[One-sentence framing subtitle]
 
 ## Goal
-[What this deck should help the audience understand or decide]
+[What this deck should help the audience understand, align on, or decide]
 
 # Page 2
 ## Title
-[Context or Overview]
+[Context and Opportunity]
 
 ## Summary
-- [Point one]
-- [Point two]
-- [Point three]
+- [Current situation]
+- [Why this matters now]
+- [What changed or what triggered this review]
 
 # Page 3
 ## Title
-[Comparison or Key Question]
+[Current State vs Target State]
 
 ## Left Column
-- [Item]
-- [Item]
-- [Item]
+- [Current constraint]
+- [Current gap]
+- [Current risk]
 
 ## Right Column
-- [Item]
-- [Item]
-- [Item]
+- [Target outcome]
+- [Target capability]
+- [Target impact]
 
 # Page 4
 ## Title
-[Metric or Evidence]
+[Primary Metric or Evidence]
 
 ## Key Number
-[Primary metric]
+[Main signal]
 
 ## Explanation
-[Short explanatory paragraph]
+[One short explanation of why this number matters]
 
 ## Supporting Points
-- [Point one]
-- [Point two]
-- [Point three]
+- [Supporting evidence]
+- [Supporting evidence]
+- [Supporting evidence]
 
 # Page 5
 ## Title
-[Closing or Next Step]
+[Decision and Next Step]
 
 ## Takeaways
-- [Takeaway one]
-- [Takeaway two]
-- [Takeaway three]
+- [Decision to make]
+- [Immediate next action]
+- [Owner / timing / success condition]
