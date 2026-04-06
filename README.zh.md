@@ -2,7 +2,7 @@
 
 语言： [English](./README.md) | **简体中文** | [繁體中文](./README.zh-TW.md)
 
-![Release](https://img.shields.io/badge/release-v0.2.0-1f2937)
+![Release](https://img.shields.io/badge/release-v0.2.1-1f2937)
 ![Skill](https://img.shields.io/badge/skill-ppt--design-b85038)
 ![Agents](https://img.shields.io/badge/agents-Codex%20%7C%20Claude%20Code-4b5563)
 
@@ -12,7 +12,7 @@
 
 当前版本：
 
-- [`v0.2.0 更新说明`](./RELEASE_NOTES_v0.2.0.md)
+- [`v0.2.1 更新说明`](./RELEASE_NOTES_v0.2.1.md)
 
 ## 快速开始
 

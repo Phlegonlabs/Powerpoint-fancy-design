@@ -2,7 +2,7 @@
 
 Language: **English** | [简体中文](./README.zh.md) | [繁體中文](./README.zh-TW.md)
 
-![Release](https://img.shields.io/badge/release-v0.2.0-1f2937)
+![Release](https://img.shields.io/badge/release-v0.2.1-1f2937)
 ![Skill](https://img.shields.io/badge/skill-ppt--design-b85038)
 ![Agents](https://img.shields.io/badge/agents-Codex%20%7C%20Claude%20Code-4b5563)
 
@@ -12,7 +12,7 @@ It is designed to work in both Codex and Claude Code workflows. The repository r
 
 Current release:
 
-- [`v0.2.0 release notes`](./RELEASE_NOTES_v0.2.0.md)
+- [`v0.2.1 release notes`](./RELEASE_NOTES_v0.2.1.md)
 
 ## Quick Start
 
