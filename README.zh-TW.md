@@ -2,9 +2,17 @@
 
 語言： [English](./README.md) | [简体中文](./README.zh.md) | **繁體中文**
 
+![Release](https://img.shields.io/badge/release-v0.2.0-1f2937)
+![Skill](https://img.shields.io/badge/skill-ppt--design-b85038)
+![Agents](https://img.shields.io/badge/agents-Codex%20%7C%20Claude%20Code-4b5563)
+
 `ppt-design` 是一套面向演示稿設計的 skill，用來把按頁組織好的 Markdown 轉成 `1600x900` 的 HTML slides，並在需要時進一步匯出成高保真的圖片式 PPTX。
 
 它同時支援 Codex 與 Claude Code 工作流。倉庫根目錄是完整開發工作區；`skills/ppt-design/` 是可分發的 skill bundle，鏡像了共享的 skill 內容。
+
+當前版本：
+
+- [`v0.2.0 更新說明`](./RELEASE_NOTES_v0.2.0.md)
 
 ## 快速開始
 

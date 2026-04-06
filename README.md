@@ -2,9 +2,17 @@
 
 Language: **English** | [简体中文](./README.zh.md) | [繁體中文](./README.zh-TW.md)
 
+![Release](https://img.shields.io/badge/release-v0.2.0-1f2937)
+![Skill](https://img.shields.io/badge/skill-ppt--design-b85038)
+![Agents](https://img.shields.io/badge/agents-Codex%20%7C%20Claude%20Code-4b5563)
+
 `ppt-design` is a presentation-design skill for turning page-structured Markdown into polished `1600x900` HTML slides, then exporting those slides to a high-fidelity image-based PPTX when needed.
 
 It is designed to work in both Codex and Claude Code workflows. The repository root is the full development workspace. `skills/ppt-design/` is the distributable skill bundle that mirrors the shared skill content.
+
+Current release:
+
+- [`v0.2.0 release notes`](./RELEASE_NOTES_v0.2.0.md)
 
 ## Quick Start
 

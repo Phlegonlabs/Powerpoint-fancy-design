@@ -1,7 +1,7 @@
 ---
 name: ppt-design
 description: Design presentation slides, infographic pages, and PPT-style visuals as 1600x900 HTML slides with optional PPT export. Use when the agent needs to pick or explain a slide style, recommend styles based on content, generate one or more static HTML slides, support `background_mode` paper or white for compatible light styles, or render finished slides into a high-fidelity image-based PPTX.
-version: 0.1.0
+version: 0.2.0
 ---
 
 # PPT Design
