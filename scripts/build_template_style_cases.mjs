@@ -13,6 +13,7 @@ const defaultRoot = path.join(
 const { values } = parseArgs({
   options: {
     root: { type: "string", default: defaultRoot },
+    style: { type: "string" },
     previews: { type: "boolean", default: false },
   },
 });
@@ -68,12 +69,21 @@ async function buildStyleArtifacts(style) {
 }
 
 async function main() {
-  await buildHtml({ output: outputRoot, validate: false });
+  const styleFilter = values.style ? String(values.style).toLowerCase() : null;
+  const selectedStyles = styleFilter
+    ? styles.filter((style) => style.id === styleFilter || style.slug === styleFilter)
+    : styles;
+
+  if (selectedStyles.length === 0) {
+    throw new Error(`Unknown style filter: ${values.style}`);
+  }
+
+  await buildHtml({ output: outputRoot, style: styleFilter, validate: false });
 
   const collectionDir = path.join(outputRoot, "pptx-collection");
   await ensureDir(collectionDir);
 
-  for (const style of styles) {
+  for (const style of selectedStyles) {
     const { pptPath } = await buildStyleArtifacts(style);
     await copyFile(pptPath, path.join(collectionDir, path.basename(pptPath)));
   }

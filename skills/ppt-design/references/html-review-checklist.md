@@ -22,6 +22,8 @@ If rendering tools are available, inspect the rendered result rather than trusti
 - No text content appears in the top chrome zone (`0-96px`) except style label and meta label on cover or closing slides.
 - No text content appears in the bottom chrome zone (`804-900px`) except layout name and page number on cover or closing slides.
 - Content does not overflow `.main-frame`. If it does, split the slide or rebuild the hierarchy instead of expanding the frame.
+- The slide still clearly belongs to the chosen style family after revisions.
+- Decorative dividers, rules, and accent lines do not visually collide with nearby text.
 
 ## Failure Handling
 

@@ -55,3 +55,10 @@ Slides are not documents. Optimize for viewing distance, scanning speed, and spe
 - Some styles intentionally distort, tilt, or densify composition.
 - Preserve style energy, but never let expressive styling break readability.
 - If a fancy treatment causes legibility problems, simplify the layout before shrinking the type too far.
+
+## Style Fidelity Rules
+
+- Treat the chosen style file as the source of truth for pacing, ornament density, and whitespace.
+- Do not force all styles toward the same amount of fill. Some styles should feel open, quiet, or restrained.
+- When a slide feels weak, refine hierarchy and composition first before adding decoration.
+- Decorative rules, dividers, and accents must never collide with live text just because they are “part of the style”.

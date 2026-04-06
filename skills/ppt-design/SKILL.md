@@ -29,13 +29,14 @@ Design each slide as a standalone 1600x900 HTML file, then export to PPT only wh
 10. Read [html-review-checklist.md](./references/html-review-checklist.md).
 11. Read [layout-prototypes.md](./references/layout-prototypes.md). Classify each slide's content role and select a layout prototype before writing HTML. Do not repeat the same layout on consecutive slides.
 12. Read [safe-zone.md](./references/safe-zone.md). Enforce content boundaries on every slide: all primary content must live inside the main frame area (`y = 108px` to `y = 804px`). Include chrome labels only on cover and closing slides when `chrome=bookend`.
-13. Read the chosen style file in `./styles/style_[a-j].md` before writing HTML. Do not rely on memory.
-14. When the slide copy is Chinese or bilingual, follow the style's Chinese and English pairing guidance rather than reusing the English display font everywhere.
-15. Recompose page content into slide hierarchy instead of preserving raw Markdown formatting literally.
-16. Generate one HTML file per slide in `./outputs/html/`.
-17. Review every generated HTML slide before delivery. Treat this as mandatory, not optional.
-18. Fix layout, spacing, typography, and hierarchy issues found in review.
-19. If the user wants PPT, render the HTML slides to PNG and package them into a PPTX.
+13. Read the chosen style file in `./styles/style_[a-j].md` before writing HTML. Treat that file as the visual source of truth. Do not rely on memory.
+14. Preserve the chosen style's native whitespace, ornament density, contrast, and pacing. Do not normalize all styles toward the same layout density.
+15. When the slide copy is Chinese or bilingual, follow the style's Chinese and English pairing guidance rather than reusing the English display font everywhere.
+16. Recompose page content into slide hierarchy instead of preserving raw Markdown formatting literally.
+17. Generate one HTML file per slide in `./outputs/html/`.
+18. Review every generated HTML slide before delivery. Treat this as mandatory, not optional.
+19. Fix layout, spacing, typography, and hierarchy issues found in review using the smallest change that keeps the slide true to the chosen style.
+20. If the user wants PPT, render the HTML slides to PNG and package them into a PPTX.
 
 ## Inputs
 
@@ -184,6 +185,16 @@ Apply these rules:
 - `chrome=none`: omit chrome labels entirely.
 - The main content frame does not move when chrome visibility changes.
 
+## Style Fidelity
+
+Apply these rules on every slide:
+
+- The chosen style file is the source of truth for visual behavior.
+- Preserve the style's native whitespace strategy. Minimal and editorial styles should stay restrained.
+- Preserve ornament logic. Decorative rules, frames, and accents should support the composition, not dominate it.
+- When fixing density or collisions, prefer content edits, card count changes, or local spacing adjustments over turning every style into the same template.
+- A successful revision should still look unmistakably like the chosen style family.
+
 ## Presentation Typography
 
 Read [presentation-layout-rules.md](./references/presentation-layout-rules.md).
@@ -271,3 +282,4 @@ The PPT export is intentionally image-based for fidelity. Each slide becomes one
 - No text content appears in the top reserved zone (`0-96px`) or bottom reserved zone (`804-900px`) except chrome labels allowed by the current `chrome` mode.
 - Consecutive slides use different layout prototypes.
 - A 10-slide deck uses at least 5 distinct layout prototypes.
+- Refinements preserve the original style instead of flattening all decks toward the same density or ornament pattern.

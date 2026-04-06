@@ -27,6 +27,14 @@ export async function main(options = {}) {
   const repoRoot = path.resolve(moduleDir, "..", "..");
   const outputRoot = path.resolve(options.output || defaultOutputDir);
   const validate = options.validate ?? true;
+  const styleFilter = options.style ? String(options.style).toLowerCase() : null;
+  const selectedStyles = styleFilter
+    ? styles.filter((style) => style.id === styleFilter || style.slug === styleFilter)
+    : styles;
+
+  if (selectedStyles.length === 0) {
+    throw new Error(`Unknown style filter: ${options.style}`);
+  }
 
   await fs.mkdir(outputRoot, { recursive: true });
   await copyToOutput(
@@ -52,7 +60,7 @@ export async function main(options = {}) {
   ];
   await fs.writeFile(path.join(outputRoot, "README.txt"), manifestLines.join("\n"), "utf8");
 
-  for (const style of styles) {
+  for (const style of selectedStyles) {
     const styleDir = path.join(outputRoot, style.slug);
     const htmlDir = path.join(styleDir, "html");
     const renderedDir = path.join(styleDir, "rendered");
@@ -75,7 +83,7 @@ export async function main(options = {}) {
     }
   }
 
-  console.log(`Generated ${styles.length} style case directories at ${outputRoot}`);
+  console.log(`Generated ${selectedStyles.length} style case directories at ${outputRoot}`);
 }
 
 if (process.argv[1] && fileURLToPath(import.meta.url) === path.resolve(process.argv[1])) {
@@ -83,6 +91,7 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === path.resolve(process.a
   const { values } = parseArgs({
     options: {
       output: { type: "string", default: defaultOutputDir },
+      style: { type: "string" },
       validate: { type: "boolean", default: true },
     },
   });
