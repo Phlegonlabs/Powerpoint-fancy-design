@@ -191,10 +191,12 @@ ppt-design/
 |- scripts/
 |  |- render_slides.mjs
 |  |- export_ppt.mjs
+|  |- build_public_stage_cases.mjs
 |  |- build_twitter_style_cases.mjs
 |  |- check_shared_engine_usage.mjs
 |  |- build_review_sheets.mjs
 |  |- generate_style_previews.mjs
+|  |- public_stage_cases/
 |  |- slide_engine/
 |  `- twitter_style_cases/
 |- skills/

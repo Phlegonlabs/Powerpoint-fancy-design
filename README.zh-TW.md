@@ -57,10 +57,11 @@
 3. [`references/background-modes.md`](./references/background-modes.md)
 4. [`references/presentation-layout-rules.md`](./references/presentation-layout-rules.md)
 5. [`references/html-review-checklist.md`](./references/html-review-checklist.md)
-6. [`references/layout-prototypes.md`](./references/layout-prototypes.md)
-7. [`references/safe-zone.md`](./references/safe-zone.md)
-8. [`references/geometry-preserve.md`](./references/geometry-preserve.md)（圖示與嚴格表格需要）
-9. 選中的 style 文件，位於 [`styles/`](./styles/)
+6. [`references/presentation-quality-rubric.md`](./references/presentation-quality-rubric.md)
+7. [`references/layout-prototypes.md`](./references/layout-prototypes.md)
+8. [`references/safe-zone.md`](./references/safe-zone.md)
+9. [`references/geometry-preserve.md`](./references/geometry-preserve.md)（圖示與嚴格表格需要）
+10. 選中的 style 文件，位於 [`styles/`](./styles/)
 
 整個流程是內容優先的：
 
@@ -166,6 +167,7 @@ ppt-design/
 |  |- geometry-preserve.md
 |  |- html-review-checklist.md
 |  |- layout-prototypes.md
+|  |- presentation-quality-rubric.md
 |  |- presentation-layout-rules.md
 |  |- safe-zone.md
 |  `- style-selector.md
@@ -176,9 +178,12 @@ ppt-design/
 |- scripts/
 |  |- render_slides.mjs
 |  |- export_ppt.mjs
+|  |- build_public_stage_cases.mjs
 |  |- build_twitter_style_cases.mjs
 |  |- build_review_sheets.mjs
 |  |- generate_style_previews.mjs
+|  |- public_stage_cases/
+|  |- slide_engine/
 |  `- twitter_style_cases/
 |- skills/
 |  `- ppt-design/
